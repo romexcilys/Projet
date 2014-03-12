@@ -4,19 +4,27 @@ import java.util.Date;
 
 public class Computer {
 	
+	private int id;
 	private String nom ;
-	private Date introduced_date;
-	private Date discontinued_date;
-	private int company;
-	private String company_name;
+	private Date introducedDate;
+	private Date discontinuedDate;
+	private Company company;
 	
-	public Computer(String nom, Date introduced_date, Date discontinued_date,
-			int company, String company_name) {
+	public Computer(int id, String nom, Date introducedDate,
+			Date discontinuedDate, Company company) {
+		this.id = id;
 		this.nom = nom;
-		this.introduced_date = introduced_date;
-		this.discontinued_date = discontinued_date;
+		this.introducedDate = introducedDate;
+		this.discontinuedDate = discontinuedDate;
 		this.company = company;
-		this.company_name = company_name;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getNom() {
@@ -27,46 +35,27 @@ public class Computer {
 		this.nom = nom;
 	}
 
-	public Date getIntroduced_date() {
-		return introduced_date;
+	public Date getIntroducedDate() {
+		return introducedDate;
 	}
 
-	public void setIntroduced_date(Date introduced_date) {
-		this.introduced_date = introduced_date;
+	public void setIntroducedDate(Date introducedDate) {
+		this.introducedDate = introducedDate;
 	}
 
-	public Date getDiscontinued_date() {
-		return discontinued_date;
+	public Date getDiscontinuedDate() {
+		return discontinuedDate;
 	}
 
-	public void setDiscontinued_date(Date discontinued_date) {
-		this.discontinued_date = discontinued_date;
+	public void setDiscontinuedDate(Date discontinuedDate) {
+		this.discontinuedDate = discontinuedDate;
 	}
 
-	public int getCompany() {
+	public Company getCompany() {
 		return company;
 	}
 
-	public void setCompany(int company) {
+	public void setCompany(Company company) {
 		this.company = company;
 	}
-
-	public String getCompany_name() {
-		return company_name;
-	}
-
-	public void setCompany_name(String company_name) {
-		this.company_name = company_name;
-	}
-
-	@Override
-	public String toString() {
-		return "Computer [nom=" + nom + ", introduced_date=" + introduced_date
-				+ ", discontinued_date=" + discontinued_date + ", company="
-				+ company + ", company_name=" + company_name + "]";
-	}
-	
-	
-	
-
 }

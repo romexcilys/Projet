@@ -36,34 +36,14 @@
 				<tr> 
 				
 					<td> <c:out value="${computer.nom}"/> </td>
-					<td>  <c:out value="${computer.introduced_date }"/> </td>
-					<td>  <c:out value="${computer.discontinued_date }"/> </td>
-					<td>  <c:out value="${computer.company_name }"/> </td>
+					<td>  <c:out value="${computer.introducedDate }"/> </td>
+					<td>  <c:out value="${computer.discontinuedDate }"/> </td>
+					<td>  <c:out value="${computer.company.nom }"/> </td>
 									
 				</tr>
 			
 			</c:forEach>
 
-<!--  
-				<tr>
-					<td><a href="#" onclick="">ThinkPad T420</a></td>
-					<td>2011-01-01</td>
-					<td>2013-03-04</td>
-					<td>Lenovo</td>
-				</tr>
-				<tr>
-					<td><a href="#">Precision 3500</a></td>
-					<td>2010-05-07</td>
-					<td>2012-06-01</td>
-					<td>Dell</td>
-				</tr>
-				<tr>
-					<td><a href="#">Macbook Air</a></td>
-					<td>2005-05-09</td>
-					<td>2008-06-06</td>
-					<td>Apple</td>
-				</tr>
-	-->
 			</tbody>
 		</table>
 </section>

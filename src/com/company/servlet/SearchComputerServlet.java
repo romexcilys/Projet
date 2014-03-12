@@ -37,10 +37,7 @@ public class SearchComputerServlet extends HttpServlet {
 		
 		if(nom.length() != 0)
 		{
-		
-			ComputerDAO computerDao = new ComputerDAO();
-			
-			List<Computer> computers = computerDao.searchComputer(nom);
+			List<Computer> computers = ComputerDAO.getInstance().searchComputer(nom);
 			
 			
 			request.setAttribute("computers", computers);

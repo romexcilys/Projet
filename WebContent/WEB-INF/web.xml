@@ -9,6 +9,10 @@
     <servlet-name>AjoutComputerServlet</servlet-name>
     <url-pattern>/AjoutComputer</url-pattern>
   </servlet-mapping>
+   <servlet-mapping>
+    <servlet-name>AjoutComputerServlet</servlet-name>
+    <url-pattern>/PageAjout</url-pattern>
+  </servlet-mapping>
   <servlet>
     <servlet-name>ListComputerServlet</servlet-name>
     <servlet-class>com.company.servlet.ListComputerServlet</servlet-class>
@@ -26,14 +30,7 @@
     <url-pattern>/SearchComputer</url-pattern>
   </servlet-mapping>
   
-  <servlet>
-    <servlet-name>PageAjoutServlet</servlet-name>
-    <servlet-class>com.company.servlet.PageAjoutServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>PageAjoutServlet</servlet-name>
-    <url-pattern>/PageAjout</url-pattern>
-  </servlet-mapping>
+ 
   
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>

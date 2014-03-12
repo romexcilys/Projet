@@ -25,7 +25,9 @@ public class Company {
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return "Company [id=" + id + ", nom=" + nom + "]";
+	}
 }

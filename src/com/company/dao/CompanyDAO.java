@@ -1,4 +1,5 @@
 package com.company.dao;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -10,18 +11,35 @@ import com.company.connexion.ConnexionSingleton;
 
 public class CompanyDAO {
 	
+	
+	private static CompanyDAO computerDao;
+	
+	private CompanyDAO()
+	{
+		
+	}
+	
+	public static CompanyDAO getInstance()
+	{
+		if(computerDao == null)
+			computerDao = new CompanyDAO();
+		
+		return computerDao;
+	}
+	
 	public List<Company> getListCompany()
 	{
 		List<Company> companys = new ArrayList<Company>();
 		
 		String query = "SELECT * FROM company;";
 		
-		Statement stmt;
-		ResultSet results;
+		Statement stmt = null;
+		ResultSet results = null;
+		Connection con = null;
 		
 		try {
-			
-			stmt = ConnexionSingleton.getInstance().createStatement();
+			con = ConnexionSingleton.getInstance();
+			stmt = con.createStatement();
 			results = stmt.executeQuery(query);
 			
 			while(results.next())
@@ -34,6 +52,18 @@ public class CompanyDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally
+		{
+			try {
+				
+				stmt.close();
+				results.close();
+				con.close();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		

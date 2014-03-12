@@ -34,15 +34,14 @@ public class ListComputerServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		List<Computer> computers;
-		ComputerDAO computerDao = new ComputerDAO();
 		
-		computers = computerDao.getListComputer();
+		computers = ComputerDAO.getInstance().getListComputer();
 		
 		
-		int nombre = computerDao.getNumberComputer();
+		//int nombre = computerDao.getNumberComputer();
 		
 		request.setAttribute("computers", computers);
-		request.setAttribute("number_computer", nombre);
+		request.setAttribute("number_computer", computers.size());
 		
 		this.getServletContext().getRequestDispatcher("/dashboard.jsp").forward(request, response);
 	}
