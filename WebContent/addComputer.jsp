@@ -12,7 +12,7 @@
 			<div class="clearfix">
 				<label for="name">Computer name:</label>
 				<div class="input">
-					<input type="text" name="name" />
+					<input type="text" name="name" required/>
 					<span class="help-inline">Required</span>
 				</div>
 			</div>
@@ -20,14 +20,14 @@
 			<div class="clearfix">
 				<label for="introduced">Introduced date:</label>
 				<div class="input">
-					<input type="date" name="introducedDate"/><!--  pattern="YY-MM-dd" -->
+					<input type="date" name="introducedDate" pattern = "^(19|20)\d\d([- /.])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$"/><!--  pattern="YY-MM-dd" -->
 					<span class="help-inline">YYYY-MM-DD</span>
 				</div>
 			</div>
 			<div class="clearfix">
 				<label for="discontinued">Discontinued date:</label>
 				<div class="input">
-					<input type="date" name="discontinuedDate"/><!--  pattern="YY-MM-dd" -->
+					<input type="date" name="discontinuedDate" pattern = "^(19|20)\d\d([- /.])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$"/><!--  pattern="YY-MM-dd" -->
 					<span class="help-inline">YYYY-MM-DD</span>
 				</div>
 			</div>
@@ -42,21 +42,13 @@
 							<option value="<c:out value='${ company.id}'/>"> <c:out value="${ company.nom }" /> </option>
 						
 						</c:forEach>
-						
-						
-						
-						<!--  
-						<option value="1">Apple</option>
-						<option value="2">Dell</option>
-						<option value="3">Lenovo</option>
-						-->
 					</select>
 				</div>
 			</div>
 		</fieldset>
 		<div class="actions">
 			<input type="submit" value="Add" class="btn primary">
-			or <a href="dashboard.jsp" class="btn">Cancel</a>
+			or <a href="affichage" class="btn">Cancel</a>
 		</div>
 	</form>
 </section>

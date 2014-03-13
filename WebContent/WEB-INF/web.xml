@@ -3,7 +3,7 @@
   <display-name>computer-database</display-name>
   <servlet>
     <servlet-name>AjoutComputerServlet</servlet-name>
-    <servlet-class>com.company.servlet.AjoutComputerServlet</servlet-class>
+    <servlet-class>com.computerdatabase.servlet.AjoutComputerServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>AjoutComputerServlet</servlet-name>
@@ -15,7 +15,7 @@
   </servlet-mapping>
   <servlet>
     <servlet-name>ListComputerServlet</servlet-name>
-    <servlet-class>com.company.servlet.ListComputerServlet</servlet-class>
+    <servlet-class>com.computerdatabase.servlet.ListComputerServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ListComputerServlet</servlet-name>
@@ -23,7 +23,7 @@
   </servlet-mapping>
   <servlet>
     <servlet-name>SearchComputerServlet</servlet-name>
-    <servlet-class>com.company.servlet.SearchComputerServlet</servlet-class>
+    <servlet-class>com.computerdatabase.servlet.SearchComputerServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>SearchComputerServlet</servlet-name>
