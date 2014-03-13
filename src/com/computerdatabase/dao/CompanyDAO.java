@@ -6,10 +6,24 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
+
+
 import com.computerdatabase.domain.Company;
 import com.computerdatabase.dao.ConnexionSingleton;
 
 public class CompanyDAO {
+	
+	final Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
+	private XLogger loggerx = XLoggerFactory.getXLogger(CompanyDAO.class
+		      .getName());
+
+
 	
 	
 	private static CompanyDAO computerDao;
@@ -29,9 +43,11 @@ public class CompanyDAO {
 	
 	public List<Company> getListCompany()
 	{
+		loggerx.entry();
+		logger.info("In getListCompany method");
 		List<Company> companys = new ArrayList<Company>();
 		
-		String query = "SELECT * FROM company;";
+		String query = "SELECT * FROM company ORDER BY name;";
 		
 		Statement stmt = null;
 		ResultSet results = null;
@@ -50,11 +66,10 @@ public class CompanyDAO {
 				//companys.add(new Company(results.getInt("id"),results.getString("name")));
 			}
 			
-			
-			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			loggerx.catching(e);
 		}finally
 		{
 			try {
@@ -66,10 +81,12 @@ public class CompanyDAO {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				loggerx.catching(e);
 			}
 		}
 		
-		
+		logger.info("Quit getListCompany method");
+		loggerx.exit(companys);
 		
 		return companys;
 	}

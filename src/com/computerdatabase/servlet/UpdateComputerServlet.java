@@ -13,22 +13,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.computerdatabase.domain.Company;
-import com.computerdatabase.domain.Computer;
 import com.computerdatabase.dao.CompanyDAO;
 import com.computerdatabase.dao.ComputerDAO;
+import com.computerdatabase.domain.Company;
+import com.computerdatabase.domain.Computer;
 
 /**
- * Servlet implementation class AjoutComputerServlet
+ * Servlet implementation class UpdateComputerServlet
  */
-@WebServlet("/AjoutComputerServlet")
-public class AjoutComputerServlet extends HttpServlet {
+@WebServlet("/UpdateComputerServlet")
+public class UpdateComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AjoutComputerServlet() {
+    public UpdateComputerServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,14 +39,24 @@ public class AjoutComputerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		List<Company> companys = new ArrayList<Company>();
-				
-		companys = CompanyDAO.getInstance().getListCompany();
+		String idComputer = request.getParameter("id");
 		
-		request.setAttribute("companys", companys);
+		if(idComputer != null)
+		{
+			int id = Integer.parseInt(idComputer.trim());
+			Computer computer = ComputerDAO.getInstance().findComputer(id);
+			List<Company> companys = new ArrayList<Company>();
+			
+			companys = CompanyDAO.getInstance().getListCompany();
+			
+			request.setAttribute("companys", companys);
+			
+			request.setAttribute("computer", computer);
+			request.setAttribute("companyId", computer.getCompany().getId());
+			
+		}
 		
-		
-		this.getServletContext().getRequestDispatcher("/addComputer.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/Formulaire.jsp").forward(request, response);
 		
 	}
 
@@ -56,16 +66,20 @@ public class AjoutComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
+		String idString = request.getParameter("idComputer");
+		int idComputer = 0;
+		
+		if(idString != null)
+			idComputer = Integer.parseInt(idString);
+		
 		String nom ;
 		if(request.getParameter("name").compareTo("") != 0 && request.getParameter("name") != null)
 			nom = request.getParameter("name");
 		else
 			nom = null;
 		
-		
 		String introducedDate = request.getParameter("introducedDate");
 		String discontinuedDate = request.getParameter("discontinuedDate");
-		
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
@@ -76,7 +90,6 @@ public class AjoutComputerServlet extends HttpServlet {
 		{
 			try {
 				dateIntroduced = (Date) sdf.parse(introducedDate);
-				System.out.println(dateIntroduced);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -86,7 +99,6 @@ public class AjoutComputerServlet extends HttpServlet {
 		{
 			try {
 				dateIntroduced = (Date) sdf.parse("0000-00-00");
-				System.out.println(dateIntroduced);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -97,7 +109,6 @@ public class AjoutComputerServlet extends HttpServlet {
 		{
 			try {
 				dateDiscontinued = (Date) sdf.parse(discontinuedDate);
-				System.out.println(dateDiscontinued);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -107,7 +118,6 @@ public class AjoutComputerServlet extends HttpServlet {
 		{
 			try {
 				dateDiscontinued = (Date) sdf.parse("0000-00-00");
-				System.out.println(dateDiscontinued);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -115,12 +125,10 @@ public class AjoutComputerServlet extends HttpServlet {
 			
 		}
 		
-		int company;
+		int company = 0;
 		
 		if(request.getParameter("company").compareTo("") != 0 && request.getParameter("company") != null)
 			company = Integer.parseInt(request.getParameter("company"));
-		else
-			company = 0;
 		
 		/*
 		 * Les données sont dans 
@@ -130,11 +138,10 @@ public class AjoutComputerServlet extends HttpServlet {
 		 * company
 		 */
 		
-		ComputerDAO.getInstance().insererComputer(Computer.builder().id(0).name(nom).introduced(dateIntroduced).discontinued(dateDiscontinued).company(Company.builder().id(company).build()).build());
+		ComputerDAO.getInstance().editComputer(Computer.builder().id(idComputer).name(nom).introduced(dateIntroduced).discontinued(dateDiscontinued).company(Company.builder().id(company).build()).build());
 		//ComputerDAO.getInstance().insererComputer(new Computer(0, nom, dateIntroduced, dateDiscontinued, new Company(company, null)));
 		
 		response.sendRedirect("affichage");
-		//this.getServletContext().getRequestDispatcher("/affichage").forward(request, response);		
+		
 	}
-
 }

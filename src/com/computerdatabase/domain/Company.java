@@ -60,7 +60,6 @@ public class Company {
 		public Company build() {
 			return this.company;
 		}
-
 	}
 
 	public static Builder builder() {
