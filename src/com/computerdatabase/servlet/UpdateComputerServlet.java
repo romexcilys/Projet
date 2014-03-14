@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.computerdatabase.dao.CompanyDAO;
 import com.computerdatabase.dao.ComputerDAO;
@@ -65,6 +66,7 @@ public class UpdateComputerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
 		
 		String idString = request.getParameter("idComputer");
 		int idComputer = 0;
@@ -141,7 +143,10 @@ public class UpdateComputerServlet extends HttpServlet {
 		ComputerDAO.getInstance().editComputer(Computer.builder().id(idComputer).name(nom).introduced(dateIntroduced).discontinued(dateDiscontinued).company(Company.builder().id(company).build()).build());
 		//ComputerDAO.getInstance().insererComputer(new Computer(0, nom, dateIntroduced, dateDiscontinued, new Company(company, null)));
 		
-		response.sendRedirect("affichage");
+		if(session.getAttribute("choixPage") != null && (Boolean) session.getAttribute("choixPage") == true)
+			response.sendRedirect("affichage?page=1");
+		else
+			response.sendRedirect("affichage");
 		
 	}
 }

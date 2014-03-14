@@ -37,47 +37,63 @@ public class ListComputerServlet extends HttpServlet {
 		int nombreElement = -1;
 		int numeroPage = 0;
 		
+		session.setAttribute("search", false);
 		
 		if(session.getAttribute("numberPage") == null)
 		{
 			nombreElement = 20;
 			int nombreComputer = ComputerDAO.getInstance().getNumberComputer();
-			int numberPage = nombreComputer/nombreElement;
+			int numberPage = (int) Math.ceil((double)nombreComputer/nombreElement);
+			System.out.println(nombreComputer/nombreElement);
 			session.setAttribute("numberPage", numberPage);
 		}
-		
-		if(request.getParameter("page") != null && request.getParameter("page").compareTo("") != 0 && Integer.parseInt(request.getParameter("page")) >= 1  && Integer.parseInt(request.getParameter("page")) < (Integer)session.getAttribute("numberPage"))
-		{
+		try {
+			
+			if(request.getParameter("page") != null && request.getParameter("page").compareTo("") != 0 && Integer.parseInt(request.getParameter("page")) >= 1  && Integer.parseInt(request.getParameter("page")) <= (Integer)session.getAttribute("numberPage"))
+			{
+				nombreElement = 20;
+				int nombreComputer = ComputerDAO.getInstance().getNumberComputer();
+				int numberPage = (int) (Math.ceil((double)nombreComputer/nombreElement));
+				session.setAttribute("numberPage", numberPage);
+				request.setAttribute("currentPage", Integer.parseInt(request.getParameter("page")));
+				session.setAttribute("choixPage", true);
+				
+				numeroPage = (Integer.parseInt(request.getParameter("page"))-1)*nombreElement;
+			}
+			else if(request.getParameter("page") != null)
+			{
+				nombreElement = 20;
+				int nombreComputer = ComputerDAO.getInstance().getNumberComputer();
+				int numberPage = (int) (Math.ceil((double)nombreComputer/nombreElement));
+				session.setAttribute("numberPage", numberPage);
+				request.setAttribute("currentPage", 1);
+				session.setAttribute("choixPage", true);
+			}
+			else
+			{
+				session.setAttribute("choixPage", false);
+			}
+			
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			nombreElement = 20;
 			int nombreComputer = ComputerDAO.getInstance().getNumberComputer();
-			int numberPage = nombreComputer/nombreElement;
+			int numberPage = (int) (Math.ceil((double)nombreComputer/nombreElement));
 			session.setAttribute("numberPage", numberPage);
-			request.setAttribute("currentPage", Integer.parseInt(request.getParameter("page")));
+			request.setAttribute("currentPage", 1);
 			session.setAttribute("choixPage", true);
-			
-			numeroPage = (Integer.parseInt(request.getParameter("page"))-1)*nombreElement;
-		}
-		else
-		{
-			session.setAttribute("choixPage", false);
 		}
 		
 		List<Computer> computers;
 		
 		computers = ComputerDAO.getInstance().getListComputer(numeroPage,nombreElement);
-		//int nombre = computerDao.getNumberComputer();
+		int nombre = ComputerDAO.getInstance().getNumberComputer();
 		
 		request.setAttribute("computers", computers);
-		request.setAttribute("number_computer", computers.size());
+		
+		request.setAttribute("number_computer", nombre);
 		
 		this.getServletContext().getRequestDispatcher("/dashboard.jsp").forward(request, response);
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 *//*
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}*/
-
 }

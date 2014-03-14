@@ -16,7 +16,6 @@ import org.slf4j.ext.XLoggerFactory;
 
 import com.computerdatabase.domain.Company;
 import com.computerdatabase.domain.Computer;
-import com.computerdatabase.dao.ConnexionSingleton;
 
 public class ComputerDAO {
 	
@@ -137,7 +136,6 @@ public class ComputerDAO {
 			}
 		}
 		
-
 		loggerx.exit(computers);
 		logger.info("Quit getListComputer method");
 		return computers;	
@@ -173,6 +171,7 @@ public class ComputerDAO {
 				
 				computers.add(Computer.builder().id(id).name(name).introduced(introduced).discontinued(discontinued).company(Company.builder().id(compaId).nom(compaName).build()).build());
 				//computers.add(new Computer(results.getInt("compu_id"), results.getString("compu_name"), results.getDate("introduced"), results.getDate("discontinued"), new Company(results.getInt("id"), results.getString("compa_name"))));
+			
 			}
 			
 						
@@ -235,6 +234,49 @@ public class ComputerDAO {
 			}
 		}
 		
+		logger.info("Quit getNumberComputer method");
+		loggerx.exit(total);
+		return total;
+	}
+	
+	public int getNumberComputer(String nom)
+	{
+		logger.info("In getNumberComputer method with arguments");
+		loggerx.entry();
+		int total = 0;
+		
+		String query = "SELECT COUNT(*) AS nombre FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?;";
+		
+		PreparedStatement ps = null;
+		ResultSet results = null;
+		Connection con = null;
+		try {
+			con = ConnexionSingleton.getInstance();
+			ps = con.prepareStatement(query);
+			ps.setString(1,"%"+nom+"%");
+			ps.setString(2,"%"+nom+"%");
+			
+			results = ps.executeQuery();
+			results.next();
+			total = results.getInt("nombre");
+										
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			loggerx.catching(e1);
+		} finally{
+			try {
+				
+				ps.close();
+				results.close();
+				con.close();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				loggerx.catching(e);
+			}
+		}
 		logger.info("Quit getNumberComputer method");
 		loggerx.exit(total);
 		return total;
@@ -443,4 +485,68 @@ public class ComputerDAO {
 		
 		return computer;		
 	}
+
+
+
+
+public List<Computer> findComputer(String nom, int debut, int number)
+{
+	logger.info("In searchComputer method");
+	loggerx.entry(nom);
+	List<Computer> computers = new ArrayList<Computer>();
+	
+	String query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compa.name, compu.name ASC  LIMIT ?, ?;";
+			
+	Connection con = null;
+	PreparedStatement ps = null ;
+	ResultSet results = null;
+	
+	try {
+		
+		con = ConnexionSingleton.getInstance();
+		ps = con.prepareStatement(query);
+		ps.setString(1,"%"+nom+"%");
+		ps.setString(2,"%"+nom+"%");
+		ps.setInt(3, debut);
+		ps.setInt(4, number);
+		
+		results = ps.executeQuery();
+		
+		while(results.next())
+		{
+			int id = results.getInt("compu_id");
+			String name = results.getString("compu_name");
+			Date introduced = results.getDate("introduced");
+			Date discontinued = results.getDate("discontinued");
+			
+			int compaId = results.getInt("compaId");
+			String compaName = results.getString("compa_name");
+			
+			computers.add(Computer.builder().id(id).name(name).introduced(introduced).discontinued(discontinued).company(Company.builder().id(compaId).nom(compaName).build()).build());
+			
+			//computers.add(new Computer(results.getInt("compu_id"),results.getString("compu_name"), results.getDate("introduced"), results.getDate("discontinued"),new Company(results.getInt("id"), results.getString("compa_name"))));
+		}
+		
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		loggerx.catching(e);
+	}finally{
+		try {
+			
+			con.close();
+			results.close();
+			ps.close();
+			
+		} catch (SQLException e) {loggerx.entry();
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			loggerx.catching(e);
+		}
+	}
+
+	logger.info("Quit searchComputer method");
+	loggerx.exit(computers);
+	return computers;
+}
 }

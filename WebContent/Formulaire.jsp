@@ -49,7 +49,15 @@
 		</fieldset>
 		<div class="actions">
 			<input type="submit" value="Update" class="btn primary">
-			or <a href="affichage" class="btn">Cancel</a>
+			or 
+			<c:choose>
+				<c:when test='${ sessionScope.choixPage == true }'>
+							<a href="affichage?page=1" class="btn">Cancel</a>
+				</c:when>
+				<c:otherwise>
+							<a href="affichage" class="btn">Cancel</a>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</form>
 </section>

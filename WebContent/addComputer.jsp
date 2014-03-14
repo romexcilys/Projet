@@ -27,7 +27,7 @@
 			<div class="clearfix">
 				<label for="discontinued">Discontinued date:</label>
 				<div class="input">
-					<input type="date" name="discontinuedDate" pattern = "^(19|20)\d\d([- /.])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$"/><!--  pattern="YY-MM-dd" -->
+					<input type="date" name="discontinuedDate"  data-validation="date" data-validation-format="yyyy-mm-dd" /><!-- pattern = "^(19|20)\d\d([- /.])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$" /> --> <!--  pattern="YY-MM-dd" -->
 					<span class="help-inline">YYYY-MM-DD</span>
 				</div>
 			</div>
@@ -48,9 +48,21 @@
 		</fieldset>
 		<div class="actions">
 			<input type="submit" value="Add" class="btn primary">
-			or <a href="affichage" class="btn">Cancel</a>
+			or 
+			<c:choose>
+				<c:when test='${ sessionScope.choixPage == true }'>
+							<a href="affichage?page=1" class="btn">Cancel</a>
+				</c:when>
+				<c:otherwise>
+							<a href="affichage" class="btn">Cancel</a>
+				</c:otherwise>
+			</c:choose>
+			
 		</div>
 	</form>
 </section>
 
 <jsp:include page="include/footer.jsp" />
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.1.47/jquery.form-validator.min.js"></script> 

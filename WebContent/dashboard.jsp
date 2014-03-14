@@ -7,19 +7,48 @@
 	<h1 id="homeTitle"><c:out value="${ number_computer }" /> Computers found</h1>
 	<div id="actions">
 		<form action="SearchComputer" method="GET">
+		<c:if test="${ sessionScope.choixPage == true }">
+			<input type="hidden" name = "page" value="1" />
+		</c:if>
 			<input type="search" id="searchbox" name="search"
 				value="" placeholder="Search name">
 			<input type="submit" id="searchsubmit"
 				value="Filter by name"
 				class="btn primary">
 		</form>
-		<a class="btn success" id="delete" href="PageDelete">Delete Computer</a>
-		<a class="btn success" id="add" href="PageAjout">Add Computer</a>
-		<c:choose>
-			<c:when test='${ sessionScope.choixPage == true }'><a class="btn success" id="sort" href="affichage"><c:out value="${ session.choixPage }" />Don't sort</a></c:when>
-			<c:otherwise><a class="btn success" id="sort" href="affichage?page=1">Sort by pages</a></c:otherwise>
-		</c:choose>
 		
+		<div id="coincoin">
+			<a class="btn success" id="delete" href="PageDelete">Delete Computer</a>
+			<a class="btn success" id="addo" href="PageAjout">Add Computer</a>
+		
+		
+			<c:choose>
+				<c:when test='${ sessionScope.choixPage == true }'>
+					<c:choose>
+						<c:when test="${sessionScope.search == true }">
+							<a class="btn success" id="sort" href="SearchComputer?search=<c:out value='${ searchName }'/>">Don't sort</a>
+							
+						</c:when>
+						<c:otherwise>
+							<a class="btn success" id="sort" href="affichage">Don't sort</a>
+						</c:otherwise>
+					</c:choose>
+					
+				
+				</c:when>
+				<c:otherwise>
+					<c:choose>
+						<c:when test="${sessionScope.search == true }">
+							<a class="btn success" id="sort" href="SearchComputer?search=<c:out value='${ searchName }'/>&page=1">Sort by pages</a>
+						</c:when>
+						<c:otherwise>
+							<a class="btn success" id="sort" href="affichage?page=1">Sort by pages</a>
+						</c:otherwise>
+					</c:choose>
+					
+				</c:otherwise>
+			</c:choose>
+		</div>
 	</div>
 	
 		<table class="computers zebra-striped">
@@ -33,7 +62,7 @@
 					<th>Discontinued Date</th>
 					<!-- Table header for Company -->
 					<th>Company</th>
-					<th>Update</th>
+					<th width="180px">Modification</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -49,7 +78,7 @@
 					<!--  <td><a class="btn primary" href="PageUpdate?id= <c:out value='${ computer.id }'/>" onclick="window.open('Formulaire.jsp', 'nom','height=500, width=500, top=300, left=600, toolbar=no, menubar=no, location=no, resizable=no, scrollbars=no, status=no');return false;">Update</a></td>
 							 -->
 							<td><a class="btn primary" href="PageUpdate?id= <c:out value='${ computer.id }'/>">Update</a>
-							<a class="btn error" href="PageDelete?id= <c:out value='${ computer.id }'/>">Delete</a></td>
+							<a class="btn error" href="PageDelete?id= <c:out value='${ computer.id }'/>"  onclick="return confirm('Are you sure ?');" >Delete</a></td>
 				</tr>
 			
 			</c:forEach>
@@ -60,14 +89,33 @@
 
 <c:if test='${ sessionScope.choixPage == true }'>
 	<c:choose>
-		<c:when test="${ currentPage > 1 }"><a href="affichage?page=<c:out value='${ currentPage - 1 }'/>">Previous</a></c:when>
+		<c:when test="${ currentPage > 1 }">
+			<c:choose>
+				<c:when test="${sessionScope.search == true }">
+					<a href="SearchComputer?search=<c:out value='${ searchName }'/>&page=<c:out value='${ currentPage - 1 }'/>">Previous</a>
+				</c:when>
+				<c:otherwise>
+					<a href="affichage?page=<c:out value='${ currentPage - 1 }'/>">Previous</a>
+				</c:otherwise>
+			</c:choose>
+		</c:when>
 		<c:otherwise>Previous</c:otherwise>
 	</c:choose>
 	 / 
 	 <c:choose>
-		<c:when test="${ currentPage < sessionScope.numberPage }"><a href="affichage?page=<c:out value='${ currentPage + 1 }'/>">Next</a></c:when>
+		<c:when test="${ currentPage < sessionScope.numberPage }">
+			<c:choose>
+				<c:when test="${sessionScope.search == true }">
+					<a href="SearchComputer?search=<c:out value='${ searchName }'/>&page=<c:out value='${ currentPage + 1 }'/>">Next</a>
+				</c:when>
+				<c:otherwise>
+					<a href="affichage?page=<c:out value='${ currentPage + 1 }'/>">Next</a>
+				</c:otherwise>
+			</c:choose>
+		</c:when>
 		<c:otherwise>Next</c:otherwise>
 	</c:choose>
+	
 	Page <c:out value="${ currentPage }"/> sur <c:out value="${ sessionScope.numberPage }" />
 </c:if>
 

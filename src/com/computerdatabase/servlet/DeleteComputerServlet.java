@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.computerdatabase.dao.ComputerDAO;
 import com.computerdatabase.domain.Computer;
@@ -32,6 +33,7 @@ public class DeleteComputerServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
 		
 		//CHOIX DE SUPPRESSION MULTIPLE
 		if(request.getParameter("id") == null)
@@ -46,13 +48,18 @@ public class DeleteComputerServlet extends HttpServlet {
 			request.setAttribute("computers", computers);
 			request.setAttribute("number_computer", computers.size());
 			
-			this.getServletContext().getRequestDispatcher("/update.jsp").forward(request, response);
+			this.getServletContext().getRequestDispatcher("/delete.jsp").forward(request, response);
 		}
 		else
 		{
+			
+				
 			int idComputer = Integer.parseInt(request.getParameter("id").trim());
 			ComputerDAO.getInstance().deleteComputer(idComputer);
-			response.sendRedirect("affichage");
+			if(session.getAttribute("choixPage") != null && (Boolean) session.getAttribute("choixPage") == true)
+				response.sendRedirect("affichage?page=1");
+			else
+				response.sendRedirect("affichage");
 		}
 		
 	}
@@ -78,5 +85,4 @@ public class DeleteComputerServlet extends HttpServlet {
 		
 		response.sendRedirect("affichage");
 	}
-
 }

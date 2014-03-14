@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.computerdatabase.domain.Company;
 import com.computerdatabase.domain.Computer;
@@ -55,7 +56,7 @@ public class AjoutComputerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+		HttpSession session = request.getSession();
 		String nom ;
 		if(request.getParameter("name").compareTo("") != 0 && request.getParameter("name") != null)
 			nom = request.getParameter("name");
@@ -92,6 +93,8 @@ public class AjoutComputerServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
+		
+		
 		
 		if(discontinuedDate.compareTo("") != 0 && discontinuedDate != null)
 		{
@@ -133,7 +136,10 @@ public class AjoutComputerServlet extends HttpServlet {
 		ComputerDAO.getInstance().insererComputer(Computer.builder().id(0).name(nom).introduced(dateIntroduced).discontinued(dateDiscontinued).company(Company.builder().id(company).build()).build());
 		//ComputerDAO.getInstance().insererComputer(new Computer(0, nom, dateIntroduced, dateDiscontinued, new Company(company, null)));
 		
-		response.sendRedirect("affichage");
+		if(session.getAttribute("choixPage") != null && (Boolean) session.getAttribute("choixPage") == true)
+			response.sendRedirect("affichage?page=1");
+		else
+			response.sendRedirect("affichage");
 		//this.getServletContext().getRequestDispatcher("/affichage").forward(request, response);		
 	}
 
