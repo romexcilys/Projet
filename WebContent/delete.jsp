@@ -13,8 +13,10 @@
 				value="Filter by name"
 				class="btn primary">
 		</form>
-		<a class="btn success" id="delete" href="PageDelete">Delete Computer</a>
-		<a class="btn success" id="add" href="PageAjout">Add Computer</a>
+		
+		<div id="coincoin">
+			<a class="btn success" id="addo" href="PageAjout">Add Computer</a>
+		</div>
 	</div>
 
 		<table class="computers zebra-striped">
@@ -48,7 +50,7 @@
 					</tr>
 				
 				</c:forEach>
-				<input type="submit" value = "DELETE"  class="btn primary"/>
+				<input type="submit" value = "DELETE" onclick="return confirm('Are you sure ?');"  class="btn primary"/>
 			</form>
 			</tbody>
 		</table>

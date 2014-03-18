@@ -1,6 +1,8 @@
 package com.computerdatabase.servlet;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,7 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.computerdatabase.domain.Computer;
-import com.computerdatabase.dao.ComputerDAO;
+import com.computerdatabase.dao.ConnectionManager;
+import com.computerdatabase.service.ComputerServices;
 
 /**
  * Servlet implementation class SearchComputerServlet
@@ -19,8 +22,9 @@ import com.computerdatabase.dao.ComputerDAO;
 @WebServlet("/SearchComputerServlet")
 public class SearchComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
+	
+	private static ComputerServices computerServices = new ComputerServices();
+	/**
      * @see HttpServlet#HttpServlet()
      */
     public SearchComputerServlet() {
@@ -36,6 +40,9 @@ public class SearchComputerServlet extends HttpServlet {
 		
 		String nom = request.getParameter("search").toLowerCase();
 		HttpSession session = request.getSession();
+		
+		
+		
 		//session.setAttribute("choixPage", false);
 		
 		if(request.getParameter("page") != null)
@@ -46,8 +53,10 @@ public class SearchComputerServlet extends HttpServlet {
 		//EST CE QUE LA VALEUR DE RECHERCHE N'EST PAS VIDE
 		if(nom.length() != 0)
 		{
+			Connection connection = ConnectionManager.getConnection();
+			
 			session.setAttribute("search", true);
-			int nombre = ComputerDAO.getInstance().getNumberComputer( nom );
+			int nombre = computerServices.getCount( nom, connection );
 			request.setAttribute("number_computer", nombre);
 			
 			
@@ -73,15 +82,14 @@ public class SearchComputerServlet extends HttpServlet {
 					
 					List<Computer> computers;
 					
-					computers = ComputerDAO.getInstance().findComputer(nom,numeroPage,nombreElement);
+					computers = computerServices.find(nom,numeroPage,nombreElement, connection);
 					
 					request.setAttribute("computers", computers);
-					
 					
 				}//PAS DE PAGINATION
 				else
 				{
-					List<Computer> computers = ComputerDAO.getInstance().searchComputer(nom);
+					List<Computer> computers = computerServices.find(nom, connection);
 					
 					request.setAttribute("computers", computers);
 					
@@ -89,10 +97,19 @@ public class SearchComputerServlet extends HttpServlet {
 			}
 			else//PAS DE VARIABLE SESSION SUR LA PAGINATION
 			{
-				List<Computer> computers = ComputerDAO.getInstance().searchComputer(nom);
+				List<Computer> computers = computerServices.find(nom, connection);
 				
 				request.setAttribute("computers", computers);
 			}
+			
+			try {
+				connection.commit();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			ConnectionManager.closeConnection(connection);
 			
 			request.setAttribute("searchName", nom);
 			this.getServletContext().getRequestDispatcher("/dashboard.jsp").forward(request, response);

@@ -1,6 +1,8 @@
 package com.computerdatabase.servlet;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,8 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.computerdatabase.dao.ComputerDAO;
+import com.computerdatabase.dao.ConnectionManager;
 import com.computerdatabase.domain.Computer;
+import com.computerdatabase.service.ComputerServices;
 
 /**
  * Servlet implementation class UpdateComputerServlet
@@ -19,6 +22,9 @@ import com.computerdatabase.domain.Computer;
 @WebServlet("/UpdateComputerServlet")
 public class DeleteComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private static ComputerServices computerServices = new ComputerServices();
+    
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -35,18 +41,31 @@ public class DeleteComputerServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		
+
+		Connection connection = ConnectionManager.getConnection();
+		
+		
 		//CHOIX DE SUPPRESSION MULTIPLE
 		if(request.getParameter("id") == null)
 		{
 		
 			List<Computer> computers;
 			
-			computers = ComputerDAO.getInstance().getListComputer();
+			computers = computerServices.get(connection);
 			
 			//int nombre = computerDao.getNumberComputer();
 			
 			request.setAttribute("computers", computers);
 			request.setAttribute("number_computer", computers.size());
+			
+			try {
+				connection.commit();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			ConnectionManager.closeConnection(connection);
 			
 			this.getServletContext().getRequestDispatcher("/delete.jsp").forward(request, response);
 		}
@@ -55,7 +74,17 @@ public class DeleteComputerServlet extends HttpServlet {
 			
 				
 			int idComputer = Integer.parseInt(request.getParameter("id").trim());
-			ComputerDAO.getInstance().deleteComputer(idComputer);
+			computerServices.delete(idComputer, connection);
+			
+			try {
+				connection.commit();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			ConnectionManager.closeConnection(connection);
+			
 			if(session.getAttribute("choixPage") != null && (Boolean) session.getAttribute("choixPage") == true)
 				response.sendRedirect("affichage?page=1");
 			else
@@ -72,16 +101,27 @@ public class DeleteComputerServlet extends HttpServlet {
 		
 		String[] checkboxes = request.getParameterValues("idComputer");
 		
+
+		Connection connection = ConnectionManager.getConnection();
+		
 		if(checkboxes != null)
 		{
 			for(int i = 0; i < checkboxes.length; i++)
 			{
 				int idComputer = Integer.parseInt(checkboxes[i]);
-				ComputerDAO.getInstance().deleteComputer(idComputer);
+				computerServices.delete(idComputer, connection);
 			}
 			
 		}
 		
+		try {
+			connection.commit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		ConnectionManager.closeConnection(connection);
 		
 		response.sendRedirect("affichage");
 	}

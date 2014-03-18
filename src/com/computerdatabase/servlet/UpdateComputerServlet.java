@@ -1,6 +1,8 @@
 package com.computerdatabase.servlet;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,8 +18,11 @@ import javax.servlet.http.HttpSession;
 
 import com.computerdatabase.dao.CompanyDAO;
 import com.computerdatabase.dao.ComputerDAO;
+import com.computerdatabase.dao.ConnectionManager;
 import com.computerdatabase.domain.Company;
 import com.computerdatabase.domain.Computer;
+import com.computerdatabase.service.CompanyServices;
+import com.computerdatabase.service.ComputerServices;
 
 /**
  * Servlet implementation class UpdateComputerServlet
@@ -25,6 +30,9 @@ import com.computerdatabase.domain.Computer;
 @WebServlet("/UpdateComputerServlet")
 public class UpdateComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private static ComputerServices computerServices = new ComputerServices();
+    private static CompanyServices companyServices = new CompanyServices();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -42,13 +50,16 @@ public class UpdateComputerServlet extends HttpServlet {
 		
 		String idComputer = request.getParameter("id");
 		
+		Connection connection = ConnectionManager.getConnection();
+		
+		
 		if(idComputer != null)
 		{
 			int id = Integer.parseInt(idComputer.trim());
-			Computer computer = ComputerDAO.getInstance().findComputer(id);
+			Computer computer = computerServices.find(id, connection);
 			List<Company> companys = new ArrayList<Company>();
 			
-			companys = CompanyDAO.getInstance().getListCompany();
+			companys = companyServices.get(connection);
 			
 			request.setAttribute("companys", companys);
 			
@@ -56,6 +67,15 @@ public class UpdateComputerServlet extends HttpServlet {
 			request.setAttribute("companyId", computer.getCompany().getId());
 			
 		}
+		
+		try {
+			connection.commit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		ConnectionManager.closeConnection(connection);
 		
 		this.getServletContext().getRequestDispatcher("/Formulaire.jsp").forward(request, response);
 		
@@ -67,6 +87,9 @@ public class UpdateComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
+		
+		Connection connection = ConnectionManager.getConnection();
+		
 		
 		String idString = request.getParameter("idComputer");
 		int idComputer = 0;
@@ -140,8 +163,24 @@ public class UpdateComputerServlet extends HttpServlet {
 		 * company
 		 */
 		
-		ComputerDAO.getInstance().editComputer(Computer.builder().id(idComputer).name(nom).introduced(dateIntroduced).discontinued(dateDiscontinued).company(Company.builder().id(company).build()).build());
+		computerServices.edit(Computer.builder().id(idComputer).name(nom).introduced(dateIntroduced).discontinued(dateDiscontinued).company(Company.builder().id(company).build()).build(), connection);
 		//ComputerDAO.getInstance().insererComputer(new Computer(0, nom, dateIntroduced, dateDiscontinued, new Company(company, null)));
+		
+		try {
+			connection.commit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			connection.commit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		ConnectionManager.closeConnection(connection);
 		
 		if(session.getAttribute("choixPage") != null && (Boolean) session.getAttribute("choixPage") == true)
 			response.sendRedirect("affichage?page=1");

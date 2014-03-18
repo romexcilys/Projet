@@ -8,21 +8,17 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
-
 import com.computerdatabase.domain.Company;
-import com.computerdatabase.dao.ConnexionSingleton;
 
 public class CompanyDAO {
 	
 	final Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 	private XLogger loggerx = XLoggerFactory.getXLogger(CompanyDAO.class
 		      .getName());
-
+	private LogDAO logDAO = LogDAO.getInstance();
 
 	
 	
@@ -41,7 +37,7 @@ public class CompanyDAO {
 		return computerDao;
 	}
 	
-	public List<Company> getListCompany()
+	public List<Company> getListCompany(Connection connection)
 	{
 		loggerx.entry();
 		logger.info("In getListCompany method");
@@ -51,11 +47,11 @@ public class CompanyDAO {
 		
 		Statement stmt = null;
 		ResultSet results = null;
-		Connection con = null;
 		
 		try {
-			con = ConnexionSingleton.getInstance();
-			stmt = con.createStatement();
+			logger.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			//con = ConnexionSingleton.getInstance();
+			stmt = connection.createStatement();
 			results = stmt.executeQuery(query);
 			
 			while(results.next())
@@ -69,6 +65,14 @@ public class CompanyDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.info("getListCompany error!!!!!!!!!");
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			logDAO.logOperation("Problem in getting companys", connection);
 			loggerx.catching(e);
 		}finally
 		{
@@ -76,12 +80,12 @@ public class CompanyDAO {
 				
 				stmt.close();
 				results.close();
-				con.close();
 				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				loggerx.catching(e);
+				logger.info("getListCompany error!!!!!!!!!");
 			}
 		}
 		
