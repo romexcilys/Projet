@@ -63,9 +63,9 @@ public class DeleteComputerServlet extends HttpServlet {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}finally{
+				ConnectionManager.closeConnection(connection);
 			}
-			
-			ConnectionManager.closeConnection(connection);
 			
 			this.getServletContext().getRequestDispatcher("/delete.jsp").forward(request, response);
 		}
@@ -81,9 +81,9 @@ public class DeleteComputerServlet extends HttpServlet {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}finally{
+				ConnectionManager.closeConnection(connection);
 			}
-			
-			ConnectionManager.closeConnection(connection);
 			
 			if(session.getAttribute("choixPage") != null && (Boolean) session.getAttribute("choixPage") == true)
 				response.sendRedirect("affichage?page=1");
@@ -119,10 +119,10 @@ public class DeleteComputerServlet extends HttpServlet {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally{
+			ConnectionManager.closeConnection(connection);
 		}
-		
-		ConnectionManager.closeConnection(connection);
-		
+
 		response.sendRedirect("affichage");
 	}
 }

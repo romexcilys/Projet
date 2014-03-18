@@ -73,9 +73,9 @@ public class UpdateComputerServlet extends HttpServlet {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally{		
+			ConnectionManager.closeConnection(connection);
 		}
-		
-		ConnectionManager.closeConnection(connection);
 		
 		this.getServletContext().getRequestDispatcher("/Formulaire.jsp").forward(request, response);
 		
@@ -171,16 +171,9 @@ public class UpdateComputerServlet extends HttpServlet {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally{		
+			ConnectionManager.closeConnection(connection);
 		}
-		
-		try {
-			connection.commit();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		ConnectionManager.closeConnection(connection);
 		
 		if(session.getAttribute("choixPage") != null && (Boolean) session.getAttribute("choixPage") == true)
 			response.sendRedirect("affichage?page=1");

@@ -107,9 +107,9 @@ public class SearchComputerServlet extends HttpServlet {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}finally{			
+				ConnectionManager.closeConnection(connection);
 			}
-			
-			ConnectionManager.closeConnection(connection);
 			
 			request.setAttribute("searchName", nom);
 			this.getServletContext().getRequestDispatcher("/dashboard.jsp").forward(request, response);

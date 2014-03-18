@@ -113,9 +113,7 @@ public class ListComputerServlet extends HttpServlet {
 		}finally{
 			ConnectionManager.closeConnection(connection);
 		}
-		
-		ConnectionManager.closeConnection(connection);
-		
+			
 		
 		request.setAttribute("computers", computers);
 		
