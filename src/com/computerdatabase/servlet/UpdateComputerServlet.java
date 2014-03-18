@@ -1,8 +1,6 @@
 package com.computerdatabase.servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,9 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.computerdatabase.dao.CompanyDAO;
-import com.computerdatabase.dao.ComputerDAO;
-import com.computerdatabase.dao.ConnectionManager;
 import com.computerdatabase.domain.Company;
 import com.computerdatabase.domain.Computer;
 import com.computerdatabase.service.CompanyServices;
@@ -50,31 +45,19 @@ public class UpdateComputerServlet extends HttpServlet {
 		
 		String idComputer = request.getParameter("id");
 		
-		Connection connection = ConnectionManager.getConnection();
-		
-		
 		if(idComputer != null)
 		{
 			int id = Integer.parseInt(idComputer.trim());
-			Computer computer = computerServices.find(id, connection);
+			Computer computer = computerServices.find(id);
 			List<Company> companys = new ArrayList<Company>();
 			
-			companys = companyServices.get(connection);
+			companys = companyServices.get();
 			
 			request.setAttribute("companys", companys);
 			
 			request.setAttribute("computer", computer);
 			request.setAttribute("companyId", computer.getCompany().getId());
 			
-		}
-		
-		try {
-			connection.commit();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{		
-			ConnectionManager.closeConnection(connection);
 		}
 		
 		this.getServletContext().getRequestDispatcher("/Formulaire.jsp").forward(request, response);
@@ -87,9 +70,6 @@ public class UpdateComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
-		
-		Connection connection = ConnectionManager.getConnection();
-		
 		
 		String idString = request.getParameter("idComputer");
 		int idComputer = 0;
@@ -163,17 +143,9 @@ public class UpdateComputerServlet extends HttpServlet {
 		 * company
 		 */
 		
-		computerServices.edit(Computer.builder().id(idComputer).name(nom).introduced(dateIntroduced).discontinued(dateDiscontinued).company(Company.builder().id(company).build()).build(), connection);
+		computerServices.edit(Computer.builder().id(idComputer).name(nom).introduced(dateIntroduced).discontinued(dateDiscontinued).company(Company.builder().id(company).build()).build());
 		//ComputerDAO.getInstance().insererComputer(new Computer(0, nom, dateIntroduced, dateDiscontinued, new Company(company, null)));
 		
-		try {
-			connection.commit();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{		
-			ConnectionManager.closeConnection(connection);
-		}
 		
 		if(session.getAttribute("choixPage") != null && (Boolean) session.getAttribute("choixPage") == true)
 			response.sendRedirect("affichage?page=1");

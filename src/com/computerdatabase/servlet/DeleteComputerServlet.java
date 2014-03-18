@@ -1,8 +1,6 @@
 package com.computerdatabase.servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -12,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.computerdatabase.dao.ConnectionManager;
 import com.computerdatabase.domain.Computer;
 import com.computerdatabase.service.ComputerServices;
 
@@ -42,7 +39,13 @@ public class DeleteComputerServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		
 
-		Connection connection = ConnectionManager.getConnection();
+		String sort = "compu_name";
+		if(request.getParameter("sort") != null && request.getParameter("sort").compareTo("") != 0)
+			sort = request.getParameter("sort");
+		
+		String ordre = "asc";
+		if(request.getParameter("ordre") != null && request.getParameter("ordre").compareTo("") != 0)
+			ordre = request.getParameter("ordre");
 		
 		
 		//CHOIX DE SUPPRESSION MULTIPLE
@@ -51,46 +54,27 @@ public class DeleteComputerServlet extends HttpServlet {
 		
 			List<Computer> computers;
 			
-			computers = computerServices.get(connection);
+			computers = computerServices.get(sort, ordre);
 			
 			//int nombre = computerDao.getNumberComputer();
 			
 			request.setAttribute("computers", computers);
 			request.setAttribute("number_computer", computers.size());
 			
-			try {
-				connection.commit();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}finally{
-				ConnectionManager.closeConnection(connection);
-			}
-			
 			this.getServletContext().getRequestDispatcher("/delete.jsp").forward(request, response);
 		}
 		else
 		{
 			
-				
 			int idComputer = Integer.parseInt(request.getParameter("id").trim());
-			computerServices.delete(idComputer, connection);
+			computerServices.delete(idComputer);
 			
-			try {
-				connection.commit();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}finally{
-				ConnectionManager.closeConnection(connection);
-			}
 			
 			if(session.getAttribute("choixPage") != null && (Boolean) session.getAttribute("choixPage") == true)
 				response.sendRedirect("affichage?page=1");
 			else
 				response.sendRedirect("affichage");
 		}
-		
 	}
 
 	/**
@@ -101,28 +85,15 @@ public class DeleteComputerServlet extends HttpServlet {
 		
 		String[] checkboxes = request.getParameterValues("idComputer");
 		
-
-		Connection connection = ConnectionManager.getConnection();
-		
 		if(checkboxes != null)
 		{
 			for(int i = 0; i < checkboxes.length; i++)
 			{
 				int idComputer = Integer.parseInt(checkboxes[i]);
-				computerServices.delete(idComputer, connection);
+				computerServices.delete(idComputer);
 			}
-			
 		}
 		
-		try {
-			connection.commit();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally{
-			ConnectionManager.closeConnection(connection);
-		}
-
 		response.sendRedirect("affichage");
 	}
 }

@@ -1,8 +1,6 @@
 package com.computerdatabase.servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,9 +16,6 @@ import javax.servlet.http.HttpSession;
 
 import com.computerdatabase.domain.Company;
 import com.computerdatabase.domain.Computer;
-import com.computerdatabase.dao.CompanyDAO;
-import com.computerdatabase.dao.ComputerDAO;
-import com.computerdatabase.dao.ConnectionManager;
 import com.computerdatabase.service.CompanyServices;
 import com.computerdatabase.service.ComputerServices;
 
@@ -50,21 +45,9 @@ public class AjoutComputerServlet extends HttpServlet {
 		
 		List<Company> companys = new ArrayList<Company>();
 		
-		Connection connection = ConnectionManager.getConnection();
-		
 				
-		companys = companyServices.get(connection);
-		
+		companys = companyServices.get();
 		request.setAttribute("companys", companys);
-		
-		try {
-			connection.commit();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally{
-			ConnectionManager.closeConnection(connection);
-		}	
 		
 		this.getServletContext().getRequestDispatcher("/addComputer.jsp").forward(request, response);
 		
@@ -76,8 +59,6 @@ public class AjoutComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
-		
-		Connection connection = ConnectionManager.getConnection();
 		
 		
 		String nom ;
@@ -156,19 +137,9 @@ public class AjoutComputerServlet extends HttpServlet {
 		 * company
 		 */
 		
-		computerServices.put(Computer.builder().id(0).name(nom).introduced(dateIntroduced).discontinued(dateDiscontinued).company(Company.builder().id(company).build()).build(), connection);
+		computerServices.put(Computer.builder().id(0).name(nom).introduced(dateIntroduced).discontinued(dateDiscontinued).company(Company.builder().id(company).build()).build());
 		//ComputerDAO.getInstance().insererComputer(new Computer(0, nom, dateIntroduced, dateDiscontinued, new Company(company, null)));
 		
-		
-		try {
-			connection.commit();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-		
-			ConnectionManager.closeConnection(connection);
-		}
 		
 
 		if(session.getAttribute("choixPage") != null && (Boolean) session.getAttribute("choixPage") == true)

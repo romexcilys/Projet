@@ -19,6 +19,7 @@ public class CompanyDAO {
 	private XLogger loggerx = XLoggerFactory.getXLogger(CompanyDAO.class
 		      .getName());
 	private LogDAO logDAO = LogDAO.getInstance();
+	
 
 	
 	
@@ -49,7 +50,6 @@ public class CompanyDAO {
 		ResultSet results = null;
 		
 		try {
-			logger.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			//con = ConnexionSingleton.getInstance();
 			stmt = connection.createStatement();
 			results = stmt.executeQuery(query);
@@ -91,6 +91,16 @@ public class CompanyDAO {
 		
 		logger.info("Quit getListCompany method");
 		loggerx.exit(companys);
+		
+		try {
+			connection.commit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			ConnectionManager.closeConnection(connection);
+		}
+		
 		
 		return companys;
 	}

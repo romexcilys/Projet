@@ -86,22 +86,56 @@ public class ComputerDAO {
 			}
 		}
 
+		
 		logger.info("Quit insererComputer method");
 		loggerx.exit();
 	}
 
-	public List<Computer> getListComputer(Connection connection) {
+	public List<Computer> getListComputer(Connection connection, String sort, String ordre) {
 		logger.info("In getListComputer method");
 		loggerx.entry();
 		List<Computer> computers = new ArrayList<Computer>();
-
-		String query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compa.name, compu.name ASC;";
-
-		Statement stmt = null;
+		
+		String query = "";
+		
+		if(sort.equals("compa_name"))
+		{
+			if(ordre.equals("desc"))
+				query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compa.name DESC;";
+			else
+				query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compa.name ASC;";
+		}
+		else if(sort.equals("compu_name"))
+		{
+			if(ordre.equals("desc"))
+				query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compa.name, compu.name DESC;";
+			else
+				query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compa.name, compu.name ASC;";
+		}
+		else if(sort.equals("intro_date"))
+		{
+			if(ordre.equals("desc"))
+				query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compu.introduced DESC;";
+			else
+				query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compu.introduced ASC;";
+		}
+		else if(sort.equals("discon_date"))
+		{
+			if(ordre.equals("desc"))
+				query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compu.discontinued DESC;";
+			else
+				query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compu.discontinued ASC;";
+		}
+		else
+		{
+			query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compa.name, compu.name ASC;";
+		}
+		PreparedStatement stmt = null;
 		ResultSet results = null;
 		try {
-			stmt = connection.createStatement();
-			results = stmt.executeQuery(query);
+			
+			stmt = connection.prepareStatement(query);
+			results = stmt.executeQuery();
 
 			while (results.next()) {
 				int id = results.getInt("compu_id");
@@ -159,13 +193,46 @@ public class ComputerDAO {
 		return computers;
 	}
 
-	public List<Computer> getListComputer(int debut, int number,Connection connection) {
+	public List<Computer> getListComputer(int debut, int number,Connection connection, String sort, String ordre) {
 		logger.info("In getListComputer with arguments");
 		loggerx.entry(debut, number);
 		List<Computer> computers = new ArrayList<Computer>();
-
-		String query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compa.name, compu.name ASC LIMIT ?, ?;";
-
+		
+		String query="";
+		
+		if(sort.equals("compa_name"))
+		{
+			if(ordre.equals("desc"))
+				query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compa.name DESC LIMIT ?, ?;";
+			else
+				query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compa.name ASC LIMIT ?, ?;";
+		}
+		else if(sort.equals("compu_name"))
+		{
+			if(ordre.equals("desc"))
+				query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compa.name, compu.name DESC LIMIT ?, ?;";
+			else
+				query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compa.name, compu.name ASC LIMIT ?, ?;";
+		}
+		else if(sort.equals("intro_date"))
+		{
+			if(ordre.equals("desc"))
+				query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compu.introduced DESC LIMIT ?, ?;";
+			else
+				query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compu.introduced ASC LIMIT ?, ?;";
+		}
+		else if(sort.equals("discon_date"))
+		{
+			if(ordre.equals("desc"))
+				query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compu.discontinued DESC LIMIT ?, ?;";
+			else
+				query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compu.discontinued ASC LIMIT ?, ?;";
+		}
+		else
+		{
+			query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compu.id, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id ORDER BY compa.name, compu.name ASC LIMIT ?, ?;";
+		}
+		
 		PreparedStatement ps = null;
 		ResultSet results = null;
 		try {
@@ -225,6 +292,7 @@ public class ComputerDAO {
 			}
 		}
 
+		
 		loggerx.exit(computers);
 		logger.info("Quit getListComputer method");
 		return computers;
@@ -271,6 +339,9 @@ public class ComputerDAO {
 
 		logger.info("Quit getNumberComputer method");
 		loggerx.exit(total);
+		
+		
+		
 		return total;
 	}
 
@@ -317,16 +388,52 @@ public class ComputerDAO {
 		}
 		logger.info("Quit getNumberComputer method");
 		loggerx.exit(total);
+		
+		
 		return total;
 	}
 
-	public List<Computer> searchComputer(String nom, Connection connection) {
+	public List<Computer> searchComputer(String nom, Connection connection, String sort, String ordre) {
 		logger.info("In searchComputer method");
 		loggerx.entry(nom);
 		List<Computer> computers = new ArrayList<Computer>();
 
-		String query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compa.name, compu.name ASC;";
-
+		String query="";
+		
+		if(sort.equals("compa_name"))
+		{
+			if(ordre.equals("desc"))
+				query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compa.name DESC;";
+			else
+				query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compa.name ASC;";
+		}
+		else if(sort.equals("compu_name"))
+		{
+			if(ordre.equals("desc"))
+				query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compa.name, compu.name DESC;";
+			else
+				query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compa.name, compu.name ASC;";
+		}
+		else if(sort.equals("intro_date"))
+		{
+			if(ordre.equals("desc"))
+				query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compu.introduced DESC;";
+			else
+				query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compu.introduced ASC;";
+		}
+		else if(sort.equals("discon_date"))
+		{
+			if(ordre.equals("desc"))
+				query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compu.discontinued DESC;";
+			else
+				query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compu.discontinued ASC;";
+		}
+		else
+		{
+			query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compa.name, compu.name ASC;";
+		}
+		
+		
 		PreparedStatement ps = null;
 		ResultSet results = null;
 
@@ -391,6 +498,8 @@ public class ComputerDAO {
 
 		logger.info("Quit searchComputer method");
 		loggerx.exit(computers);
+		
+		
 		return computers;
 	}
 
@@ -446,6 +555,8 @@ public class ComputerDAO {
 		}
 		logger.info("Quit editComputer method");
 		loggerx.exit();
+		
+		
 	}
 
 	public void deleteComputer(int id, Connection connection) {
@@ -487,6 +598,9 @@ public class ComputerDAO {
 		}
 		logger.info("Quit deleteComputer method");
 		loggerx.exit();
+		
+		
+		
 	}
 
 	public Computer findComputer(int id, Connection connection) {
@@ -494,6 +608,8 @@ public class ComputerDAO {
 		loggerx.entry(id);
 		Computer computer = null;
 
+		
+		
 		String query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued,  compa.name AS compa_name, compa.id AS compaID FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE compu.id = ?;";
 
 		PreparedStatement ps = null;
@@ -548,17 +664,52 @@ public class ComputerDAO {
 		}
 		logger.info("Quit findComputer method");
 		loggerx.exit(computer);
+		
 
 		return computer;
 	}
 
-	public List<Computer> findComputer(String nom, int debut, int number, Connection connection) {
+	public List<Computer> findComputer(String nom, int debut, int number, Connection connection, String sort, String ordre) {
 		logger.info("In searchComputer method");
 		loggerx.entry(nom);
 		List<Computer> computers = new ArrayList<Computer>();
 
-		String query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compa.name, compu.name ASC  LIMIT ?, ?;";
-
+		String query="";
+		
+		if(sort.equals("compa_name"))
+		{
+			if(ordre.equals("desc"))
+				query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compa.name DESC LIMIT ?, ?;";
+			else
+				query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compa.name ASC LIMIT ?, ?;";
+		}
+		else if(sort.equals("compu_name"))
+		{
+			if(ordre.equals("desc"))
+				query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compa.name, compu.name DESC LIMIT ?, ?;";
+			else
+				query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compa.name, compu.name ASC LIMIT ?, ?;";
+		}
+		else if(sort.equals("intro_date"))
+		{
+			if(ordre.equals("desc"))
+				query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compu.introduced DESC LIMIT ?, ?;";
+			else
+				query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compu.introduced ASC LIMIT ?, ?;";
+		}
+		else if(sort.equals("discon_date"))
+		{
+			if(ordre.equals("desc"))
+				query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compu.discontinued DESC LIMIT ?, ?;";
+			else
+				query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compu.discontinued ASC LIMIT ?, ?;";
+		}
+		else
+		{
+			query = "SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?  ORDER BY compa.name, compu.name ASC LIMIT ?, ?;";
+		}
+		
+		
 		PreparedStatement ps = null;
 		ResultSet results = null;
 
@@ -626,6 +777,8 @@ public class ComputerDAO {
 
 		logger.info("Quit searchComputer method");
 		loggerx.exit(computers);
+		
+		
 		return computers;
 	}
 }

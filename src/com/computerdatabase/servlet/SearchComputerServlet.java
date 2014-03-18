@@ -1,8 +1,6 @@
 package com.computerdatabase.servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -13,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.computerdatabase.domain.Computer;
-import com.computerdatabase.dao.ConnectionManager;
 import com.computerdatabase.service.ComputerServices;
 
 /**
@@ -41,7 +38,13 @@ public class SearchComputerServlet extends HttpServlet {
 		String nom = request.getParameter("search").toLowerCase();
 		HttpSession session = request.getSession();
 		
+		String sort = "compu.name";
+		if(request.getParameter("sort") != null && request.getParameter("sort").compareTo("") != 0)
+			sort = request.getParameter("sort");
 		
+		String ordre = "ASC";
+		if(request.getParameter("ordre") != null && request.getParameter("ordre").compareTo("") != 0)
+			ordre = request.getParameter("ordre");
 		
 		//session.setAttribute("choixPage", false);
 		
@@ -53,10 +56,8 @@ public class SearchComputerServlet extends HttpServlet {
 		//EST CE QUE LA VALEUR DE RECHERCHE N'EST PAS VIDE
 		if(nom.length() != 0)
 		{
-			Connection connection = ConnectionManager.getConnection();
-			
 			session.setAttribute("search", true);
-			int nombre = computerServices.getCount( nom, connection );
+			int nombre = computerServices.getCount( nom );
 			request.setAttribute("number_computer", nombre);
 			
 			
@@ -82,14 +83,14 @@ public class SearchComputerServlet extends HttpServlet {
 					
 					List<Computer> computers;
 					
-					computers = computerServices.find(nom,numeroPage,nombreElement, connection);
+					computers = computerServices.find(nom,numeroPage,nombreElement, sort, ordre);
 					
 					request.setAttribute("computers", computers);
 					
 				}//PAS DE PAGINATION
 				else
 				{
-					List<Computer> computers = computerServices.find(nom, connection);
+					List<Computer> computers = computerServices.find(nom, sort, ordre);
 					
 					request.setAttribute("computers", computers);
 					
@@ -97,19 +98,11 @@ public class SearchComputerServlet extends HttpServlet {
 			}
 			else//PAS DE VARIABLE SESSION SUR LA PAGINATION
 			{
-				List<Computer> computers = computerServices.find(nom, connection);
+				List<Computer> computers = computerServices.find(nom, sort, ordre);
 				
 				request.setAttribute("computers", computers);
 			}
 			
-			try {
-				connection.commit();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}finally{			
-				ConnectionManager.closeConnection(connection);
-			}
 			
 			request.setAttribute("searchName", nom);
 			this.getServletContext().getRequestDispatcher("/dashboard.jsp").forward(request, response);

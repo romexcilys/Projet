@@ -56,12 +56,89 @@
 				<tr>
 					<!-- Variable declarations for passing labels as parameters -->
 					<!-- Table header for Computer Name -->
-					<th>Computer Name</th>
-					<th>Introduced Date</th>
+					<th>Computer Name
+						<c:choose>
+						<c:when test="${ sessionScope.search == true &&  sessionScope.choixPage == true }">
+							<a href="SearchComputer?search=<c:out value='${ searchName }'/>&page=<c:out value='${ currentPage }'/>&sort=compu_name&ordre=asc"><img src="images/fleche_bas.png" /></a><a href="SearchComputer?search=<c:out value='${ searchName }'/>&page=<c:out value='${ currentPage }'/>&sort=compu_name&ordre=desc"><img src="images/fleche_haut.png" /> </a>
+							
+						</c:when>
+						<c:when test="${ sessionScope.search == true}">
+							<a href="SearchComputer?search=<c:out value='${ searchName }'/>&sort=compu_name&ordre=asc"><img src="images/fleche_bas.png" /></a><a href="SearchComputer?search=<c:out value='${ searchName }'/>&sort=compu_name&ordre=desc"><img src="images/fleche_haut.png" /> </a>
+							
+						</c:when>
+						<c:when test="${ sessionScope.choixPage == true }">
+							<a href="affichage?page=<c:out value='${ currentPage }'/>&sort=compu_name&ordre=asc"><img src="images/fleche_bas.png" /></a><a href="affichage?page=<c:out value='${ currentPage }'/>&sort=compu_name&ordre=desc"><img src="images/fleche_haut.png" /> </a>
+							
+						</c:when>
+						<c:otherwise>
+							<a href="affichage?sort=compu_name&ordre=asc"><img src="images/fleche_bas.png" /></a><a href="affichage?sort=compu_name&ordre=desc"><img src="images/fleche_haut.png" /> </a>
+						</c:otherwise>
+					</c:choose>
+					</th>
+					
+					<th>Introduced Date
+					<c:choose>
+						<c:when test="${ sessionScope.search == true &&  sessionScope.choixPage == true }">
+							<a href="SearchComputer?search=<c:out value='${ searchName }'/>&page=<c:out value='${ currentPage  }'/>&sort=intro_date&ordre=asc"><img src="images/fleche_bas.png" /></a><a href="SearchComputer?search=<c:out value='${ searchName }'/>&page=<c:out value='${ currentPage }'/>&sort=intro_date&ordre=desc"><img src="images/fleche_haut.png" /> </a>
+							
+						</c:when>
+						<c:when test="${ sessionScope.search == true}">
+							<a href="SearchComputer?search=<c:out value='${ searchName }'/>&sort=intro_date&ordre=asc"><img src="images/fleche_bas.png" /></a><a href="SearchComputer?search=<c:out value='${ searchName }'/>&sort=intro_date&ordre=desc"><img src="images/fleche_haut.png" /> </a>
+							
+						</c:when>
+						<c:when test="${ sessionScope.choixPage == true }">
+							<a href="affichage?page=<c:out value='${ currentPage }'/>&sort=intro_date&ordre=asc"><img src="images/fleche_bas.png" /></a><a href="affichage?page=<c:out value='${ currentPage }'/>&sort=intro_date&ordre=desc"><img src="images/fleche_haut.png" /> </a>
+							
+						</c:when>
+						<c:otherwise>
+							<a href="affichage?sort=intro_date&ordre=assc"><img src="images/fleche_bas.png" /></a><a href="affichage?sort=intro_date&ordre=desc"><img src="images/fleche_haut.png" /> </a>
+						</c:otherwise>
+					</c:choose>
+					</th>
+					
 					<!-- Table header for Discontinued Date -->
-					<th>Discontinued Date</th>
+					<th>Discontinued Date
+						<c:choose>
+						<c:when test="${ sessionScope.search == true &&  sessionScope.choixPage == true }">
+							<a href="SearchComputer?search=<c:out value='${ searchName }'/>&page=<c:out value='${ currentPage }'/>&sort=discon_date&ordre=asc"><img src="images/fleche_bas.png" /></a><a href="SearchComputer?search=<c:out value='${ searchName }'/>&page=<c:out value='${ currentPage }'/>&sort=discon_date&ordre=desc"><img src="images/fleche_haut.png" /> </a>
+							
+						</c:when>
+						<c:when test="${ sessionScope.search == true}">
+							<a href="SearchComputer?search=<c:out value='${ searchName }'/>&sort=discon_date&ordre=asc"><img src="images/fleche_bas.png" /></a><a href="SearchComputer?search=<c:out value='${ searchName }'/>&sort=discon_date&ordre=desc"><img src="images/fleche_haut.png" /> </a>
+							
+						</c:when>
+						<c:when test="${ sessionScope.choixPage == true }">
+							<a href="affichage?page=<c:out value='${ currentPage }'/>&sort=discon_date&ordre=asc"><img src="images/fleche_bas.png" /></a><a href="affichage?page=<c:out value='${ currentPage }'/>&sort=discon_date&ordre=desc"><img src="images/fleche_haut.png" /> </a>
+							
+						</c:when>
+						<c:otherwise>
+							<a href="affichage?sort=discon_date&ordre=assc"><img src="images/fleche_bas.png" /></a><a href="affichage?sort=discon_date&ordre=desc"><img src="images/fleche_haut.png" /> </a>
+						</c:otherwise>
+					</c:choose>
+					</th>
 					<!-- Table header for Company -->
-					<th>Company</th>
+					
+					
+					<th>Company
+						<c:choose>
+						<c:when test="${ sessionScope.search == true &&  sessionScope.choixPage == true }">
+							<a href="SearchComputer?search=<c:out value='${ searchName }'/>&page=<c:out value='${ currentPage }'/>&sort=compa_name&ordre=asc"><img src="images/fleche_bas.png" /></a><a href="SearchComputer?search=<c:out value='${ searchName }'/>&page=<c:out value='${ currentPage }'/>&sort=compa_name&ordre=desc"><img src="images/fleche_haut.png" /> </a>
+							
+						</c:when>
+						<c:when test="${ sessionScope.search == true}">
+							<a href="SearchComputer?search=<c:out value='${ searchName }'/>&sort=compa_name&ordre=asc"><img src="images/fleche_bas.png" /></a><a href="SearchComputer?search=<c:out value='${ searchName }'/>&sort=compa_name&ordre=desc"><img src="images/fleche_haut.png" /> </a>
+							
+						</c:when>
+						<c:when test="${ sessionScope.choixPage == true }">
+							<a href="affichage?page=<c:out value='${ currentPage }'/>&sort=compa_name&ordre=asc"><img src="images/fleche_bas.png" /></a><a href="affichage?page=<c:out value='${ currentPage }'/>&sort=compa_name&ordre=desc"><img src="images/fleche_haut.png" /> </a>
+							
+						</c:when>
+						<c:otherwise>
+							<a href="affichage?sort=compa_name&ordre=asc"><img src="images/fleche_bas.png" /></a><a href="affichage?sort=compa_name&ordre=desc"><img src="images/fleche_haut.png" /> </a>
+						</c:otherwise>
+					</c:choose>
+					</th>
+					
 					<th width="180px">Modification</th>
 				</tr>
 			</thead>
