@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import com.computerdatabase.domain.Company;
 import com.computerdatabase.domain.Computer;
+import com.computerdatabase.domain.Page;
 import com.computerdatabase.service.CompanyServices;
 import com.computerdatabase.service.ComputerServices;
 
@@ -25,83 +26,88 @@ import com.computerdatabase.service.ComputerServices;
 @WebServlet("/UpdateComputerServlet")
 public class UpdateComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	private static ComputerServices computerServices = ComputerServices.getInstance();
-    private static CompanyServices companyServices = CompanyServices.getInstance();
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public UpdateComputerServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	private static ComputerServices computerServices = ComputerServices
+			.getInstance();
+	private static CompanyServices companyServices = CompanyServices
+			.getInstance();
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
-		String idComputer = request.getParameter("id");
-		
-		if(idComputer != null)
-		{
-			int id = Integer.parseInt(idComputer.trim());
-			Computer computer = computerServices.find(id);
-			List<Company> companys = new ArrayList<Company>();
-			
-			companys = companyServices.get();
-			
-			request.setAttribute("companys", companys);
-			
-			request.setAttribute("computer", computer);
-			request.setAttribute("companyId", computer.getCompany().getId());
-			
-		}
-		
-		this.getServletContext().getRequestDispatcher("/Formulaire.jsp").forward(request, response);
-		
+	public UpdateComputerServlet() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+
+		String idComputer = request.getParameter("id");
+
+		if (idComputer != null) {
+			int id = Integer.parseInt(idComputer.trim());
+			Computer computer = computerServices.find(id);
+			List<Company> companys = new ArrayList<Company>();
+
+			companys = companyServices.get();
+
+			request.setAttribute("companys", companys);
+
+			request.setAttribute("computer", computer);
+			request.setAttribute("companyId", computer.getCompany().getId());
+
+		}
+
+		this.getServletContext()
+				.getRequestDispatcher("/WEB-INF/Formulaire.jsp")
+				.forward(request, response);
+
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
-		
+
 		String idString = request.getParameter("idComputer");
 		int idComputer = 0;
-		
-		if(idString != null)
+
+		if (idString != null)
 			idComputer = Integer.parseInt(idString);
-		
-		String nom ;
-		if(request.getParameter("name").compareTo("") != 0 && request.getParameter("name") != null)
+
+		String nom;
+		if (request.getParameter("name").compareTo("") != 0
+				&& request.getParameter("name") != null)
 			nom = request.getParameter("name");
 		else
 			nom = null;
-		
+
 		String introducedDate = request.getParameter("introducedDate");
 		String discontinuedDate = request.getParameter("discontinuedDate");
-		
+
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		
+
 		Date dateIntroduced = null;
 		Date dateDiscontinued = null;
-		
-		if(introducedDate.compareTo("") != 0 && introducedDate != null)
-		{
+
+		if (introducedDate.compareTo("") != 0 && introducedDate != null) {
 			try {
 				dateIntroduced = (Date) sdf.parse(introducedDate);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		else
-		{
+		} else {
 			try {
 				dateIntroduced = (Date) sdf.parse("0000-00-00");
 			} catch (ParseException e) {
@@ -109,48 +115,42 @@ public class UpdateComputerServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-		
-		if(discontinuedDate.compareTo("") != 0 && discontinuedDate != null)
-		{
+
+		if (discontinuedDate.compareTo("") != 0 && discontinuedDate != null) {
 			try {
 				dateDiscontinued = (Date) sdf.parse(discontinuedDate);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		else
-		{
+		} else {
 			try {
 				dateDiscontinued = (Date) sdf.parse("0000-00-00");
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
-		
+
 		int company = 0;
-		
-		if(request.getParameter("company").compareTo("") != 0 && request.getParameter("company") != null)
+
+		if (request.getParameter("company").compareTo("") != 0
+				&& request.getParameter("company") != null)
 			company = Integer.parseInt(request.getParameter("company"));
-		
+
 		/*
-		 * Les données sont dans 
-		 * nom
-		 * date_introduced
-		 * date_discontinued
-		 * company
+		 * Les données sont dans nom date_introduced date_discontinued company
 		 */
-		
-		computerServices.update(Computer.builder().id(idComputer).name(nom).introduced(dateIntroduced).discontinued(dateDiscontinued).company(Company.builder().id(company).build()).build());
-		//ComputerDAO.getInstance().insererComputer(new Computer(0, nom, dateIntroduced, dateDiscontinued, new Company(company, null)));
-		
-		
-		if(session.getAttribute("choixPage") != null && (Boolean) session.getAttribute("choixPage") == true)
-			response.sendRedirect("affichage?page=1");
-		else
-			response.sendRedirect("affichage");
-		
+		Computer computer = Computer.builder().id(idComputer).name(nom)
+				.introduced(dateIntroduced).discontinued(dateDiscontinued)
+				.company(Company.builder().id(company).build()).build();
+
+		computerServices.update(computer);
+		// ComputerDAO.getInstance().insererComputer(new Computer(0, nom,
+		// dateIntroduced, dateDiscontinued, new Company(company, null)));
+
+		response.sendRedirect("affichage?page=1");
+
 	}
 }

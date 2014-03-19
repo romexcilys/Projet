@@ -1,6 +1,7 @@
 package com.computerdatabase.service;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import com.computerdatabase.dao.ComputerDAO;
@@ -10,14 +11,12 @@ import com.computerdatabase.dao.LogDAO;
 import com.computerdatabase.domain.Computer;
 
 public class ComputerServices {
-	private ComputerDAO computerDAO;
-	private LogDAO logDAO;
+	private static ComputerDAO computerDAO = DAOFactory.getInstance().getComputerDAO();
+	private static LogDAO logDAO = DAOFactory.getInstance().getLogDAO();
 	private static ComputerServices computerServices = null;
 	
 	private ComputerServices()
 	{
-		computerDAO = DAOFactory.getComputerDAO();
-		logDAO = DAOFactory.getLogDAO();
 	}
 	
 	public static ComputerServices getInstance()
@@ -30,122 +29,186 @@ public class ComputerServices {
 	
 	public void put(Computer computer)
 	{
-		Connection connection = ConnectionManager.getConnection();
-		logDAO.logOperation("INSERT computer : "+computer.getNom()+" from company : "+computer.getCompany().getNom(),  connection);
-		computerDAO.put(computer, connection);
+		Connection connection = DAOFactory.getInstance().getConnectionThread();
 		
-		ConnectionManager.commitConnection(connection);
-		ConnectionManager.closeConnection(connection);
+		try {
+			logDAO.logOperation("INSERT computer : "+computer.getNom()+" from company : "+computer.getCompany().getNom());
+			computerDAO.put(computer);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			DAOFactory.getInstance().rollbackConnection(connection);
+			e.printStackTrace();
+		}
+		
+		DAOFactory.getInstance().commitConnection(connection);
+		DAOFactory.getInstance().closeConnection();
 	}
 	
 	public List<Computer> get(String sort, String ordre)
 	{
-		Connection connection = ConnectionManager.getConnection();
-		logDAO.logOperation("Get computers",  connection);
+		Connection connection = DAOFactory.getInstance().getConnectionThread();
+		List<Computer> computers = null;
 		
-		List<Computer> computers = computerDAO.get(connection, sort, ordre);
+		try {
+			logDAO.logOperation("Get computers");
+			computers = computerDAO.get(sort, ordre);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			DAOFactory.getInstance().rollbackConnection(connection);
+			e.printStackTrace();
+		}
 		
-		ConnectionManager.commitConnection(connection);
-		ConnectionManager.closeConnection(connection);
+		DAOFactory.getInstance().commitConnection(connection);
+		DAOFactory.getInstance().closeConnection();
 		
 		return computers;
 	}
 	
 	public List<Computer> get(int debut, int number,String sort, String ordre)
 	{
-		Connection connection = ConnectionManager.getConnection();
-		logDAO.logOperation("Get computers from "+debut+" to "+(debut+number),  connection);
+		Connection connection = DAOFactory.getInstance().getConnectionThread();
+		List<Computer> computers = null;
+		try {
+			logDAO.logOperation("Get computers from "+debut+" to "+(debut+number));
+			computers = computerDAO.get(debut, number, sort, ordre);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			DAOFactory.getInstance().rollbackConnection(connection);
+			e.printStackTrace();
+		}
 		
-		List<Computer> computers = computerDAO.get(debut, number, connection, sort, ordre);
-		
-		ConnectionManager.commitConnection(connection);
-		ConnectionManager.closeConnection(connection);
+		DAOFactory.getInstance().commitConnection(connection);
+		DAOFactory.getInstance().closeConnection();
 		
 		return computers;
 	}
 	
 	public int getCount()
 	{
-		Connection connection = ConnectionManager.getConnection();
-		logDAO.logOperation("Get numbers computer",  connection);
+		Connection connection = DAOFactory.getInstance().getConnectionThread();
+		int number = 0;
+		try {
+			logDAO.logOperation("Get numbers computer");
+			number = computerDAO.getNumber();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			DAOFactory.getInstance().rollbackConnection(connection);
+			e.printStackTrace();
+		}
 		
-		int number = computerDAO.getNumber(connection);
-		
-		ConnectionManager.commitConnection(connection);
-		ConnectionManager.closeConnection(connection);
+		DAOFactory.getInstance().commitConnection(connection);
+		DAOFactory.getInstance().closeConnection();
 		
 		return number;
 	}
 	
 	public int getCount(String nom)
 	{
-		Connection connection = ConnectionManager.getConnection();
-		logDAO.logOperation("Get numbers computer : "+nom,  connection);
+		Connection connection = DAOFactory.getInstance().getConnectionThread();
+		int number = 0;
 		
-		int number = computerDAO.getNumber(nom, connection);
+		try {
+			logDAO.logOperation("Get numbers computer : "+nom);
+			number = computerDAO.getNumber(nom);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			DAOFactory.getInstance().rollbackConnection(connection);
+			e.printStackTrace();
+		}
 		
-		ConnectionManager.commitConnection(connection);
-		ConnectionManager.closeConnection(connection);
+		
+		DAOFactory.getInstance().commitConnection(connection);
+		DAOFactory.getInstance().closeConnection();
 		
 		return number;
 	}
 	
 	public Computer find(int id)
 	{
-		Connection connection = ConnectionManager.getConnection();
-		logDAO.logOperation("Find computer with id : "+id,  connection);
+		Connection connection = DAOFactory.getInstance().getConnectionThread();
+		Computer  computer = null;
+		try {
+			computer = computerDAO.find(id);
+			logDAO.logOperation("Find computer with id : "+id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			DAOFactory.getInstance().rollbackConnection(connection);
+			e.printStackTrace();
+		}
 		
-		Computer computer = computerDAO.find(id, connection);
-		
-		ConnectionManager.commitConnection(connection);
-		ConnectionManager.closeConnection(connection);
+		DAOFactory.getInstance().commitConnection(connection);
+		DAOFactory.getInstance().closeConnection();
 		
 		return computer;
 	}
 	
 	public List<Computer> find(String nom,String sort, String ordre)
 	{
-		Connection connection = ConnectionManager.getConnection();
-		logDAO.logOperation("Find computer with name : "+nom,  connection);
+		Connection connection = DAOFactory.getInstance().getConnectionThread();
+		List<Computer> computers = null;
+		try {
+			logDAO.logOperation("Find computer with name : "+nom);
+			computers = computerDAO.find(nom, sort,ordre);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			DAOFactory.getInstance().rollbackConnection(connection);
+			e.printStackTrace();
+		}
 		
-		List<Computer> computers = computerDAO.find(nom, connection,sort,ordre);
-		
-		ConnectionManager.commitConnection(connection);
-		ConnectionManager.closeConnection(connection);
+		DAOFactory.getInstance().commitConnection(connection);
+		DAOFactory.getInstance().closeConnection();
 		
 		return computers;
 	}
 	
 	public List<Computer> find(String nom, int debut, int number,String sort, String ordre)
 	{
-		Connection connection = ConnectionManager.getConnection();
-		logDAO.logOperation("Find computer with name : "+nom+" from "+debut+" to "+(debut+number),  connection);
+		Connection connection = DAOFactory.getInstance().getConnectionThread();
+		List<Computer> computers = null;
+		try {
+			logDAO.logOperation("Find computer with name : "+nom+" from "+debut+" to "+(debut+number));
+			computers = computerDAO.find(nom, debut, number, sort, ordre);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			DAOFactory.getInstance().rollbackConnection(connection);
+			e.printStackTrace();
+		}
 		
-		List<Computer> computers = computerDAO.find(nom, debut, number, connection,sort,ordre);
-		
-		ConnectionManager.commitConnection(connection);
-		ConnectionManager.closeConnection(connection);
+		DAOFactory.getInstance().commitConnection(connection);
+		DAOFactory.getInstance().closeConnection();
 		
 		return computers;
 	}
 	
 	public void update(Computer computer)
 	{
-		Connection connection = ConnectionManager.getConnection();
-		logDAO.logOperation("Edit computer name : "+computer.getNom()+ " and id : "+computer.getId(),  connection);
-		computerDAO.update(computer, connection);
+		Connection connection = DAOFactory.getInstance().getConnectionThread();
+		try {
+			logDAO.logOperation("Edit computer name : "+computer.getNom()+ " and id : "+computer.getId());
+			computerDAO.update(computer);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			DAOFactory.getInstance().rollbackConnection(connection);
+			e.printStackTrace();
+		}
 		
-		ConnectionManager.commitConnection(connection);
-		ConnectionManager.closeConnection(connection);
+		DAOFactory.getInstance().commitConnection(connection);
+		DAOFactory.getInstance().closeConnection();
 	}
 	
 	public void delete(int id)
 	{
-		Connection connection = ConnectionManager.getConnection();
-		logDAO.logOperation("Delete computer with id :"+id,  connection);
-		computerDAO.delete(id, connection);
+		Connection connection = DAOFactory.getInstance().getConnectionThread();
+		try {
+			logDAO.logOperation("Delete computer with id :"+id);
+			computerDAO.delete(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			DAOFactory.getInstance().rollbackConnection(connection);
+			e.printStackTrace();
+		}
 		
-		ConnectionManager.commitConnection(connection);
-		ConnectionManager.closeConnection(connection);
+		DAOFactory.getInstance().commitConnection(connection);
+		DAOFactory.getInstance().closeConnection();
 	}
 }

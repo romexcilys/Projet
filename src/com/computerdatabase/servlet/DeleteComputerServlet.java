@@ -19,81 +19,79 @@ import com.computerdatabase.service.ComputerServices;
 @WebServlet("/UpdateComputerServlet")
 public class DeleteComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	private static ComputerServices computerServices = ComputerServices.getInstance();
-    
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public DeleteComputerServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	private static ComputerServices computerServices = ComputerServices
+			.getInstance();
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public DeleteComputerServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
-		
 
 		String sort = "compu_name";
-		if(request.getParameter("sort") != null && request.getParameter("sort").compareTo("") != 0)
+		if (request.getParameter("sort") != null
+				&& request.getParameter("sort").compareTo("") != 0)
 			sort = request.getParameter("sort");
-		
+
 		String ordre = "asc";
-		if(request.getParameter("ordre") != null && request.getParameter("ordre").compareTo("") != 0)
+		if (request.getParameter("ordre") != null
+				&& request.getParameter("ordre").compareTo("") != 0)
 			ordre = request.getParameter("ordre");
-		
-		
-		//CHOIX DE SUPPRESSION MULTIPLE
-		if(request.getParameter("id") == null)
-		{
-		
+
+		// CHOIX DE SUPPRESSION MULTIPLE
+		if (request.getParameter("id") == null) {
+
 			List<Computer> computers;
-			
+
 			computers = computerServices.get(sort, ordre);
-			
-			//int nombre = computerDao.getNumberComputer();
-			
+
+			// int nombre = computerDao.getNumberComputer();
+
 			request.setAttribute("computers", computers);
 			request.setAttribute("number_computer", computers.size());
-			
-			this.getServletContext().getRequestDispatcher("/delete.jsp").forward(request, response);
-		}
-		else
-		{
-			
-			int idComputer = Integer.parseInt(request.getParameter("id").trim());
+
+			this.getServletContext()
+					.getRequestDispatcher("/WEB-INF/delete.jsp")
+					.forward(request, response);
+		} else {
+
+			int idComputer = Integer
+					.parseInt(request.getParameter("id").trim());
 			computerServices.delete(idComputer);
-			
-			
-			if(session.getAttribute("choixPage") != null && (Boolean) session.getAttribute("choixPage") == true)
-				response.sendRedirect("affichage?page=1");
-			else
-				response.sendRedirect("affichage");
+
+			response.sendRedirect("affichage?page=1");
 		}
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+
 		String[] checkboxes = request.getParameterValues("idComputer");
-		
-		if(checkboxes != null)
-		{
-			for(int i = 0; i < checkboxes.length; i++)
-			{
+
+		if (checkboxes != null) {
+			for (int i = 0; i < checkboxes.length; i++) {
 				int idComputer = Integer.parseInt(checkboxes[i]);
 				computerServices.delete(idComputer);
 			}
 		}
-		
-		response.sendRedirect("affichage");
+
+		response.sendRedirect("affichage?page=1");
 	}
 }
