@@ -19,15 +19,12 @@ public class CompanyDAO {
 	private XLogger loggerx = XLoggerFactory.getXLogger(CompanyDAO.class
 		      .getName());
 	private LogDAO logDAO = LogDAO.getInstance();
-	
 
-	
 	
 	private static CompanyDAO computerDao;
 	
 	private CompanyDAO()
 	{
-		
 	}
 	
 	public static CompanyDAO getInstance()
@@ -50,7 +47,6 @@ public class CompanyDAO {
 		ResultSet results = null;
 		
 		try {
-			//con = ConnexionSingleton.getInstance();
 			stmt = connection.createStatement();
 			results = stmt.executeQuery(query);
 			
@@ -59,19 +55,15 @@ public class CompanyDAO {
 				int id = results.getInt("id");
 				String nom = results.getString("name");
 				companys.add(Company.builder().id(id).nom(nom).build());
-				//companys.add(new Company(results.getInt("id"),results.getString("name")));
 			}
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			logger.info("getListCompany error!!!!!!!!!");
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			
+			ConnectionManager.rollbackConnection(connection);
+			
 			logDAO.logOperation("Problem in getting companys", connection);
 			loggerx.catching(e);
 		}finally
@@ -100,7 +92,6 @@ public class CompanyDAO {
 		}finally{
 			ConnectionManager.closeConnection(connection);
 		}
-		
 		
 		return companys;
 	}

@@ -66,12 +66,7 @@ public class ComputerDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			loggerx.catching(e);
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			ConnectionManager.rollbackConnection(connection);
 			
 			logDAO.logOperation("Problem to put computer with name : "+computer.getNom(), connection);
 		} finally {
@@ -86,7 +81,6 @@ public class ComputerDAO {
 			}
 		}
 
-		
 		logger.info("Quit insererComputer method");
 		loggerx.exit();
 	}
@@ -155,24 +149,13 @@ public class ComputerDAO {
 						.company(
 								Company.builder().id(compaId).nom(compaName)
 										.build()).build());
-				// computers.add(new Computer(results.getInt("compu_id"),
-				// results.getString("compu_name"),
-				// results.getDate("introduced"),
-				// results.getDate("discontinued"), new
-				// Company(results.getInt("id"),
-				// results.getString("compa_name"))));
 			}
 
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 			loggerx.catching(e1);
-			try {
-				connection.rollback();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			ConnectionManager.rollbackConnection(connection);
 			logDAO.logOperation("Problem to get computers", connection);
 		} finally {
 			try {
@@ -259,25 +242,13 @@ public class ComputerDAO {
 						.company(
 								Company.builder().id(compaId).nom(compaName)
 										.build()).build());
-				// computers.add(new Computer(results.getInt("compu_id"),
-				// results.getString("compu_name"),
-				// results.getDate("introduced"),
-				// results.getDate("discontinued"), new
-				// Company(results.getInt("id"),
-				// results.getString("compa_name"))));
-
 			}
 
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 			loggerx.catching(e1);
-			try {
-				connection.rollback();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			ConnectionManager.rollbackConnection(connection);
 			logDAO.logOperation("Problem to get computers from "+debut+" to "+(debut+number), connection);
 		} finally {
 			try {
@@ -292,7 +263,6 @@ public class ComputerDAO {
 			}
 		}
 
-		
 		loggerx.exit(computers);
 		logger.info("Quit getListComputer method");
 		return computers;
@@ -317,12 +287,7 @@ public class ComputerDAO {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 			loggerx.catching(e1);
-			try {
-				connection.rollback();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			ConnectionManager.rollbackConnection(connection);
 			logDAO.logOperation("Problem to get numbers computer", connection);
 		} finally {
 			try {
@@ -339,8 +304,6 @@ public class ComputerDAO {
 
 		logger.info("Quit getNumberComputer method");
 		loggerx.exit(total);
-		
-		
 		
 		return total;
 	}
@@ -367,12 +330,7 @@ public class ComputerDAO {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 			loggerx.catching(e1);
-			try {
-				connection.rollback();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			ConnectionManager.rollbackConnection(connection);
 			logDAO.logOperation("Problem to get numbers computer with name : "+nom, connection);
 		} finally {
 			try {
@@ -463,24 +421,13 @@ public class ComputerDAO {
 								Company.builder().id(compaId).nom(compaName)
 										.build()).build());
 
-				// computers.add(new
-				// Computer(results.getInt("compu_id"),results.getString("compu_name"),
-				// results.getDate("introduced"),
-				// results.getDate("discontinued"),new
-				// Company(results.getInt("id"),
-				// results.getString("compa_name"))));
 			}
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			loggerx.catching(e);
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			ConnectionManager.rollbackConnection(connection);
 			logDAO.logOperation("Problem to find computer with name : "+nom, connection);
 		} finally {
 			try {
@@ -489,7 +436,6 @@ public class ComputerDAO {
 				ps.close();
 
 			} catch (SQLException e) {
-				loggerx.entry();
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				loggerx.catching(e);
@@ -535,12 +481,7 @@ public class ComputerDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			loggerx.catching(e);
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			ConnectionManager.rollbackConnection(connection);
 			logDAO.logOperation("Problem to edit computer with id : "+computer.getId(), connection);
 		} finally {
 
@@ -555,7 +496,6 @@ public class ComputerDAO {
 		}
 		logger.info("Quit editComputer method");
 		loggerx.exit();
-		
 		
 	}
 
@@ -577,12 +517,7 @@ public class ComputerDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			loggerx.catching(e);
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			ConnectionManager.rollbackConnection(connection);
 			logDAO.logOperation("Problem to delete computer with id : "+id, connection);
 		} finally {
 
@@ -598,8 +533,6 @@ public class ComputerDAO {
 		}
 		logger.info("Quit deleteComputer method");
 		loggerx.exit();
-		
-		
 		
 	}
 
@@ -645,12 +578,7 @@ public class ComputerDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			loggerx.catching(e);
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			ConnectionManager.rollbackConnection(connection);
 			logDAO.logOperation("Problem to find computer with id : "+computer.getId(), connection);
 		} finally {
 			try {
@@ -741,12 +669,6 @@ public class ComputerDAO {
 								Company.builder().id(compaId).nom(compaName)
 										.build()).build());
 
-				// computers.add(new
-				// Computer(results.getInt("compu_id"),results.getString("compu_name"),
-				// results.getDate("introduced"),
-				// results.getDate("discontinued"),new
-				// Company(results.getInt("id"),
-				// results.getString("compa_name"))));
 			}
 
 		} catch (SQLException e) {
@@ -754,12 +676,7 @@ public class ComputerDAO {
 			e.printStackTrace();
 			loggerx.catching(e);
 			
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			ConnectionManager.rollbackConnection(connection);
 			logDAO.logOperation("Problem to find computer with name : "+nom+" from "+debut +" to "+(debut+number), connection);
 		} finally {
 			try {
@@ -768,7 +685,6 @@ public class ComputerDAO {
 				ps.close();
 
 			} catch (SQLException e) {
-				loggerx.entry();
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				loggerx.catching(e);
@@ -777,7 +693,6 @@ public class ComputerDAO {
 
 		logger.info("Quit searchComputer method");
 		loggerx.exit(computers);
-		
 		
 		return computers;
 	}

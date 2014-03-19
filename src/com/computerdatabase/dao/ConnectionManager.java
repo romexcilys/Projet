@@ -135,5 +135,25 @@ public class ConnectionManager {
 		ConnectionManager.connectionPool = connectionPool;
 		logger.info("Quit setConnectionPool");
 	}
+	
+	public static void commitConnection(Connection connection)
+	{
+		try {
+			connection.commit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void rollbackConnection(Connection connection)
+	{
+		try {
+			connection.rollback();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }

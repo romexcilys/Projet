@@ -1,7 +1,6 @@
 package com.computerdatabase.service;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 import com.computerdatabase.dao.CompanyDAO;
@@ -24,14 +23,8 @@ public class ComputerServices {
 		logDAO.logOperation("Get companys",  connection);
 		List<Company> companys = companyDAO.getListCompany(connection);
 		
-		try {
-			connection.commit();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			ConnectionManager.closeConnection(connection);
-		}
+		ConnectionManager.commitConnection(connection);
+		ConnectionManager.closeConnection(connection);
 		
 		return companys;
 	}
@@ -42,14 +35,8 @@ public class ComputerServices {
 		logDAO.logOperation("INSERT computer : "+computer.getNom()+" from company : "+computer.getCompany().getNom(),  connection);
 		computerDAO.insererComputer(computer, connection);
 		
-		try {
-			connection.commit();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			ConnectionManager.closeConnection(connection);
-		}
+		ConnectionManager.commitConnection(connection);
+		ConnectionManager.closeConnection(connection);
 	}
 	
 	public List<Computer> get(String sort, String ordre)
@@ -59,14 +46,8 @@ public class ComputerServices {
 		
 		List<Computer> computers = computerDAO.getListComputer(connection, sort, ordre);
 		
-		try {
-			connection.commit();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			ConnectionManager.closeConnection(connection);
-		}
+		ConnectionManager.commitConnection(connection);
+		ConnectionManager.closeConnection(connection);
 		
 		return computers;
 	}
@@ -78,14 +59,8 @@ public class ComputerServices {
 		
 		List<Computer> computers = computerDAO.getListComputer(debut, number, connection, sort, ordre);
 		
-		try {
-			connection.commit();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			ConnectionManager.closeConnection(connection);
-		}
+		ConnectionManager.commitConnection(connection);
+		ConnectionManager.closeConnection(connection);
 		
 		return computers;
 	}
@@ -97,14 +72,8 @@ public class ComputerServices {
 		
 		int number = computerDAO.getNumberComputer(connection);
 		
-		try {
-			connection.commit();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			ConnectionManager.closeConnection(connection);
-		}
+		ConnectionManager.commitConnection(connection);
+		ConnectionManager.closeConnection(connection);
 		
 		return number;
 	}
@@ -116,14 +85,8 @@ public class ComputerServices {
 		
 		int number = computerDAO.getNumberComputer(nom, connection);
 		
-		try {
-			connection.commit();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			ConnectionManager.closeConnection(connection);
-		}
+		ConnectionManager.commitConnection(connection);
+		ConnectionManager.closeConnection(connection);
 		
 		return number;
 	}
@@ -135,14 +98,8 @@ public class ComputerServices {
 		
 		Computer computer = computerDAO.findComputer(id, connection);
 		
-		try {
-			connection.commit();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			ConnectionManager.closeConnection(connection);
-		}
+		ConnectionManager.commitConnection(connection);
+		ConnectionManager.closeConnection(connection);
 		
 		return computer;
 	}
@@ -154,14 +111,8 @@ public class ComputerServices {
 		
 		List<Computer> computers = computerDAO.searchComputer(nom, connection,sort,ordre);
 		
-		try {
-			connection.commit();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			ConnectionManager.closeConnection(connection);
-		}
+		ConnectionManager.commitConnection(connection);
+		ConnectionManager.closeConnection(connection);
 		
 		return computers;
 	}
@@ -173,14 +124,8 @@ public class ComputerServices {
 		
 		List<Computer> computers = computerDAO.findComputer(nom, debut, number, connection,sort,ordre);
 		
-		try {
-			connection.commit();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			ConnectionManager.closeConnection(connection);
-		}
+		ConnectionManager.commitConnection(connection);
+		ConnectionManager.closeConnection(connection);
 		
 		return computers;
 	}
@@ -191,14 +136,8 @@ public class ComputerServices {
 		logDAO.logOperation("Edit computer name : "+computer.getNom()+ " and id : "+computer.getId(),  connection);
 		computerDAO.editComputer(computer, connection);
 		
-		try {
-			connection.commit();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			ConnectionManager.closeConnection(connection);
-		}
+		ConnectionManager.commitConnection(connection);
+		ConnectionManager.closeConnection(connection);
 	}
 	
 	public void delete(int id)
@@ -207,13 +146,7 @@ public class ComputerServices {
 		logDAO.logOperation("Delete computer with id :"+id,  connection);
 		computerDAO.deleteComputer(id, connection);
 		
-		try {
-			connection.commit();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			ConnectionManager.closeConnection(connection);
-		}
+		ConnectionManager.commitConnection(connection);
+		ConnectionManager.closeConnection(connection);
 	}
 }
