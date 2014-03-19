@@ -20,7 +20,7 @@ import com.computerdatabase.service.ComputerServices;
 public class SearchComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private static ComputerServices computerServices = new ComputerServices();
+	private static ComputerServices computerServices = ComputerServices.getInstance();
 	/**
      * @see HttpServlet#HttpServlet()
      */

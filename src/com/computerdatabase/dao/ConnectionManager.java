@@ -31,7 +31,7 @@ public class ConnectionManager {
 			config.setPassword(password);
 			
 			config.setMinConnectionsPerPartition(1);
-			config.setMaxConnectionsPerPartition(20);
+			config.setMaxConnectionsPerPartition(10);
 			config.setPartitionCount(2);
 			connectionPool = new BoneCP(config);
 			

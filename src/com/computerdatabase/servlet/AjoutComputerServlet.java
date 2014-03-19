@@ -26,8 +26,8 @@ import com.computerdatabase.service.ComputerServices;
 public class AjoutComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private static ComputerServices computerServices = new ComputerServices();
-	private static CompanyServices companyServices = new CompanyServices();
+	private static ComputerServices computerServices = ComputerServices.getInstance();
+	private static CompanyServices companyServices = CompanyServices.getInstance();
        
     /**
      * @see HttpServlet#HttpServlet()

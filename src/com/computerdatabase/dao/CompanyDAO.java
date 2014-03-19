@@ -15,16 +15,17 @@ import com.computerdatabase.domain.Company;
 
 public class CompanyDAO {
 	
-	final Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
-	private XLogger loggerx = XLoggerFactory.getXLogger(CompanyDAO.class
-		      .getName());
-	private LogDAO logDAO = LogDAO.getInstance();
-
-	
-	private static CompanyDAO computerDao;
+	private final Logger logger;
+	private XLogger loggerx;
+	private LogDAO logDAO;
+	private static CompanyDAO computerDao = null;
 	
 	private CompanyDAO()
 	{
+		logDAO = LogDAO.getInstance();
+		loggerx = XLoggerFactory.getXLogger(CompanyDAO.class
+			      .getName());
+		logger = LoggerFactory.getLogger(CompanyDAO.class);
 	}
 	
 	public static CompanyDAO getInstance()
@@ -35,7 +36,7 @@ public class CompanyDAO {
 		return computerDao;
 	}
 	
-	public List<Company> getListCompany(Connection connection)
+	public List<Company> get(Connection connection)
 	{
 		loggerx.entry();
 		logger.info("In getListCompany method");

@@ -26,8 +26,8 @@ import com.computerdatabase.service.ComputerServices;
 public class UpdateComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private static ComputerServices computerServices = new ComputerServices();
-    private static CompanyServices companyServices = new CompanyServices();
+	private static ComputerServices computerServices = ComputerServices.getInstance();
+    private static CompanyServices companyServices = CompanyServices.getInstance();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -143,7 +143,7 @@ public class UpdateComputerServlet extends HttpServlet {
 		 * company
 		 */
 		
-		computerServices.edit(Computer.builder().id(idComputer).name(nom).introduced(dateIntroduced).discontinued(dateDiscontinued).company(Company.builder().id(company).build()).build());
+		computerServices.update(Computer.builder().id(idComputer).name(nom).introduced(dateIntroduced).discontinued(dateDiscontinued).company(Company.builder().id(company).build()).build());
 		//ComputerDAO.getInstance().insererComputer(new Computer(0, nom, dateIntroduced, dateDiscontinued, new Company(company, null)));
 		
 		

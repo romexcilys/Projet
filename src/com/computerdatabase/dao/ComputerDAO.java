@@ -19,16 +19,16 @@ import com.computerdatabase.domain.Computer;
 
 public class ComputerDAO {
 
-	final Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
-
-	private XLogger loggerx = XLoggerFactory.getXLogger(ComputerDAO.class
-			.getName());
-	
-	private LogDAO logDAO = LogDAO.getInstance();
-
-	private static ComputerDAO computerDao;
+	private final Logger logger;
+	private XLogger loggerx;
+	private LogDAO logDAO;
+	private static ComputerDAO computerDao = null;
 
 	private ComputerDAO() {
+		logDAO = LogDAO.getInstance();
+		loggerx = XLoggerFactory.getXLogger(ComputerDAO.class
+				.getName());
+		logger = LoggerFactory.getLogger(ComputerDAO.class);
 	}
 
 	public static ComputerDAO getInstance() {
@@ -38,7 +38,7 @@ public class ComputerDAO {
 		return computerDao;
 	}
 
-	public void insererComputer(Computer computer, Connection connection) {
+	public void put(Computer computer, Connection connection) {
 		logger.info("In insererComputer with computer argument");
 		loggerx.entry();
 		String query;
@@ -85,7 +85,7 @@ public class ComputerDAO {
 		loggerx.exit();
 	}
 
-	public List<Computer> getListComputer(Connection connection, String sort, String ordre) {
+	public List<Computer> get(Connection connection, String sort, String ordre) {
 		logger.info("In getListComputer method");
 		loggerx.entry();
 		List<Computer> computers = new ArrayList<Computer>();
@@ -176,7 +176,7 @@ public class ComputerDAO {
 		return computers;
 	}
 
-	public List<Computer> getListComputer(int debut, int number,Connection connection, String sort, String ordre) {
+	public List<Computer> get(int debut, int number,Connection connection, String sort, String ordre) {
 		logger.info("In getListComputer with arguments");
 		loggerx.entry(debut, number);
 		List<Computer> computers = new ArrayList<Computer>();
@@ -268,7 +268,7 @@ public class ComputerDAO {
 		return computers;
 	}
 
-	public int getNumberComputer(Connection connection) {
+	public int getNumber(Connection connection) {
 		logger.info("In getNumberComputer method");
 		loggerx.entry();
 		int total = 0;
@@ -308,7 +308,7 @@ public class ComputerDAO {
 		return total;
 	}
 
-	public int getNumberComputer(String nom, Connection connection) {
+	public int getNumber(String nom, Connection connection) {
 		logger.info("In getNumberComputer method with arguments");
 		loggerx.entry();
 		int total = 0;
@@ -351,7 +351,7 @@ public class ComputerDAO {
 		return total;
 	}
 
-	public List<Computer> searchComputer(String nom, Connection connection, String sort, String ordre) {
+	public List<Computer> find(String nom, Connection connection, String sort, String ordre) {
 		logger.info("In searchComputer method");
 		loggerx.entry(nom);
 		List<Computer> computers = new ArrayList<Computer>();
@@ -449,7 +449,7 @@ public class ComputerDAO {
 		return computers;
 	}
 
-	public void editComputer(Computer computer, Connection connection) {
+	public void update(Computer computer, Connection connection) {
 		logger.info("In editComputer method");
 		loggerx.entry(computer);
 		String query;
@@ -499,7 +499,7 @@ public class ComputerDAO {
 		
 	}
 
-	public void deleteComputer(int id, Connection connection) {
+	public void delete(int id, Connection connection) {
 
 		logger.info("In deleteComputer method with id argument");
 		loggerx.entry(id);
@@ -536,7 +536,7 @@ public class ComputerDAO {
 		
 	}
 
-	public Computer findComputer(int id, Connection connection) {
+	public Computer find(int id, Connection connection) {
 		logger.info("In findComputer method with id argument");
 		loggerx.entry(id);
 		Computer computer = null;
@@ -597,7 +597,7 @@ public class ComputerDAO {
 		return computer;
 	}
 
-	public List<Computer> findComputer(String nom, int debut, int number, Connection connection, String sort, String ordre) {
+	public List<Computer> find(String nom, int debut, int number, Connection connection, String sort, String ordre) {
 		logger.info("In searchComputer method");
 		loggerx.entry(nom);
 		List<Computer> computers = new ArrayList<Computer>();
