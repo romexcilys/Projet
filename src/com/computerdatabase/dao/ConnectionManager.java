@@ -34,7 +34,6 @@ public class ConnectionManager {
 			config.setMaxConnectionsPerPartition(20);
 			config.setPartitionCount(2);
 			connectionPool = new BoneCP(config);
-			//ConnectionManager.setConnectionPool(connectionPool);
 			
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block

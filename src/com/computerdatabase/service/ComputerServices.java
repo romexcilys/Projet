@@ -3,31 +3,14 @@ package com.computerdatabase.service;
 import java.sql.Connection;
 import java.util.List;
 
-import com.computerdatabase.dao.CompanyDAO;
 import com.computerdatabase.dao.ComputerDAO;
 import com.computerdatabase.dao.ConnectionManager;
 import com.computerdatabase.dao.LogDAO;
-import com.computerdatabase.domain.Company;
 import com.computerdatabase.domain.Computer;
 
 public class ComputerServices {
 	private ComputerDAO computerDAO = ComputerDAO.getInstance();
 	private LogDAO logDAO = LogDAO.getInstance();
-	//private Connection connection = ConnectionManager.getConnection();
-	
-	private CompanyDAO companyDAO = CompanyDAO.getInstance();
-	
-	public List<Company> getCompany()
-	{
-		Connection connection = ConnectionManager.getConnection();
-		logDAO.logOperation("Get companys",  connection);
-		List<Company> companys = companyDAO.getListCompany(connection);
-		
-		ConnectionManager.commitConnection(connection);
-		ConnectionManager.closeConnection(connection);
-		
-		return companys;
-	}
 	
 	public void put(Computer computer)
 	{
