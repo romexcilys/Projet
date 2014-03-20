@@ -39,11 +39,13 @@ public class SearchComputerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
-		String nom = request.getParameter("search").toLowerCase();
+		String nom = "";
+		if(request.getParameter("search") != null)
+			nom = request.getParameter("search").toLowerCase();
+		
 		HttpSession session = request.getSession();
 
-		String sort = "compu.name";
+		String sort = "compu_name";
 		if (request.getParameter("sort") != null
 				&& request.getParameter("sort").compareTo("") != 0)
 			sort = request.getParameter("sort");
@@ -56,45 +58,49 @@ public class SearchComputerServlet extends HttpServlet {
 
 		// EST CE QUE LA VALEUR DE RECHERCHE N'EST PAS VIDE
 		if (nom.length() != 0) {
+			
 			session.setAttribute("search", true);
 
-			int nombre = computerServices.getCount(nom);
+			int nombreComputer = computerServices.getCount(nom); //nombre dans la base pour cette recherche
 
-			int nombreElement = -1;
-			int numeroPage = 0;
+			int nombreElement = 20;
+			int numeroPage = 1;
 
-			nombreElement = 20;
-			int nombreComputer = nombre;
 			int numberPage = (int) (Math.ceil((double) nombreComputer
 					/ nombreElement));
+			
 			request.setAttribute("number_page", numberPage);
+			
+			int currentPage = 1;
+			if(request.getParameter("page") != null)
+				currentPage = Integer.parseInt(request.getParameter("page"));
+			
 			request.setAttribute("currentPage",
-					Integer.parseInt(request.getParameter("page")));
+					currentPage);
 
-			numeroPage = (Integer.parseInt(request.getParameter("page")) - 1)
+			numeroPage = (currentPage - 1)
 					* nombreElement;
 
 			List<Computer> computers;
 
-			Page page = Page.builder().currentPage(numeroPage)
-					.numberComputer(nombreElement).sort(sort).ordre(ordre)
-					.name(nom).build();
+			Page page = Page.builder().currentPage(numeroPage).numberElement(nombreElement).sort(sort).ordre(ordre)
+					.name(nom).searchName(nom).build();
 
-			computers = computerServices.find(nom, numeroPage, nombreElement,
-					sort, ordre);
+			computers = computerServices.find(page);
 
 			// ajouter computers a page
 
-			request.setAttribute("number_computer", nombre);
+			request.setAttribute("number_computer", nombreComputer);
 			request.setAttribute("computers", computers);
-
 			request.setAttribute("searchName", nom);
+			
 			this.getServletContext()
 					.getRequestDispatcher("/WEB-INF/dashboard.jsp")
 					.forward(request, response);
 
 		} else// SI STRING VIDE ALORS ON REVIENT SUR PAGE AFFICHAGE
 		{
+			session.setAttribute("search", false);
 			response.sendRedirect("affichage?page=1");
 		}
 	}

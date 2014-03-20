@@ -1,10 +1,7 @@
 package com.computerdatabase.servlet;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -12,11 +9,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.computerdatabase.domain.Company;
 import com.computerdatabase.domain.Computer;
-import com.computerdatabase.domain.Page;
+import com.computerdatabase.dto.ComputerDTO;
+import com.computerdatabase.dto.Mapper;
 import com.computerdatabase.service.CompanyServices;
 import com.computerdatabase.service.ComputerServices;
 
@@ -77,78 +74,39 @@ public class UpdateComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession session = request.getSession();
-
-		String idString = request.getParameter("idComputer");
+		
+		String idString = null;
+		if(request.getParameter("idComputer") != null )
+			idString = request.getParameter("idComputer");
+		
 		int idComputer = 0;
-
 		if (idString != null)
 			idComputer = Integer.parseInt(idString);
 
-		String nom;
+		String nom = null;
 		if (request.getParameter("name").compareTo("") != 0
 				&& request.getParameter("name") != null)
 			nom = request.getParameter("name");
-		else
-			nom = null;
 
-		String introducedDate = request.getParameter("introducedDate");
-		String discontinuedDate = request.getParameter("discontinuedDate");
+		String introducedDate = null;
+		if(request.getParameter("introducedDate") != null && request.getParameter("introducedDate").compareTo("") != 0)
+			introducedDate = request.getParameter("introducedDate");
+		
+		String discontinuedDate = null;
+		if(request.getParameter("discontinuedDate") != null && request.getParameter("discontinuedDate").compareTo("") != 0)
+			discontinuedDate = request.getParameter("discontinuedDate");
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		int idCompany = 0;
+		if (request.getParameter("company") != null && request.getParameter("company").compareTo("") != 0
+				)
+			idCompany = Integer.parseInt(request.getParameter("company"));
+		
+		
+		ComputerDTO computerDTO = ComputerDTO.Builder().id(idComputer).nom(nom).introducedDate(introducedDate).discontinuedDate(discontinuedDate).idCompany(idCompany).build();
 
-		Date dateIntroduced = null;
-		Date dateDiscontinued = null;
-
-		if (introducedDate.compareTo("") != 0 && introducedDate != null) {
-			try {
-				dateIntroduced = (Date) sdf.parse(introducedDate);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else {
-			try {
-				dateIntroduced = (Date) sdf.parse("0000-00-00");
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		if (discontinuedDate.compareTo("") != 0 && discontinuedDate != null) {
-			try {
-				dateDiscontinued = (Date) sdf.parse(discontinuedDate);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else {
-			try {
-				dateDiscontinued = (Date) sdf.parse("0000-00-00");
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
-
-		int company = 0;
-
-		if (request.getParameter("company").compareTo("") != 0
-				&& request.getParameter("company") != null)
-			company = Integer.parseInt(request.getParameter("company"));
-
-		/*
-		 * Les données sont dans nom date_introduced date_discontinued company
-		 */
-		Computer computer = Computer.builder().id(idComputer).name(nom)
-				.introduced(dateIntroduced).discontinued(dateDiscontinued)
-				.company(Company.builder().id(company).build()).build();
+		Computer computer = Mapper.mapper(computerDTO);
 
 		computerServices.update(computer);
-		// ComputerDAO.getInstance().insererComputer(new Computer(0, nom,
-		// dateIntroduced, dateDiscontinued, new Company(company, null)));
 
 		response.sendRedirect("affichage?page=1");
 

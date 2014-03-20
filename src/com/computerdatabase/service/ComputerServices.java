@@ -5,10 +5,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.computerdatabase.dao.ComputerDAO;
-import com.computerdatabase.dao.ConnectionManager;
 import com.computerdatabase.dao.DAOFactory;
 import com.computerdatabase.dao.LogDAO;
 import com.computerdatabase.domain.Computer;
+import com.computerdatabase.domain.Page;
 
 public class ComputerServices {
 	private static ComputerDAO computerDAO = DAOFactory.getInstance().getComputerDAO();
@@ -32,8 +32,8 @@ public class ComputerServices {
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
 		
 		try {
-			logDAO.logOperation("INSERT computer : "+computer.getNom()+" from company : "+computer.getCompany().getNom());
 			computerDAO.put(computer);
+			logDAO.logOperation("INSERT computer : "+computer.getNom()+" from company : "+computer.getCompany().getNom()+" id = "+computer.getId());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			DAOFactory.getInstance().rollbackConnection(connection);
@@ -43,34 +43,15 @@ public class ComputerServices {
 		DAOFactory.getInstance().commitConnection(connection);
 		DAOFactory.getInstance().closeConnection();
 	}
+
 	
-	public List<Computer> get(String sort, String ordre)
-	{
-		Connection connection = DAOFactory.getInstance().getConnectionThread();
-		List<Computer> computers = null;
-		
-		try {
-			logDAO.logOperation("Get computers");
-			computers = computerDAO.get(sort, ordre);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			DAOFactory.getInstance().rollbackConnection(connection);
-			e.printStackTrace();
-		}
-		
-		DAOFactory.getInstance().commitConnection(connection);
-		DAOFactory.getInstance().closeConnection();
-		
-		return computers;
-	}
-	
-	public List<Computer> get(int debut, int number,String sort, String ordre)
+	public List<Computer> get(Page page)
 	{
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
 		List<Computer> computers = null;
 		try {
-			logDAO.logOperation("Get computers from "+debut+" to "+(debut+number));
-			computers = computerDAO.get(debut, number, sort, ordre);
+			logDAO.logOperation("Get computers from "+page.getCurrentPage()+" to "+(page.getCurrentPage()+page.getNumberElement()));
+			computers = computerDAO.get(page);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			DAOFactory.getInstance().rollbackConnection(connection);
@@ -142,32 +123,15 @@ public class ComputerServices {
 		return computer;
 	}
 	
-	public List<Computer> find(String nom,String sort, String ordre)
-	{
-		Connection connection = DAOFactory.getInstance().getConnectionThread();
-		List<Computer> computers = null;
-		try {
-			logDAO.logOperation("Find computer with name : "+nom);
-			computers = computerDAO.find(nom, sort,ordre);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			DAOFactory.getInstance().rollbackConnection(connection);
-			e.printStackTrace();
-		}
-		
-		DAOFactory.getInstance().commitConnection(connection);
-		DAOFactory.getInstance().closeConnection();
-		
-		return computers;
-	}
+
 	
-	public List<Computer> find(String nom, int debut, int number,String sort, String ordre)
+	public List<Computer> find(Page page)
 	{
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
 		List<Computer> computers = null;
 		try {
-			logDAO.logOperation("Find computer with name : "+nom+" from "+debut+" to "+(debut+number));
-			computers = computerDAO.find(nom, debut, number, sort, ordre);
+			logDAO.logOperation("Find computer with name : "+page.getName()+" from "+page.getCurrentPage()+" to "+(page.getCurrentPage()+page.getNumberElement()));
+			computers = computerDAO.find(page);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			DAOFactory.getInstance().rollbackConnection(connection);

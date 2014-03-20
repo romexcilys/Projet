@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="/WEB-INF/Pagination.tld" prefix="p" %>
+
+<%@ taglib tagdir="/WEB-INF/tags" prefix="pag"%>
 
 <jsp:include page="/include/header.jsp" />
 
@@ -30,91 +31,42 @@
 			<tr>
 				<!-- Variable declarations for passing labels as parameters -->
 				<!-- Table header for Computer Name -->
-				<th>Computer Name <c:choose>
-						<c:when test="${ sessionScope.search == true}">
-							<a
-								href="SearchComputer?search=<c:out value='${ searchName }'/>&sort=compu_name&ordre=asc"><img
-								src="images/fleche_bas.png" /></a>
-							<a
-								href="SearchComputer?search=<c:out value='${ searchName }'/>&sort=compu_name&ordre=desc"><img
-								src="images/fleche_haut.png" /> </a>
+				<th>Computer Name <c:out value="${sessionScope.search }" /> <pag:UrlMaker
+						searchName="${ searchName }" search="${ sessionScope.search }"
+						sort="compu_name" ordre="asc" /><img src="images/fleche_bas.png" /></a>
+					<pag:UrlMaker searchName="${ searchName }"
+						search="${ sessionScope.search }" sort="compu_name" ordre="desc" />
+					<img src="images/fleche_haut.png" /> </a>
 
-						</c:when>
-						<c:otherwise>
-							<a
-								href="affichage?page=<c:out value='${ currentPage }'/>&sort=compu_name&ordre=asc"><img
-								src="images/fleche_bas.png" /></a>
-							<a
-								href="affichage?page=<c:out value='${ currentPage }'/>&sort=compu_name&ordre=desc"><img
-								src="images/fleche_haut.png" /> </a>
-						</c:otherwise>
-					</c:choose>
 				</th>
 
-				<th>Introduced Date <c:choose>
-						<c:when test="${ sessionScope.search == true}">
-							<a
-								href="SearchComputer?search=<c:out value='${ searchName }'/>&sort=intro_date&ordre=asc"><img
-								src="images/fleche_bas.png" /></a>
-							<a
-								href="SearchComputer?search=<c:out value='${ searchName }'/>&sort=intro_date&ordre=desc"><img
-								src="images/fleche_haut.png" /> </a>
-
-						</c:when>
-						<c:otherwise>
-							<a
-								href="affichage?page=<c:out value='${ currentPage }'/>&sort=intro_date&ordre=asc"><img
-								src="images/fleche_bas.png" /></a>
-							<a
-								href="affichage?page=<c:out value='${ currentPage }'/>&sort=intro_date&ordre=desc"><img
-								src="images/fleche_haut.png" /> </a>
-						</c:otherwise>
-					</c:choose>
+				<th>Introduced Date <pag:UrlMaker searchName="${ searchName }"
+						search="${ sessionScope.search }" sort="intro_date" ordre="asc" />
+					<img src="images/fleche_bas.png" /></a> <pag:UrlMaker
+						searchName="${ searchName }" search="${ sessionScope.search }"
+						sort="intro_date" ordre="desc" /><img src="images/fleche_haut.png" />
+					</a>
 				</th>
 
 				<!-- Table header for Discontinued Date -->
-				<th>Discontinued Date <c:choose>
-						<c:when test="${ sessionScope.search == true}">
-							<a
-								href="SearchComputer?search=<c:out value='${ searchName }'/>&sort=discon_date&ordre=asc"><img
-								src="images/fleche_bas.png" /></a>
-							<a
-								href="SearchComputer?search=<c:out value='${ searchName }'/>&sort=discon_date&ordre=desc"><img
-								src="images/fleche_haut.png" /> </a>
+				<th>Discontinued Date <pag:UrlMaker
+						searchName="${ searchName }" search="${ sessionScope.search }"
+						sort="discon_date" ordre="asc" /><img src="images/fleche_bas.png" /></a>
+					<pag:UrlMaker searchName="${ searchName }"
+						search="${ sessionScope.search }" sort="discon_date" ordre="desc" /><img
+					src="images/fleche_haut.png" /> </a>
 
-						</c:when>
-						<c:otherwise>
-							<a
-								href="affichage?page=<c:out value='${ currentPage }'/>&sort=discon_date&ordre=asc"><img
-								src="images/fleche_bas.png" /></a>
-							<a
-								href="affichage?page=<c:out value='${ currentPage }'/>&sort=discon_date&ordre=desc"><img
-								src="images/fleche_haut.png" /> </a>
-						</c:otherwise>
-					</c:choose>
 				</th>
 				<!-- Table header for Company -->
 
 
-				<th>Company <c:choose>
-						<c:when test="${ sessionScope.search == true}">
-							<a
-								href="SearchComputer?search=<c:out value='${ searchName }'/>&sort=compa_name&ordre=asc"><img
-								src="images/fleche_bas.png" /></a>
-							<a
-								href="SearchComputer?search=<c:out value='${ searchName }'/>&sort=compa_name&ordre=desc"><img
-								src="images/fleche_haut.png" /> </a>
+				<th>Company <pag:UrlMaker searchName="${ searchName }"
+						search="${ sessionScope.search }" sort="compa_name" ordre="asc" /><img
+					src="images/fleche_bas.png" /></a> <pag:UrlMaker
+						searchName="${ searchName }" search="${ sessionScope.search }"
+						sort="compa_name" ordre="desc" /><img src="images/fleche_haut.png" />
+					</a>
 
-						</c:when>
-						<c:otherwise>
-							<a
-								href="affichage?page=<c:out value='${ currentPage }'/>&sort=compa_name&ordre=asc"><img
-								src="images/fleche_bas.png" /></a>
-							<a
-								href="affichage?page=<c:out value='${ currentPage }'/>&sort=compa_name&ordre=desc"><img
-								src="images/fleche_haut.png" /> </a>
-						</c:otherwise>
-					</c:choose>
 				</th>
 
 				<th width="180px">Modification</th>
@@ -145,6 +97,14 @@
 	</table>
 </section>
 
-<p:pagination searchName="${ searchName }" search="${ sessionScope.search }" currentPage="${ currentPage }" numberPage="${ number_page }"/>
+<pag:Pagination searchName="${ searchName }"
+	search="${ sessionScope.search }" currentPage="${ currentPage }"
+	numberPage="${ number_page }" />
+
+<!-- 
+<p:pagination searchName="${ searchName }"
+	search="${ sessionScope.search }" currentPage="${ currentPage }"
+	numberPage="${ number_page }" />
+	 -->
 
 <jsp:include page="/include/footer.jsp" />

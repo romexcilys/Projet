@@ -8,9 +8,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.computerdatabase.domain.Computer;
+import com.computerdatabase.domain.Page;
 import com.computerdatabase.service.ComputerServices;
 
 /**
@@ -38,7 +38,6 @@ public class DeleteComputerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession session = request.getSession();
 
 		String sort = "compu_name";
 		if (request.getParameter("sort") != null
@@ -55,9 +54,9 @@ public class DeleteComputerServlet extends HttpServlet {
 
 			List<Computer> computers;
 
-			computers = computerServices.get(sort, ordre);
-
-			// int nombre = computerDao.getNumberComputer();
+			Page page = Page.builder().sort(sort).ordre(ordre).build();
+			
+			computers = computerServices.get(page);
 
 			request.setAttribute("computers", computers);
 			request.setAttribute("number_computer", computers.size());

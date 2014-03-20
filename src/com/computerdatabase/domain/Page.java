@@ -3,7 +3,6 @@ package com.computerdatabase.domain;
 import java.util.List;
 
 import com.computerdatabase.domain.Computer;
-import com.computerdatabase.domain.Company.Builder;
 
 public class Page {
 	
@@ -13,12 +12,26 @@ public class Page {
 	int currentPage;
 	int numberPage;
 	int numberComputer;
+	int numberElement;
+	String searchName;
 	String name;
 	List<Computer> computers;
 	List<Company> companys; //Pas sur si interet
 	
 	
 	
+	public String getSearchName() {
+		return searchName;
+	}
+	public void setSearchName(String searchName) {
+		this.searchName = searchName;
+	}
+	public int getNumberElement() {
+		return numberElement;
+	}
+	public void setNumberElement(int numberElement) {
+		this.numberElement = numberElement;
+	}
 	public String getName() {
 		return name;
 	}
@@ -137,6 +150,17 @@ public class Page {
 		public Builder name(String name)
 		{
 			this.page.name = name;
+			return this;
+		}
+		public Builder numberElement(int numberElement)
+		{
+			this.page.numberElement = numberElement;
+			return this;
+		}
+		
+		public Builder searchName(String searchName)
+		{
+			this.page.searchName = searchName;
 			return this;
 		}
 		

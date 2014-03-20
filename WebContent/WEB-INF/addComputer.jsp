@@ -12,8 +12,8 @@
 			<div class="clearfix">
 				<label for="name">Computer name:</label>
 				<div class="input">
-					<input type="text" name="name" required /> <span
-						class="help-inline">Required</span>
+					<input type="text" name="name" value="${ computer.nom }" required /> <span
+						class="help-inline">Required</span><span class="couleur-rouge"><c:out value="${ error.tableau.name }"/></span>
 				</div>
 			</div>
 
@@ -21,19 +21,18 @@
 				<label for="introduced">Introduced date:</label>
 				<div class="input">
 					<input type="date" name="introducedDate"
-						pattern="^(19|20)\d\d([- /.])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$" />
+						pattern="^(19|20)\d\d([-])(0[1-9]|1[012])([-])(0[1-9]|[12][0-9]|3[01])$" value="${ computer.introducedDate }"/>
 					<!--  pattern="YY-MM-dd" -->
-					<span class="help-inline">YYYY-MM-DD</span>
+					<span class="help-inline">YYYY-MM-DD</span><span class="couleur-rouge"><c:out value="${ error.tableau.introducedDate }"/></span>
 				</div>
 			</div>
 			<div class="clearfix">
 				<label for="discontinued">Discontinued date:</label>
 				<div class="input">
 					<input type="date" name="discontinuedDate" data-validation="date"
-						data-validation-format="yyyy-mm-dd" />
-					<!-- pattern = "^(19|20)\d\d([- /.])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$" /> -->
+						data-validation-format="yyyy-mm-dd" pattern = "^(19|20)\d\d([-])(0[1-9]|1[012])([-])(0[1-9]|[12][0-9]|3[01])$"  value="${ computer.discontinuedDate }"/>
 					<!--  pattern="YY-MM-dd" -->
-					<span class="help-inline">YYYY-MM-DD</span>
+					<span class="help-inline">YYYY-MM-DD</span><span class="couleur-rouge"><c:out value="${ error.tableau.discontinuedDate }"/></span>
 				</div>
 			</div>
 			<div class="clearfix">
@@ -43,13 +42,21 @@
 						<option value="0">--</option>
 
 						<c:forEach items="${ companys }" var="company">
-
-							<option value="<c:out value='${ company.id}'/>">
-								<c:out value="${ company.nom }" />
-							</option>
+							<c:choose>
+								<c:when test="${ company.id == computer.idCompany }">
+									<option value="<c:out value='${ company.id}'/>" selected>
+										<c:out value="${ company.nom }" />
+									</option>
+								</c:when>
+								<c:otherwise>
+									<option value="<c:out value='${ company.id}'/>">
+										<c:out value="${ company.nom }" />
+									</option>
+								</c:otherwise>
+							</c:choose>
 
 						</c:forEach>
-					</select>
+					</select><span class="couleur-rouge"><c:out value="${ error.tableau.company }"/></span>
 				</div>
 			</div>
 		</fieldset>
@@ -62,9 +69,6 @@
 	</form>
 </section>
 
+<c:out value="${computer.idCompany  }" />
 <jsp:include page="/include/footer.jsp" />
 
-<script
-	src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script
-	src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.1.47/jquery.form-validator.min.js"></script>

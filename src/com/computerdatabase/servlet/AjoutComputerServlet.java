@@ -1,10 +1,7 @@
 package com.computerdatabase.servlet;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -12,12 +9,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.computerdatabase.domain.Company;
 import com.computerdatabase.domain.Computer;
+import com.computerdatabase.dto.ComputerDTO;
+import com.computerdatabase.dto.Mapper;
 import com.computerdatabase.service.CompanyServices;
 import com.computerdatabase.service.ComputerServices;
+import com.computerdatabase.validator.ComputerValidator;
 
 /**
  * Servlet implementation class AjoutComputerServlet
@@ -53,7 +52,7 @@ public class AjoutComputerServlet extends HttpServlet {
 		request.setAttribute("companys", companys);
 
 		this.getServletContext()
-				.getRequestDispatcher("/WEB-INF//addComputer.jsp")
+				.getRequestDispatcher("/WEB-INF/addComputer.jsp")
 				.forward(request, response);
 
 	}
@@ -65,69 +64,53 @@ public class AjoutComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
+		ComputerValidator validation = new ComputerValidator();
 		String nom = null;
-		if (request.getParameter("name").compareTo("") != 0
-				&& request.getParameter("name") != null)
+		if (request.getParameter("name") != null && request.getParameter("name").compareTo("") != 0
+			)
 			nom = request.getParameter("name");
 
-		String introducedDate = request.getParameter("introducedDate");
-		String discontinuedDate = request.getParameter("discontinuedDate");
-
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-		Date dateIntroduced = null;
-		Date dateDiscontinued = null;
-
-		if (introducedDate.compareTo("") != 0 && introducedDate != null) {
-			try {
-				dateIntroduced = (Date) sdf.parse(introducedDate);
-				System.out.println(dateIntroduced);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else {
-			try {
-				dateIntroduced = (Date) sdf.parse("0000-00-00");
-				System.out.println(dateIntroduced);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		if (discontinuedDate.compareTo("") != 0 && discontinuedDate != null) {
-			try {
-				dateDiscontinued = (Date) sdf.parse(discontinuedDate);
-				System.out.println(dateDiscontinued);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else {
-			try {
-				dateDiscontinued = (Date) sdf.parse("0000-00-00");
-				System.out.println(dateDiscontinued);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		int company = 0;
-
-		if (request.getParameter("company").compareTo("") != 0
-				&& request.getParameter("company") != null)
-			company = Integer.parseInt(request.getParameter("company"));
-
-		Computer computer = Computer.builder().id(0).name(nom)
-				.introduced(dateIntroduced).discontinued(dateDiscontinued)
-				.company(Company.builder().id(company).build()).build();
+		String introducedDate = null;
+		if(request.getParameter("introducedDate") != null && request.getParameter("introducedDate").compareTo("") != 0)
+			introducedDate = request.getParameter("introducedDate");
 		
-		computerServices.put(computer);
+		String discontinuedDate = null;
+		if(request.getParameter("discontinuedDate") != null && request.getParameter("discontinuedDate").compareTo("") != 0)
+			discontinuedDate = request.getParameter("discontinuedDate");
 
-		response.sendRedirect("affichage?page=1");
+		int idCompany = 0;
+
+		if (request.getParameter("company") != null && request.getParameter("company").compareTo("") != 0
+				)
+			idCompany = Integer.parseInt(request.getParameter("company"));
+		
+		
+		System.out.println("Id computer : "+idCompany);
+		
+		
+		ComputerDTO computerDTO = ComputerDTO.Builder().id(0).nom(nom).introducedDate(introducedDate).discontinuedDate(discontinuedDate).idCompany(idCompany).build();
+		
+		validation.test(computerDTO);
+		Computer computer = Mapper.mapper(computerDTO);
+		
+		
+		if(validation.getTableau().size() > 0)
+		{
+			List<Company> companys = new ArrayList<Company>();
+
+			companys = companyServices.get();
+			request.setAttribute("companys", companys);
+			
+			request.setAttribute("computer", computerDTO);
+			request.setAttribute("error", validation);
+			
+			this.getServletContext().getRequestDispatcher("/WEB-INF/addComputer.jsp").forward(request, response);
+		}
+		else
+		{
+			computerServices.put(computer);
+			response.sendRedirect("affichage?page=1");
+		}
 	}
 
 }

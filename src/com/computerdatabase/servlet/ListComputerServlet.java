@@ -41,6 +41,7 @@ public class ListComputerServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		
+		
 		int nombreElement = 20;
 		int numeroPage = 1;
 
@@ -80,16 +81,17 @@ public class ListComputerServlet extends HttpServlet {
 
 		List<Computer> computers;
 		
-		Page page = Page.builder().currentPage(numeroPage).numberPage(numberPage).sort(sort).ordre(ordre).build();
+		Page page = Page.builder().currentPage(numeroPage).numberPage(numberPage).sort(sort).ordre(ordre).numberElement(nombreElement).build();
 
 		computers = computerServices
-				.get(numeroPage, nombreElement, sort, ordre);
+				.get(page);
 		
 		//Ajouter a page computers
 		
 		request.setAttribute("computers", computers);
 		request.setAttribute("number_page", numberPage);
 		request.setAttribute("number_computer", nombreComputer);
+		
 
 		this.getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp")
 				.forward(request, response);
