@@ -4,11 +4,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+
 import com.computerdatabase.dao.ComputerDAO;
 import com.computerdatabase.dao.DAOFactory;
 import com.computerdatabase.dao.LogDAO;
 import com.computerdatabase.domain.Computer;
 import com.computerdatabase.domain.Page;
+import com.computerdatabase.domain.Logs;
 import com.computerdatabase.dto.ComputerDTO;
 
 public class ComputerServices {
@@ -34,7 +36,8 @@ public class ComputerServices {
 		
 		try {
 			computerDAO.put(computer);
-			logDAO.logOperation("INSERT computer : "+computer.getNom()+" from company : "+computer.getCompany().getNom()+" id = "+computer.getId());
+			Logs log = Logs.builder().operation("INSERT Computer").name(computer.getNom()).idComputer(computer.getId()).build();
+			logDAO.logOperation(log);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			DAOFactory.getInstance().rollbackConnection(connection);
@@ -51,7 +54,8 @@ public class ComputerServices {
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
 		List<Computer> computers = null;
 		try {
-			logDAO.logOperation("Get computers from "+page.getCurrentPage()+" to "+(page.getCurrentPage()+page.getNumberElement()));
+			Logs log = Logs.builder().operation("Get Computer").name(null).idComputer(-1).build();
+			logDAO.logOperation(log);
 			computers = computerDAO.get(page);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -70,7 +74,8 @@ public class ComputerServices {
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
 		int number = 0;
 		try {
-			logDAO.logOperation("Get numbers computer");
+			Logs log = Logs.builder().operation("Get numbers computer").name(null).idComputer(-1).build();
+			logDAO.logOperation(log);
 			number = computerDAO.getNumber();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -90,7 +95,8 @@ public class ComputerServices {
 		int number = 0;
 		
 		try {
-			logDAO.logOperation("Get numbers computer : "+nom);
+			Logs log = Logs.builder().operation("Get numbers computer : "+nom).name(null).idComputer(-1).build();
+			logDAO.logOperation(log);
 			number = computerDAO.getNumber(nom);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -111,7 +117,8 @@ public class ComputerServices {
 		ComputerDTO  computerDTO = null;
 		try {
 			computerDTO = computerDAO.find(id);
-			logDAO.logOperation("Find computer with id : "+id);
+			Logs log = Logs.builder().operation("Find computer").name(null).idComputer(id).build();
+			logDAO.logOperation(log);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			DAOFactory.getInstance().rollbackConnection(connection);
@@ -131,7 +138,8 @@ public class ComputerServices {
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
 		List<Computer> computers = null;
 		try {
-			logDAO.logOperation("Find computer with name : "+page.getName()+" from "+page.getCurrentPage()+" to "+(page.getCurrentPage()+page.getNumberElement()));
+			Logs log = Logs.builder().operation("Find computer").name(page.getName()).idComputer(-1).build();
+			logDAO.logOperation(log);
 			computers = computerDAO.find(page);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -149,7 +157,8 @@ public class ComputerServices {
 	{
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
 		try {
-			logDAO.logOperation("Edit computer name : "+computer.getNom()+ " and id : "+computer.getId());
+			Logs log = Logs.builder().operation("Update computer").name(computer.getNom()).idComputer(computer.getId()).build();
+			logDAO.logOperation(log);
 			computerDAO.update(computer);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -165,7 +174,8 @@ public class ComputerServices {
 	{
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
 		try {
-			logDAO.logOperation("Delete computer with id :"+id);
+			Logs log = Logs.builder().operation("Delete computer").name(null).idComputer(id).build();
+			logDAO.logOperation(log);
 			computerDAO.delete(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

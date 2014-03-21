@@ -91,7 +91,7 @@ public class AjoutComputerServlet extends HttpServlet {
 		ComputerDTO computerDTO = ComputerDTO.Builder().id(0).nom(nom).introducedDate(introducedDate).discontinuedDate(discontinuedDate).idCompany(idCompany).build();
 		
 		validation.test(computerDTO);
-		Computer computer = Mapper.mapper(computerDTO);
+		Computer computer = Mapper.fromDTO(computerDTO);
 		
 		
 		if(validation.getTableau().size() > 0)

@@ -31,7 +31,7 @@
 			<tr>
 				<!-- Variable declarations for passing labels as parameters -->
 				<!-- Table header for Computer Name -->
-				<th>Computer Name <c:out value="${sessionScope.search }" /> <pag:UrlMaker
+				<th id="computerName" >Computer Name  <pag:UrlMaker
 						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
 						sort="compu_name" ordre="asc" /><img src="images/fleche_bas.png" /></a>
 					<pag:UrlMaker searchName="${ infoPage.searchName }"
@@ -40,7 +40,7 @@
 
 				</th>
 
-				<th>Introduced Date <pag:UrlMaker searchName="${ infoPage.searchName }"
+				<th id="introducedDate" >Introduced Date <pag:UrlMaker searchName="${ infoPage.searchName }"
 						search="${ sessionScope.search }" sort="intro_date" ordre="asc" />
 					<img src="images/fleche_bas.png" /></a> <pag:UrlMaker
 						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
@@ -49,7 +49,7 @@
 				</th>
 
 				<!-- Table header for Discontinued Date -->
-				<th>Discontinued Date <pag:UrlMaker
+				<th id="discontinuedDate" >Discontinued Date <pag:UrlMaker
 						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
 						sort="discon_date" ordre="asc" /><img src="images/fleche_bas.png" /></a>
 					<pag:UrlMaker searchName="${ infoPage.searchName }"
@@ -60,7 +60,7 @@
 				<!-- Table header for Company -->
 
 
-				<th>Company <pag:UrlMaker searchName="${ infoPage.searchName }"
+				<th id="companyName" >Company <pag:UrlMaker searchName="${ infoPage.searchName }"
 						search="${ sessionScope.search }" sort="compa_name" ordre="asc" /><img
 					src="images/fleche_bas.png" /></a> <pag:UrlMaker
 						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
@@ -69,7 +69,7 @@
 
 				</th>
 
-				<th width="180px">Modification</th>
+				<th width="180px" id ="modification" >Modification</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -82,9 +82,7 @@
 					<td><c:out value="${computer.introducedDate }" /></td>
 					<td><c:out value="${computer.discontinuedDate }" /></td>
 					<td><c:out value="${computer.company.nom }" /></td>
-					<!--  <td><a class="btn primary" href="PageUpdate?id= <c:out value='${ computer.id }'/>" onclick="window.open('Formulaire.jsp', 'nom','height=500, width=500, top=300, left=600, toolbar=no, menubar=no, location=no, resizable=no, scrollbars=no, status=no');return false;">Update</a></td>
-							 -->
-					<td><a class="btn primary"
+						<td><a class="btn primary"
 						href="PageUpdate?id= <c:out value='${ computer.id }'/>">Update</a>
 						<a class="btn error"
 						href="PageDelete?id= <c:out value='${ computer.id }'/>"
@@ -97,14 +95,10 @@
 	</table>
 </section>
 
-<pag:Pagination searchName="${ infoPage.searchName }"
-	search="${ sessionScope.search }" currentPage="${ infoPage.currentPage }"
-	numberPage="${ infoPage.numberPage }" />
-
-<!-- 
-<p:pagination searchName="${ searchName }"
-	search="${ sessionScope.search }" currentPage="${ currentPage }"
-	numberPage="${ number_page }" />
-	 -->
+<div id="paginations">
+	<pag:Pagination searchName="${ infoPage.searchName }"
+		search="${ sessionScope.search }" currentPage="${ infoPage.currentPage }"
+		numberPage="${ infoPage.numberPage }" />
+</div>
 
 <jsp:include page="/include/footer.jsp" />

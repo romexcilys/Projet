@@ -21,7 +21,7 @@
 </c:choose>
 /
 <c:choose>
-	<c:when test="${ currentPage < numberPage }">
+	<c:when test="${ currentPage < numberPage+1-1 }">
 		<c:choose>
 			<c:when test="${search == true }">
 				<a
@@ -34,7 +34,7 @@
 	</c:when>
 	<c:otherwise>Next</c:otherwise>
 </c:choose>
-
+&nbsp;&nbsp;
 Page
 <c:out value="${ currentPage }" />
 sur

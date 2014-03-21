@@ -86,8 +86,8 @@ public class UpdateComputerServlet extends HttpServlet {
 			idComputer = Integer.parseInt(idString);
 
 		String nom = null;
-		if (request.getParameter("name").compareTo("") != 0
-				&& request.getParameter("name") != null)
+		if (request.getParameter("name") != null && request.getParameter("name").compareTo("") != 0
+			)
 			nom = request.getParameter("name");
 
 		String introducedDate = null;
@@ -105,8 +105,6 @@ public class UpdateComputerServlet extends HttpServlet {
 				&& request.getParameter("company").compareTo("") != 0)
 			idCompany = Integer.parseInt(request.getParameter("company"));
 
-		
-		System.out.println("Id company : "+idCompany);
 		ComputerDTO computerDTO = ComputerDTO.Builder().id(idComputer).nom(nom)
 				.introducedDate(introducedDate)
 				.discontinuedDate(discontinuedDate).idCompany(idCompany)
@@ -129,7 +127,7 @@ public class UpdateComputerServlet extends HttpServlet {
 		}
 		else
 		{
-			Computer computer = Mapper.mapper(computerDTO);
+			Computer computer = Mapper.fromDTO(computerDTO);
 			
 			computerServices.update(computer);
 	

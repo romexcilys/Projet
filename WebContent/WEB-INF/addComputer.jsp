@@ -6,8 +6,9 @@
 
 	<!-- <h1>Add Computer</h1> -->
 
+<div id="formulaireAdd">
 
-	<form action="AjoutComputer" method="POST">
+	<form action="AjoutComputer" method="POST" >
 		<fieldset>
 			<div class="clearfix">
 				<label for="name">Computer name:</label>
@@ -60,13 +61,15 @@
 				</div>
 			</div>
 		</fieldset>
-		<div class="actions">
+		<div id="barreValideAdd" >
 			<input type="submit" value="Add" class="btn primary"> or <a
 				href="affichage?page=1" class="btn">Cancel</a>
 
 
 		</div>
 	</form>
+	
+	</div>
 </section>
 
 <jsp:include page="/include/footer.jsp" />

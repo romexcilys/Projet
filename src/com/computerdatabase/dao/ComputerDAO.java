@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +16,7 @@ import com.computerdatabase.domain.Company;
 import com.computerdatabase.domain.Computer;
 import com.computerdatabase.domain.Page;
 import com.computerdatabase.dto.ComputerDTO;
+import com.computerdatabase.dto.Mapper;
 
 public class ComputerDAO {
 
@@ -287,6 +287,7 @@ public class ComputerDAO {
 		
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
 		ComputerDTO computerDTO = null;
+		Computer computer = null;
 
 		String query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued,  compa.name AS compa_name, compa.id AS compaID FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE compu.id = ?;";
 
@@ -302,26 +303,21 @@ public class ComputerDAO {
 			String name = results.getString("compu_name");
 			Date introduced = results.getDate("introduced");
 			Date discontinued = results.getDate("discontinued");
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-			
-			String introducedDate = "";
-			if(introduced != null)
-				introducedDate = sdf.format(introduced); 
-			
-			String discontinuedDate = "";
-			if(discontinued != null)
-				discontinuedDate = sdf.format(discontinued); 
 
 			int compaId = results.getInt("compaID");
-			//String compaName = results.getString("compa_name");
+			String compaName = results.getString("compa_name");
 
-			computerDTO = ComputerDTO.Builder()
+			computer = Computer
+					.builder()
 					.id(id)
-					.nom(name)
-					.introducedDate(introducedDate)
-					.discontinuedDate(discontinuedDate)
-					.idCompany(compaId).build();
+					.name(name)
+					.introduced(introduced)
+					.discontinued(discontinued)
+					.company(
+							Company.builder().id(compaId).nom(compaName)
+									.build()).build();
+
+			computerDTO = Mapper.toDTO(computer);
 
 		}
 

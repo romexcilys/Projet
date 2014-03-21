@@ -9,6 +9,7 @@ import com.computerdatabase.dao.ConnectionManager;
 import com.computerdatabase.dao.DAOFactory;
 import com.computerdatabase.dao.LogDAO;
 import com.computerdatabase.domain.Company;
+import com.computerdatabase.domain.Logs;
 
 public class CompanyServices {
 
@@ -34,7 +35,8 @@ public class CompanyServices {
 		
 		List<Company> companys = null;
 		try {
-			logDAO.logOperation("Get companys");
+			Logs log = Logs.builder().operation("SELECT Companys").name(null).idComputer(-1).build();
+			logDAO.logOperation(log);
 			companys = companyDAO.get();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

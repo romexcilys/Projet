@@ -66,14 +66,24 @@ public class SearchComputerServlet extends HttpServlet {
 																	// cette
 																	// recherche
 
-			int nombreElement = 20;
+			int nombreElement = 11;
 
 			int numberPage = (int) (Math.ceil((double) nombreComputer
 					/ nombreElement));
+			
+			if(numberPage == 0)
+				numberPage = 1;
 
 			int currentPage = 1;
-			if (request.getParameter("page") != null)
+			try{
+				
+				if (request.getParameter("page") != null)
 				currentPage = Integer.parseInt(request.getParameter("page"));
+				
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			int elementSearch = (currentPage - 1) * nombreElement;
 

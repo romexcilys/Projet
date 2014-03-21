@@ -49,6 +49,32 @@ table.computers .header a {
     top: 0;
 }
 
+#paginations
+{
+	position:relative;
+	bottom:20px;
+	text-align:center;
+	bordel-style:solid;
+	border-color:black;
+	font-size:1.5em;
+}
+
+.couleur-rouge{
+	color:red;
+}
+
+#computerName
+{
+	width : 500px;
+}
+
+#discontinuedDate
+{
+	witdh:10px;
+}
+
+
+
 #pagination {
     position: relative;
 }
@@ -64,6 +90,22 @@ table.computers .header a {
 
 .col2 {
 	width: 50%;
+}
+
+
+
+#formulaireAdd
+{
+	width:700px;
+	position:absolute;
+	left:35%;
+	top:35%;
+	border-style:solid;
+}
+
+#barreValideAdd
+{
+	text-align:center;
 }
 .col3, .col4 {
 	width: 10%;

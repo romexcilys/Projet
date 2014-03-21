@@ -42,7 +42,7 @@ public class ListComputerServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		
 		
-		int nombreElement = 20;
+		int nombreElement = 15;
 		int currentPage = 1;
 
 		session.setAttribute("search", false);
