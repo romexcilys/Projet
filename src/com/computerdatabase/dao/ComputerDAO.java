@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import com.computerdatabase.domain.Company;
 import com.computerdatabase.domain.Computer;
 import com.computerdatabase.domain.Page;
+import com.computerdatabase.dto.ComputerDTO;
 
 public class ComputerDAO {
 
@@ -81,7 +83,7 @@ public class ComputerDAO {
 	public List<Computer> get(Page page) throws SQLException {
 		logger.info("In getListComputer with arguments");
 		
-		int debut = page.getCurrentPage();
+		int debut = page.getElementSearch();
 		int number = page.getNumberElement();
 		String sort = page.getSort();
 		String ordre = page.getOrdre();
@@ -100,7 +102,7 @@ public class ComputerDAO {
 			switch(sort)
 			{
 				case "compa_name":
-					query.append("compa_name, compu.name");
+					query.append("compa_name");
 					break;
 				case "compu_name":
 					query.append("compu.name");
@@ -118,7 +120,7 @@ public class ComputerDAO {
 			
 			if(ordre != null)
 			{
-				switch(ordre)
+				switch(ordre.trim())
 				{
 				case "desc":
 					query.append(" DESC");
@@ -280,11 +282,11 @@ public class ComputerDAO {
 
 	}
 
-	public Computer find(int id) throws SQLException {
+	public ComputerDTO find(int id) throws SQLException {
 		logger.info("In findComputer method with id argument");
 		
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
-		Computer computer = null;
+		ComputerDTO computerDTO = null;
 
 		String query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued,  compa.name AS compa_name, compa.id AS compaID FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE compu.id = ?;";
 
@@ -300,19 +302,26 @@ public class ComputerDAO {
 			String name = results.getString("compu_name");
 			Date introduced = results.getDate("introduced");
 			Date discontinued = results.getDate("discontinued");
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			
+			String introducedDate = "";
+			if(introduced != null)
+				introducedDate = sdf.format(introduced); 
+			
+			String discontinuedDate = "";
+			if(discontinued != null)
+				discontinuedDate = sdf.format(discontinued); 
 
 			int compaId = results.getInt("compaID");
-			String compaName = results.getString("compa_name");
+			//String compaName = results.getString("compa_name");
 
-			computer = Computer
-					.builder()
+			computerDTO = ComputerDTO.Builder()
 					.id(id)
-					.name(name)
-					.introduced(introduced)
-					.discontinued(discontinued)
-					.company(
-							Company.builder().id(compaId).nom(compaName)
-									.build()).build();
+					.nom(name)
+					.introducedDate(introducedDate)
+					.discontinuedDate(discontinuedDate)
+					.idCompany(compaId).build();
 
 		}
 
@@ -321,13 +330,13 @@ public class ComputerDAO {
 
 		logger.info("Quit findComputer method");
 
-		return computer;
+		return computerDTO;
 	}
 
 	public List<Computer> find(Page page)
 			throws SQLException {
 		
-		int debut = page.getCurrentPage();
+		int debut = page.getElementSearch();
 		int number = page.getNumberElement();
 		String sort = page.getSort();
 		String ordre = page.getOrdre();
@@ -349,7 +358,7 @@ public class ComputerDAO {
 			switch(sort)
 			{
 				case "compa_name":
-					query.append("compa_name, compu.name");
+					query.append("compa_name");
 					break;
 				case "compu_name":
 					query.append("compu.name");
@@ -367,7 +376,7 @@ public class ComputerDAO {
 			
 			if(ordre != null)
 			{
-				switch(ordre)
+				switch(ordre.trim())
 				{
 				case "desc":
 					query.append(" DESC");

@@ -53,11 +53,18 @@ public class DeleteComputerServlet extends HttpServlet {
 		if (request.getParameter("id") == null) {
 
 			List<Computer> computers;
-
-			Page page = Page.builder().sort(sort).ordre(ordre).build();
+			int numberComputer = computerServices.getCount();
+			
+			Page page = Page.builder().elementSearch(-1).numberElement(-1).sort(sort).ordre(ordre).numberComputer(numberComputer).build();
+			
 			
 			computers = computerServices.get(page);
 
+			System.out.println(computers.size());
+			page.setComputers(computers);
+			
+			request.setAttribute("infoPage", page);
+			
 			request.setAttribute("computers", computers);
 			request.setAttribute("number_computer", computers.size());
 

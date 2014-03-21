@@ -16,6 +16,7 @@ import com.computerdatabase.dto.ComputerDTO;
 import com.computerdatabase.dto.Mapper;
 import com.computerdatabase.service.CompanyServices;
 import com.computerdatabase.service.ComputerServices;
+import com.computerdatabase.validator.ComputerValidator;
 
 /**
  * Servlet implementation class UpdateComputerServlet
@@ -49,15 +50,14 @@ public class UpdateComputerServlet extends HttpServlet {
 
 		if (idComputer != null) {
 			int id = Integer.parseInt(idComputer.trim());
-			Computer computer = computerServices.find(id);
+			ComputerDTO computerDTO = computerServices.find(id);
 			List<Company> companys = new ArrayList<Company>();
 
 			companys = companyServices.get();
 
+			
 			request.setAttribute("companys", companys);
-
-			request.setAttribute("computer", computer);
-			request.setAttribute("companyId", computer.getCompany().getId());
+			request.setAttribute("computer", computerDTO);
 
 		}
 
@@ -74,11 +74,13 @@ public class UpdateComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+
+		ComputerValidator validation = new ComputerValidator();
 		
 		String idString = null;
-		if(request.getParameter("idComputer") != null )
+		if (request.getParameter("idComputer") != null)
 			idString = request.getParameter("idComputer");
-		
+
 		int idComputer = 0;
 		if (idString != null)
 			idComputer = Integer.parseInt(idString);
@@ -89,26 +91,49 @@ public class UpdateComputerServlet extends HttpServlet {
 			nom = request.getParameter("name");
 
 		String introducedDate = null;
-		if(request.getParameter("introducedDate") != null && request.getParameter("introducedDate").compareTo("") != 0)
+		if (request.getParameter("introducedDate") != null
+				&& request.getParameter("introducedDate").compareTo("") != 0)
 			introducedDate = request.getParameter("introducedDate");
-		
+
 		String discontinuedDate = null;
-		if(request.getParameter("discontinuedDate") != null && request.getParameter("discontinuedDate").compareTo("") != 0)
+		if (request.getParameter("discontinuedDate") != null
+				&& request.getParameter("discontinuedDate").compareTo("") != 0)
 			discontinuedDate = request.getParameter("discontinuedDate");
 
 		int idCompany = 0;
-		if (request.getParameter("company") != null && request.getParameter("company").compareTo("") != 0
-				)
+		if (request.getParameter("company") != null
+				&& request.getParameter("company").compareTo("") != 0)
 			idCompany = Integer.parseInt(request.getParameter("company"));
+
 		
+		System.out.println("Id company : "+idCompany);
+		ComputerDTO computerDTO = ComputerDTO.Builder().id(idComputer).nom(nom)
+				.introducedDate(introducedDate)
+				.discontinuedDate(discontinuedDate).idCompany(idCompany)
+				.build();
+
+		validation.test(computerDTO);
 		
-		ComputerDTO computerDTO = ComputerDTO.Builder().id(idComputer).nom(nom).introducedDate(introducedDate).discontinuedDate(discontinuedDate).idCompany(idCompany).build();
+		if(validation.getTableau().size() > 0)
+		{
+			List<Company> companys = new ArrayList<Company>();
 
-		Computer computer = Mapper.mapper(computerDTO);
-
-		computerServices.update(computer);
-
-		response.sendRedirect("affichage?page=1");
-
+			companys = companyServices.get();
+			request.setAttribute("companys", companys);
+			
+			request.setAttribute("computer", computerDTO);
+			request.setAttribute("error", validation);
+			
+			this.getServletContext().getRequestDispatcher("/WEB-INF/Formulaire.jsp").forward(request, response);
+			
+		}
+		else
+		{
+			Computer computer = Mapper.mapper(computerDTO);
+			
+			computerServices.update(computer);
+	
+			response.sendRedirect("affichage?page=1");
+		}
 	}
 }

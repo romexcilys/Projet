@@ -43,7 +43,7 @@ public class ListComputerServlet extends HttpServlet {
 		
 		
 		int nombreElement = 20;
-		int numeroPage = 1;
+		int currentPage = 1;
 
 		session.setAttribute("search", false);
 
@@ -67,32 +67,28 @@ public class ListComputerServlet extends HttpServlet {
 					&& request.getParameter("page").compareTo("") != 0
 					&& Integer.parseInt(request.getParameter("page")) >= 1
 					&& Integer.parseInt(request.getParameter("page")) <= numberPage)
-				numeroPage = Integer.parseInt(request.getParameter("page"));
+				currentPage = Integer.parseInt(request.getParameter("page"));
 
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		request.setAttribute("currentPage",
-				numeroPage);
-
-		numeroPage = (numeroPage - 1) * nombreElement;
+		
+		int elementSearch = (currentPage - 1) * nombreElement;
 
 		List<Computer> computers;
 		
-		Page page = Page.builder().currentPage(numeroPage).numberPage(numberPage).sort(sort).ordre(ordre).numberElement(nombreElement).build();
+		
+		Page page = Page.builder().elementSearch(elementSearch).currentPage(currentPage).numberPage(numberPage).sort(sort).ordre(ordre).numberElement(nombreElement).numberComputer(nombreComputer).build();
 
 		computers = computerServices
 				.get(page);
 		
 		//Ajouter a page computers
+		page.setComputers(computers);
 		
-		request.setAttribute("computers", computers);
-		request.setAttribute("number_page", numberPage);
-		request.setAttribute("number_computer", nombreComputer);
+		request.setAttribute("infoPage", page);
 		
-
 		this.getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp")
 				.forward(request, response);
 	}

@@ -69,6 +69,5 @@
 	</form>
 </section>
 
-<c:out value="${computer.idCompany  }" />
 <jsp:include page="/include/footer.jsp" />
 

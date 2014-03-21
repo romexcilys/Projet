@@ -40,9 +40,9 @@ public class SearchComputerServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String nom = "";
-		if(request.getParameter("search") != null)
+		if (request.getParameter("search") != null)
 			nom = request.getParameter("search").toLowerCase();
-		
+
 		HttpSession session = request.getSession();
 
 		String sort = "compu_name";
@@ -55,45 +55,44 @@ public class SearchComputerServlet extends HttpServlet {
 				&& request.getParameter("ordre").compareTo("") != 0)
 			ordre = request.getParameter("ordre");
 
-
 		// EST CE QUE LA VALEUR DE RECHERCHE N'EST PAS VIDE
 		if (nom.length() != 0) {
-			
+
 			session.setAttribute("search", true);
 
-			int nombreComputer = computerServices.getCount(nom); //nombre dans la base pour cette recherche
+			int nombreComputer = computerServices.getCount(nom); // nombre dans
+																	// la base
+																	// pour
+																	// cette
+																	// recherche
 
 			int nombreElement = 20;
-			int numeroPage = 1;
 
 			int numberPage = (int) (Math.ceil((double) nombreComputer
 					/ nombreElement));
-			
-			request.setAttribute("number_page", numberPage);
-			
-			int currentPage = 1;
-			if(request.getParameter("page") != null)
-				currentPage = Integer.parseInt(request.getParameter("page"));
-			
-			request.setAttribute("currentPage",
-					currentPage);
 
-			numeroPage = (currentPage - 1)
-					* nombreElement;
+			int currentPage = 1;
+			if (request.getParameter("page") != null)
+				currentPage = Integer.parseInt(request.getParameter("page"));
+
+			int elementSearch = (currentPage - 1) * nombreElement;
 
 			List<Computer> computers;
 
-			Page page = Page.builder().currentPage(numeroPage).numberElement(nombreElement).sort(sort).ordre(ordre)
-					.name(nom).searchName(nom).build();
+			request.setAttribute("number_page", numberPage);
+			Page page = Page.builder().elementSearch(elementSearch)
+					.currentPage(currentPage).numberElement(nombreElement)
+					.sort(sort).ordre(ordre).name(nom).searchName(nom)
+					.numberComputer(nombreComputer).numberPage(numberPage)
+					.build();
 
 			computers = computerServices.find(page);
 
 			// ajouter computers a page
+			page.setComputers(computers);
 
-			request.setAttribute("number_computer", nombreComputer);
-			request.setAttribute("computers", computers);
-			request.setAttribute("searchName", nom);
-			
+			request.setAttribute("infoPage", page);
+
 			this.getServletContext()
 					.getRequestDispatcher("/WEB-INF/dashboard.jsp")
 					.forward(request, response);

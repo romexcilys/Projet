@@ -5,7 +5,7 @@
 <section id="main">
 	<!-- AFFICHER NOMBRE EN BASE DE DONNEE OU QUI SONT RELIE A UNE COMPANY ? -->
 	<h1 id="homeTitle">
-		<c:out value="${ number_computer }" />
+		<c:out value="${ infoPage.numberComputer }" />
 		Computers found
 	</h1>
 	<div id="actions">
@@ -37,7 +37,7 @@
 
 			<form method="post" action="PageDelete">
 
-				<c:forEach items="${ computers }" var="computer">
+				<c:forEach items="${ infoPage.computers }" var="computer">
 					<tr>
 						<td><input type="checkbox" name="idComputer"
 							value="<c:out value='${ computer.id }'/>"

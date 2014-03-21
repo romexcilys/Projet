@@ -15,7 +15,7 @@
 				<div class="input">
 					<input type="text" name="name"
 						value="<c:out value='${ computer.nom }'/>" required /> <span
-						class="help-inline">Required</span>
+						class="help-inline">Required</span><span class="couleur-rouge"><c:out value="${ error.tableau.name }"/></span>
 				</div>
 			</div>
 
@@ -26,7 +26,7 @@
 						value="<c:out value='${ computer.introducedDate }'/>"
 						pattern="^(19|20)\d\d([- /.])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$" />
 					<!--  pattern="YY-MM-dd" -->
-					<span class="help-inline">YYYY-MM-DD</span>
+					<span class="help-inline">YYYY-MM-DD</span><span class="couleur-rouge"><c:out value="${ error.tableau.introducedDate }"/></span>
 				</div>
 			</div>
 			<div class="clearfix">
@@ -36,7 +36,7 @@
 						value="<c:out value='${ computer.discontinuedDate }'/>"
 						pattern="^(19|20)\d\d([- /.])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$" />
 					<!--  pattern="YY-MM-dd" -->
-					<span class="help-inline">YYYY-MM-DD</span>
+					<span class="help-inline">YYYY-MM-DD</span><span class="couleur-rouge"><c:out value="${ error.tableau.discontinuedDate }"/></span>
 				</div>
 			</div>
 			<div class="clearfix">
@@ -47,7 +47,7 @@
 
 						<c:forEach items="${ companys }" var="company">
 							<c:choose>
-								<c:when test="${ companyId == company.id }">
+								<c:when test="${ computer.idCompany == company.id }">
 									<option value="<c:out value='${ company.id}'/>" selected>
 										<c:out value="${ company.nom }" />
 									</option>

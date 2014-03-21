@@ -12,7 +12,7 @@ import com.jolbox.bonecp.BoneCPConfig;
 import com.mysql.jdbc.ResultSet;
 
 public class ConnectionManager {
-	private static String url = "jdbc:mysql://127.0.0.1/computer-database-db?zeroDateTimeBehavior=convertToNull";
+	private static String url = "jdbc:mysql://127.0.0.1/computer-database-db";
 	private static String user = "jee-cdb";
 	private static String password = "password";
 	private static BoneCP connectionPool = null;

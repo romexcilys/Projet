@@ -9,6 +9,7 @@ import com.computerdatabase.dao.DAOFactory;
 import com.computerdatabase.dao.LogDAO;
 import com.computerdatabase.domain.Computer;
 import com.computerdatabase.domain.Page;
+import com.computerdatabase.dto.ComputerDTO;
 
 public class ComputerServices {
 	private static ComputerDAO computerDAO = DAOFactory.getInstance().getComputerDAO();
@@ -104,12 +105,12 @@ public class ComputerServices {
 		return number;
 	}
 	
-	public Computer find(int id)
+	public ComputerDTO find(int id)
 	{
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
-		Computer  computer = null;
+		ComputerDTO  computerDTO = null;
 		try {
-			computer = computerDAO.find(id);
+			computerDTO = computerDAO.find(id);
 			logDAO.logOperation("Find computer with id : "+id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -120,7 +121,7 @@ public class ComputerServices {
 		DAOFactory.getInstance().commitConnection(connection);
 		DAOFactory.getInstance().closeConnection();
 		
-		return computer;
+		return computerDTO;
 	}
 	
 

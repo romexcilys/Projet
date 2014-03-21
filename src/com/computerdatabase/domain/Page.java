@@ -10,6 +10,7 @@ public class Page {
 	String sort;
 	String ordre;
 	int currentPage;
+	int elementSearch;
 	int numberPage;
 	int numberComputer;
 	int numberElement;
@@ -20,6 +21,12 @@ public class Page {
 	
 	
 	
+	public int getElementSearch() {
+		return elementSearch;
+	}
+	public void setElementSearch(int elementSearch) {
+		this.elementSearch = elementSearch;
+	}
 	public String getSearchName() {
 		return searchName;
 	}
@@ -161,6 +168,12 @@ public class Page {
 		public Builder searchName(String searchName)
 		{
 			this.page.searchName = searchName;
+			return this;
+		}
+		
+		public Builder elementSearch(int elementSearch)
+		{
+			this.page.elementSearch = elementSearch;
 			return this;
 		}
 		

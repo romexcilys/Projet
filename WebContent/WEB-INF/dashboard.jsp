@@ -7,7 +7,7 @@
 <section id="main">
 	<!-- AFFICHER NOMBRE EN BASE DE DONNEE OU QUI SONT RELIE A UNE COMPANY ? -->
 	<h1 id="homeTitle">
-		<c:out value="${ number_computer }" />
+		<c:out value="${ infoPage.numberComputer }" />
 		Computers found
 	</h1>
 	<div id="actions">
@@ -32,27 +32,27 @@
 				<!-- Variable declarations for passing labels as parameters -->
 				<!-- Table header for Computer Name -->
 				<th>Computer Name <c:out value="${sessionScope.search }" /> <pag:UrlMaker
-						searchName="${ searchName }" search="${ sessionScope.search }"
+						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
 						sort="compu_name" ordre="asc" /><img src="images/fleche_bas.png" /></a>
-					<pag:UrlMaker searchName="${ searchName }"
+					<pag:UrlMaker searchName="${ infoPage.searchName }"
 						search="${ sessionScope.search }" sort="compu_name" ordre="desc" />
 					<img src="images/fleche_haut.png" /> </a>
 
 				</th>
 
-				<th>Introduced Date <pag:UrlMaker searchName="${ searchName }"
+				<th>Introduced Date <pag:UrlMaker searchName="${ infoPage.searchName }"
 						search="${ sessionScope.search }" sort="intro_date" ordre="asc" />
 					<img src="images/fleche_bas.png" /></a> <pag:UrlMaker
-						searchName="${ searchName }" search="${ sessionScope.search }"
+						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
 						sort="intro_date" ordre="desc" /><img src="images/fleche_haut.png" />
 					</a>
 				</th>
 
 				<!-- Table header for Discontinued Date -->
 				<th>Discontinued Date <pag:UrlMaker
-						searchName="${ searchName }" search="${ sessionScope.search }"
+						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
 						sort="discon_date" ordre="asc" /><img src="images/fleche_bas.png" /></a>
-					<pag:UrlMaker searchName="${ searchName }"
+					<pag:UrlMaker searchName="${ infoPage.searchName }"
 						search="${ sessionScope.search }" sort="discon_date" ordre="desc" /><img
 					src="images/fleche_haut.png" /> </a>
 
@@ -60,10 +60,10 @@
 				<!-- Table header for Company -->
 
 
-				<th>Company <pag:UrlMaker searchName="${ searchName }"
+				<th>Company <pag:UrlMaker searchName="${ infoPage.searchName }"
 						search="${ sessionScope.search }" sort="compa_name" ordre="asc" /><img
 					src="images/fleche_bas.png" /></a> <pag:UrlMaker
-						searchName="${ searchName }" search="${ sessionScope.search }"
+						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
 						sort="compa_name" ordre="desc" /><img src="images/fleche_haut.png" />
 					</a>
 
@@ -74,7 +74,7 @@
 		</thead>
 		<tbody>
 
-			<c:forEach items="${ computers }" var="computer">
+			<c:forEach items="${ infoPage.computers }" var="computer">
 
 				<tr>
 
@@ -97,9 +97,9 @@
 	</table>
 </section>
 
-<pag:Pagination searchName="${ searchName }"
-	search="${ sessionScope.search }" currentPage="${ currentPage }"
-	numberPage="${ number_page }" />
+<pag:Pagination searchName="${ infoPage.searchName }"
+	search="${ sessionScope.search }" currentPage="${ infoPage.currentPage }"
+	numberPage="${ infoPage.numberPage }" />
 
 <!-- 
 <p:pagination searchName="${ searchName }"
