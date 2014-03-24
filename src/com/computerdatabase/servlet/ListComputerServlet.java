@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.computerdatabase.domain.Computer;
 import com.computerdatabase.domain.Page;
+import com.computerdatabase.dto.ComputerDTO;
 import com.computerdatabase.service.ComputerServices;
 
 /**
@@ -42,7 +42,7 @@ public class ListComputerServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		
 		
-		int nombreElement = 15;
+		final int nombreElement = 11;
 		int currentPage = 1;
 
 		session.setAttribute("search", false);
@@ -76,10 +76,10 @@ public class ListComputerServlet extends HttpServlet {
 		
 		int elementSearch = (currentPage - 1) * nombreElement;
 
-		List<Computer> computers;
+		List<ComputerDTO> computers;
 		
 		
-		Page page = Page.builder().elementSearch(elementSearch).currentPage(currentPage).numberPage(numberPage).sort(sort).ordre(ordre).numberElement(nombreElement).numberComputer(nombreComputer).build();
+		Page<ComputerDTO> page = Page.<ComputerDTO>builder().typeGene("ComputerDTO").elementSearch(elementSearch).currentPage(currentPage).numberPage(numberPage).sort(sort).ordre(ordre).numberElement(nombreElement).numberComputer(nombreComputer).build();
 
 		computers = computerServices
 				.get(page);

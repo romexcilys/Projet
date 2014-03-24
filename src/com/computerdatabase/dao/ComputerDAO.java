@@ -27,7 +27,7 @@ public class ComputerDAO {
 		logger = LoggerFactory.getLogger(ComputerDAO.class);
 	}
 
-	public static ComputerDAO getInstance() {
+	public static <T>ComputerDAO getInstance() {
 		if (computerDao == null)
 			computerDao = new ComputerDAO();
 
@@ -80,7 +80,7 @@ public class ComputerDAO {
 		logger.info("Quit insererComputer method");
 	}
 
-	public List<Computer> get(Page page) throws SQLException {
+	public <T>List<T> get(Page<T> page) throws SQLException {
 		logger.info("In getListComputer with arguments");
 		
 		int debut = page.getElementSearch();
@@ -89,7 +89,7 @@ public class ComputerDAO {
 		String ordre = page.getOrdre();
 		
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
-		List<Computer> computers = new ArrayList<Computer>();
+		List<T> computers = new ArrayList<T>();
 
 		StringBuilder query = new StringBuilder();
 		
@@ -157,7 +157,7 @@ public class ComputerDAO {
 			int compaId = results.getInt("id");
 			String compaName = results.getString("compa_name");
 
-			computers.add(Computer
+			Computer computer = Computer
 					.builder()
 					.id(id)
 					.name(name)
@@ -165,7 +165,12 @@ public class ComputerDAO {
 					.discontinued(discontinued)
 					.company(
 							Company.builder().id(compaId).nom(compaName)
-									.build()).build());
+									.build()).build();
+			
+			if(page.getTypeGene().compareTo("ComputerDTO") == 0)
+				computers.add((T) Mapper.toDTO(computer));
+			else
+				computers.add((T) computer);
 		}
 
 		ps.close();
@@ -329,7 +334,7 @@ public class ComputerDAO {
 		return computerDTO;
 	}
 
-	public List<Computer> find(Page page)
+	public <T> List<T> find(Page<T> page)
 			throws SQLException {
 		
 		int debut = page.getElementSearch();
@@ -341,7 +346,7 @@ public class ComputerDAO {
 		logger.info("In searchComputer method");
 		
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
-		List<Computer> computers = new ArrayList<Computer>();
+		List<T> computers = new ArrayList<T>();
 
 		StringBuilder query = new StringBuilder();
 		
@@ -411,8 +416,8 @@ public class ComputerDAO {
 
 			int compaId = results.getInt("compaId");
 			String compaName = results.getString("compa_name");
-
-			computers.add(Computer
+				
+			Computer computer = Computer
 					.builder()
 					.id(id)
 					.name(name)
@@ -420,7 +425,12 @@ public class ComputerDAO {
 					.discontinued(discontinued)
 					.company(
 							Company.builder().id(compaId).nom(compaName)
-									.build()).build());
+									.build()).build();
+			
+			if(page.getTypeGene().compareTo("ComputerDTO") == 0)
+				computers.add((T) Mapper.toDTO(computer));
+			else
+				computers.add((T) computer);
 
 		}
 

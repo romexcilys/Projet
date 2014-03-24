@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.computerdatabase.domain.Computer;
 import com.computerdatabase.domain.Page;
+import com.computerdatabase.dto.ComputerDTO;
 import com.computerdatabase.service.ComputerServices;
 
 /**
@@ -52,10 +52,10 @@ public class DeleteComputerServlet extends HttpServlet {
 		// CHOIX DE SUPPRESSION MULTIPLE
 		if (request.getParameter("id") == null) {
 
-			List<Computer> computers;
+			List<ComputerDTO> computers;
 			int numberComputer = computerServices.getCount();
 			
-			Page page = Page.builder().elementSearch(-1).numberElement(-1).sort(sort).ordre(ordre).numberComputer(numberComputer).build();
+			Page<ComputerDTO> page = Page.<ComputerDTO>builder().typeGene("ComputerDTO").elementSearch(-1).numberElement(-1).sort(sort).ordre(ordre).numberComputer(numberComputer).build();
 			
 			
 			computers = computerServices.get(page);

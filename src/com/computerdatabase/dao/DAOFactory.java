@@ -69,7 +69,7 @@ public class DAOFactory {
 	
 	public static void shutdownConnPool()
 	{
-		BoneCP connectionPool = ConnectionManager.getConnectionPool();
+		BoneCP connectionPool = getConnectionPool();
 		if(connectionPool != null)
 		{
 			connectionPool.shutdown();
@@ -133,7 +133,7 @@ public class DAOFactory {
 		}
 	}
 	
-	public BoneCP getConnectionPool()
+	public static BoneCP getConnectionPool()
 	{
 		logger.info("In getConnectionPool");
 		if(connectionPool == null)
@@ -226,5 +226,4 @@ public class DAOFactory {
 	{
 		return logDAO;
 	}
-	
 }

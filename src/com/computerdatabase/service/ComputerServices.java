@@ -49,10 +49,10 @@ public class ComputerServices {
 	}
 
 	
-	public List<Computer> get(Page page)
+	public <T>List<T> get(Page<T> page)
 	{
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
-		List<Computer> computers = null;
+		List<T> computers = null;
 		try {
 			Logs log = Logs.builder().operation("Get Computer").name(null).idComputer(-1).build();
 			logDAO.logOperation(log);
@@ -133,10 +133,10 @@ public class ComputerServices {
 	
 
 	
-	public List<Computer> find(Page page)
+	public <T>List<T> find(Page<T> page)
 	{
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
-		List<Computer> computers = null;
+		List<T> computers = null;
 		try {
 			Logs log = Logs.builder().operation("Find computer").name(page.getName()).idComputer(-1).build();
 			logDAO.logOperation(log);

@@ -87,8 +87,8 @@ public class AjoutComputerServlet extends HttpServlet {
 		
 		System.out.println("Id computer : "+idCompany);
 		
-		
-		ComputerDTO computerDTO = ComputerDTO.Builder().id(0).nom(nom).introducedDate(introducedDate).discontinuedDate(discontinuedDate).idCompany(idCompany).build();
+		Company company = Company.builder().id(idCompany).build();
+		ComputerDTO computerDTO = ComputerDTO.Builder().id(0).nom(nom).introducedDate(introducedDate).discontinuedDate(discontinuedDate).company(company).build();
 		
 		validation.test(computerDTO);
 		Computer computer = Mapper.fromDTO(computerDTO);
@@ -99,8 +99,8 @@ public class AjoutComputerServlet extends HttpServlet {
 			List<Company> companys = new ArrayList<Company>();
 
 			companys = companyServices.get();
-			request.setAttribute("companys", companys);
 			
+			request.setAttribute("companys", companys);
 			request.setAttribute("computer", computerDTO);
 			request.setAttribute("error", validation);
 			

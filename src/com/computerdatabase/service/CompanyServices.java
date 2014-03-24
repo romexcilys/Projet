@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.computerdatabase.dao.CompanyDAO;
-import com.computerdatabase.dao.ConnectionManager;
 import com.computerdatabase.dao.DAOFactory;
 import com.computerdatabase.dao.LogDAO;
 import com.computerdatabase.domain.Company;
@@ -40,7 +39,7 @@ public class CompanyServices {
 			companys = companyDAO.get();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			ConnectionManager.rollbackConnection(connection);
+			DAOFactory.getInstance().rollbackConnection(connection);
 			e.printStackTrace();
 		}
 

@@ -104,10 +104,12 @@ public class UpdateComputerServlet extends HttpServlet {
 		if (request.getParameter("company") != null
 				&& request.getParameter("company").compareTo("") != 0)
 			idCompany = Integer.parseInt(request.getParameter("company"));
+		
+		Company company = Company.builder().id(idCompany).build();
 
 		ComputerDTO computerDTO = ComputerDTO.Builder().id(idComputer).nom(nom)
 				.introducedDate(introducedDate)
-				.discontinuedDate(discontinuedDate).idCompany(idCompany)
+				.discontinuedDate(discontinuedDate).company(company)
 				.build();
 
 		validation.test(computerDTO);

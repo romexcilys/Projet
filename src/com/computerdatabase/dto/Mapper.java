@@ -15,7 +15,9 @@ public class Mapper {
 		String name = computerDTO.getNom();
 		String introducedDate = computerDTO.getIntroducedDate();
 		String discontinuedDate = computerDTO.getDiscontinuedDate();
-		int idCompany = computerDTO.getIdCompany();
+		int idCompany = computerDTO.getCompany().getId();
+		String nomCompany = computerDTO.getCompany().getNom();
+		
 		
 		
 		
@@ -60,7 +62,7 @@ public class Mapper {
 		}
 		
 		
-		Company company = Company.builder().id(idCompany).build();
+		Company company = Company.builder().id(idCompany).nom(nomCompany).build();
 		Computer computer = Computer.builder().id(id).name(name).company(company).introduced(dateIntroduced).discontinued(dateDiscontinued).build();
 		
 		return computer;
@@ -86,7 +88,7 @@ public class Mapper {
 			dateDiscontinued = sdf.format(discontinuedDate); 
 		
 		
-		ComputerDTO computerDTO = ComputerDTO.Builder().id(id).nom(nom).introducedDate(dateIntroduced).discontinuedDate(dateDiscontinued).idCompany(company.getId()).build();
+		ComputerDTO computerDTO = ComputerDTO.Builder().id(id).nom(nom).introducedDate(dateIntroduced).discontinuedDate(dateDiscontinued).company(company).build();
 		
 		
 		return computerDTO;

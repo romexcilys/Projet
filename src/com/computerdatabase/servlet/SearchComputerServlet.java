@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.computerdatabase.domain.Computer;
 import com.computerdatabase.domain.Page;
+import com.computerdatabase.dto.ComputerDTO;
 import com.computerdatabase.service.ComputerServices;
 
 /**
@@ -39,6 +39,9 @@ public class SearchComputerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+		final int nombreElement = 11;
+		
 		String nom = "";
 		if (request.getParameter("search") != null)
 			nom = request.getParameter("search").toLowerCase();
@@ -66,7 +69,6 @@ public class SearchComputerServlet extends HttpServlet {
 																	// cette
 																	// recherche
 
-			int nombreElement = 11;
 
 			int numberPage = (int) (Math.ceil((double) nombreComputer
 					/ nombreElement));
@@ -87,13 +89,13 @@ public class SearchComputerServlet extends HttpServlet {
 
 			int elementSearch = (currentPage - 1) * nombreElement;
 
-			List<Computer> computers;
+			List<ComputerDTO> computers;
 
 			request.setAttribute("number_page", numberPage);
-			Page page = Page.builder().elementSearch(elementSearch)
+			Page<ComputerDTO> page = Page.<ComputerDTO>builder().elementSearch(elementSearch)
 					.currentPage(currentPage).numberElement(nombreElement)
 					.sort(sort).ordre(ordre).name(nom).searchName(nom)
-					.numberComputer(nombreComputer).numberPage(numberPage)
+					.numberComputer(nombreComputer).numberPage(numberPage).typeGene("ComputerDTO")
 					.build();
 
 			computers = computerServices.find(page);

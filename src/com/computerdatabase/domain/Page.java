@@ -2,9 +2,7 @@ package com.computerdatabase.domain;
 
 import java.util.List;
 
-import com.computerdatabase.domain.Computer;
-
-public class Page {
+public class Page<T> {
 	
 	int id;
 	String sort;
@@ -16,11 +14,17 @@ public class Page {
 	int numberElement;
 	String searchName;
 	String name;
-	List<Computer> computers;
-	List<Company> companys; //Pas sur si interet
+	List<T> computers;
+	String typeGene;
 	
 	
 	
+	public String getTypeGene() {
+		return typeGene;
+	}
+	public void setTypeGene(String typeGene) {
+		this.typeGene = typeGene;
+	}
 	public int getElementSearch() {
 		return elementSearch;
 	}
@@ -81,110 +85,102 @@ public class Page {
 	public void setNumberPage(int numberPage) {
 		this.numberPage = numberPage;
 	}
-	public List<Computer> getComputers() {
+	public List<T> getComputers() {
 		return computers;
 	}
-	public void setComputers(List<Computer> computers) {
+	public void setComputers(List<T> computers) {
 		this.computers = computers;
 	}
-	
-	public List<Company> getCompanys() {
-		return companys;
-	}
-	public void setCompanys(List<Company> companys) {
-		this.companys = companys;
-	}
 
 
-
-	public static class Builder
+	public static class Builder<T>
 	{
-		Page page;
+		Page<T> page;
 		
 		private Builder()
 		{
-			page = new Page();
+			page = new Page<T>();
 		}
 		
-		public Builder id(int id)
+		public Builder<T> id(int id)
 		{
 			this.page.id = id;
 			return this;
 		}
 		
-		public Builder sort(String sort)
+		public Builder<T> sort(String sort)
 		{
 			this.page.sort = sort;
 			return this;
 		}
 		
-		public Builder ordre(String ordre)
+		public Builder<T> ordre(String ordre)
 		{
 			this.page.ordre = ordre;
 			return this;
 		}
 		
-		public Builder currentPage(int currentPage)
+		public Builder<T> currentPage(int currentPage)
 		{
 			this.page.currentPage = currentPage;
 			return this;
 		}
 		
-		public Builder numberPage(int numberPage)
+		public Builder<T> numberPage(int numberPage)
 		{
 			this.page.numberPage = numberPage;
 			return this;
 		}
 		
-		public Builder computers(List<Computer> computers)
+		public Builder<T> computers(List<T> computers)
 		{
 			this.page.computers = computers;
 			return this;
 		}
 		
-		public Builder companys(List<Company> companys)
-		{
-			this.page.companys = companys;
-			return this;
-		}
-		
-		public Builder numberComputer(int numberComputer)
+		public Builder<T> numberComputer(int numberComputer)
 		{
 			this.page.numberComputer = numberComputer;
 			return this;
 		}
 		
-		public Builder name(String name)
+		public Builder<T> name(String name)
 		{
 			this.page.name = name;
 			return this;
 		}
-		public Builder numberElement(int numberElement)
+		public Builder<T> numberElement(int numberElement)
 		{
 			this.page.numberElement = numberElement;
 			return this;
 		}
 		
-		public Builder searchName(String searchName)
+		public Builder<T> searchName(String searchName)
 		{
 			this.page.searchName = searchName;
 			return this;
 		}
 		
-		public Builder elementSearch(int elementSearch)
+		public Builder<T> elementSearch(int elementSearch)
 		{
 			this.page.elementSearch = elementSearch;
 			return this;
 		}
 		
-		public Page build() {
+		public Builder<T> typeGene(String typeGene)
+		{
+			this.page.typeGene = typeGene;
+			return this;
+		}
+		
+		public Page<T> build() {
 			return this.page;
 		}
 		
 	}
 	
-	public static Builder builder() {
-		return new Builder();
+	public static <T>Builder<T> builder() {
+		return new Builder<T>();
 	}
 	
 	@Override
