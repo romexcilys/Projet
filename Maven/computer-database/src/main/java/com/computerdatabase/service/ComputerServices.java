@@ -38,14 +38,18 @@ public class ComputerServices {
 			computerDAO.put(computer);
 			Logs log = Logs.builder().operation("INSERT Computer").name(computer.getNom()).idComputer(computer.getId()).build();
 			logDAO.logOperation(log);
+			DAOFactory.getInstance().commitConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			DAOFactory.getInstance().rollbackConnection(connection);
 			e.printStackTrace();
+		}finally
+		{
+			DAOFactory.getInstance().closeConnection();
 		}
 		
-		DAOFactory.getInstance().commitConnection(connection);
-		DAOFactory.getInstance().closeConnection();
+		
+		
 	}
 
 	
@@ -57,14 +61,18 @@ public class ComputerServices {
 			Logs log = Logs.builder().operation("Get Computer").name(null).idComputer(-1).build();
 			logDAO.logOperation(log);
 			computers = computerDAO.get(page);
+			DAOFactory.getInstance().commitConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			DAOFactory.getInstance().rollbackConnection(connection);
 			e.printStackTrace();
+		} finally
+		{
+			DAOFactory.getInstance().closeConnection();
 		}
 		
-		DAOFactory.getInstance().commitConnection(connection);
-		DAOFactory.getInstance().closeConnection();
+		
+		
 		
 		return computers;
 	}
@@ -77,14 +85,17 @@ public class ComputerServices {
 			Logs log = Logs.builder().operation("Get numbers computer").name(null).idComputer(-1).build();
 			logDAO.logOperation(log);
 			number = computerDAO.getNumber();
+			DAOFactory.getInstance().commitConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			DAOFactory.getInstance().rollbackConnection(connection);
 			e.printStackTrace();
+		} finally{
+			DAOFactory.getInstance().closeConnection();
 		}
 		
-		DAOFactory.getInstance().commitConnection(connection);
-		DAOFactory.getInstance().closeConnection();
+		
+		
 		
 		return number;
 	}
@@ -98,15 +109,19 @@ public class ComputerServices {
 			Logs log = Logs.builder().operation("Get numbers computer : "+nom).name(null).idComputer(-1).build();
 			logDAO.logOperation(log);
 			number = computerDAO.getNumber(nom);
+			DAOFactory.getInstance().commitConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			DAOFactory.getInstance().rollbackConnection(connection);
 			e.printStackTrace();
+		} finally
+		{
+			DAOFactory.getInstance().closeConnection();
 		}
 		
 		
-		DAOFactory.getInstance().commitConnection(connection);
-		DAOFactory.getInstance().closeConnection();
+		
+		
 		
 		return number;
 	}
@@ -119,14 +134,17 @@ public class ComputerServices {
 			computerDTO = computerDAO.find(id);
 			Logs log = Logs.builder().operation("Find computer").name(null).idComputer(id).build();
 			logDAO.logOperation(log);
+			DAOFactory.getInstance().commitConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			DAOFactory.getInstance().rollbackConnection(connection);
 			e.printStackTrace();
+		} finally{
+			DAOFactory.getInstance().closeConnection();
 		}
 		
-		DAOFactory.getInstance().commitConnection(connection);
-		DAOFactory.getInstance().closeConnection();
+		
+		
 		
 		return computerDTO;
 	}
@@ -141,14 +159,17 @@ public class ComputerServices {
 			Logs log = Logs.builder().operation("Find computer").name(page.getName()).idComputer(-1).build();
 			logDAO.logOperation(log);
 			computers = computerDAO.find(page);
+			DAOFactory.getInstance().commitConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			DAOFactory.getInstance().rollbackConnection(connection);
 			e.printStackTrace();
+		} finally{
+			DAOFactory.getInstance().closeConnection();
 		}
 		
-		DAOFactory.getInstance().commitConnection(connection);
-		DAOFactory.getInstance().closeConnection();
+		
+		
 		
 		return computers;
 	}
@@ -177,13 +198,16 @@ public class ComputerServices {
 			Logs log = Logs.builder().operation("Delete computer").name(null).idComputer(id).build();
 			logDAO.logOperation(log);
 			computerDAO.delete(id);
+			DAOFactory.getInstance().commitConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			DAOFactory.getInstance().rollbackConnection(connection);
 			e.printStackTrace();
+		} finally{
+			DAOFactory.getInstance().closeConnection();
 		}
 		
-		DAOFactory.getInstance().commitConnection(connection);
-		DAOFactory.getInstance().closeConnection();
+		
+		
 	}
 }

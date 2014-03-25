@@ -37,14 +37,17 @@ public class CompanyServices {
 			Logs log = Logs.builder().operation("SELECT Companys").name(null).idComputer(-1).build();
 			logDAO.logOperation(log);
 			companys = companyDAO.get();
+			DAOFactory.getInstance().commitConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			DAOFactory.getInstance().rollbackConnection(connection);
 			e.printStackTrace();
+		}finally{
+			DAOFactory.getInstance().closeConnection();
 		}
 
-		DAOFactory.getInstance().commitConnection(connection);
-		DAOFactory.getInstance().closeConnection();
+		
+		
 		
 		return companys;
 	}
