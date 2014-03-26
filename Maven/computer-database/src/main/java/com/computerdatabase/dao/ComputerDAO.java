@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +17,7 @@ import com.computerdatabase.domain.Company;
 import com.computerdatabase.domain.Computer;
 import com.computerdatabase.domain.Page;
 import com.computerdatabase.dto.ComputerDTO;
-import com.computerdatabase.dto.Mapper;
+import com.computerdatabase.mapper.Mapper;
 
 public class ComputerDAO {
 
@@ -40,41 +41,61 @@ public class ComputerDAO {
 		
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
 		
-		String query;
+		StringBuilder query = new StringBuilder();
+		
+		query.append("INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?,");
+		if(computer.getIntroducedDate() != null)
+			query.append("?,");
+		else
+			query.append("'0000-00-00',");
+		
+		if(computer.getDiscontinuedDate() != null)
+			query.append("?,");
+		else
+			query.append("'0000-00-00',");
+		
+		if (computer.getCompany().getId() != 0)
+			query.append("?);");
+		else
+			query.append("null);");
+/*
 		if (computer.getCompany().getId() != 0)
 			query = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?,?,?,?);";
 		else
 			query = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?,?,?,null);";
-
+*/
 		PreparedStatement ps = null;
-
-		ps = connection.prepareStatement(query);
+		
+		
+		ps = connection.prepareStatement(query.toString(),Statement.RETURN_GENERATED_KEYS);
 		ps.setString(1, computer.getNom());
-		ps.setDate(2, new java.sql.Date(computer.getIntroducedDate().getTime()));
-
-		ps.setDate(3, new java.sql.Date(computer.getDiscontinuedDate()
+		int position = 2;
+		
+		if(computer.getIntroducedDate() != null)
+		{
+			ps.setDate(position, new java.sql.Date(computer.getIntroducedDate().toDateMidnight().toDate().getTime()));
+			position++;
+		}
+		
+		if(computer.getDiscontinuedDate() != null)
+		{
+			ps.setDate(position, new java.sql.Date(computer.getDiscontinuedDate().toDateMidnight().toDate()
 				.getTime()));
+			position++;
+		}
 
 		if (computer.getCompany().getId() != 0)
-			ps.setInt(4, computer.getCompany().getId());
-
-		ps.execute();
+		{
+			ps.setInt(position, computer.getCompany().getId());
+			position++;
+		}
+		
+		int idComputer = ps.executeUpdate();
 		ps.close();
 		
 		
 		//RECHERCHE DE L'ID DU COMPUTER AJOUTER
-		int idComputer = 0;
 		
-		ResultSet results = null;
-		PreparedStatement ps2 = null;
-		String queryId = "SELECT LAST_INSERT_ID() AS id FROM computer";
-		
-		ps2 = connection.prepareStatement(queryId);
-		results = ps2.executeQuery();
-		
-		results.next();
-		
-		idComputer = results.getInt("id");
 		computer.setId(idComputer);
 
 		logger.info("Quit insererComputer method");
@@ -151,8 +172,13 @@ public class ComputerDAO {
 		while (results.next()) {
 			int id = results.getInt("compu_id");
 			String name = results.getString("compu_name");
-			Date introduced = results.getDate("introduced");
-			Date discontinued = results.getDate("discontinued");
+			LocalDate introduced = null;
+			if(results.getDate("introduced") != null)
+				introduced = LocalDate.fromDateFields(results.getDate("introduced"));
+			
+			LocalDate discontinued = null;
+			if(results.getDate("discontinued") != null)
+				discontinued = LocalDate.fromDateFields(results.getDate("discontinued"));
 
 			int compaId = results.getInt("id");
 			String compaName = results.getString("compa_name");
@@ -231,43 +257,77 @@ public class ComputerDAO {
 		return total;
 	}
 
+	
+	///VOIR PROBLEME D'UPDATE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public void update(Computer computer)
 			throws SQLException {
 		logger.info("In editComputer method");
 		
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
-		String query;
+		StringBuilder query = new StringBuilder();
 		
-
-		if (computer.getCompany().getId() != 0)
-			query = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?;";
+		query.append("UPDATE computer SET name = ?, introduced = ");
+		
+		if(computer.getIntroducedDate() == null)
+			query.append("'0000-00-00', ");
 		else
-			query = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = null WHERE id = ?;";
+			query.append("?, ");
+		
+		
+		query.append("discontinued = ");
+		
+		if(computer.getDiscontinuedDate() == null)
+			query.append("'0000-00-00', ");
+		else
+			query.append("?, ");
+		
+		query.append("company_id = ");
+		
+		if(computer.getCompany().getId() != 0)
+			query.append("? ");
+		else
+			query.append("null ");
+		
+		query.append(" WHERE id = ?;");
+		
+			//String query = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?;";
 
 		PreparedStatement ps = null;
 
-		ps = connection.prepareStatement(query);
+		ps = connection.prepareStatement(query.toString());
 		ps.setString(1, computer.getNom());
-		ps.setDate(2, new java.sql.Date(computer.getIntroducedDate().getTime()));
-		ps.setDate(3, new java.sql.Date(computer.getDiscontinuedDate()
-				.getTime()));
+
+		
+		int position = 2;
+	
+		if(computer.getIntroducedDate() != null)
+		{
+			ps.setDate(position, new java.sql.Date(computer.getIntroducedDate().toDateMidnight().toDate().getTime()));
+			position++;
+		}
+		
+		if(computer.getDiscontinuedDate() != null)
+		{
+			ps.setDate(position, new java.sql.Date(computer.getDiscontinuedDate().toDateMidnight().toDate().getTime()));
+			position++;
+		}
+				
 
 		if (computer.getCompany().getId() != 0) {
-			ps.setInt(4, computer.getCompany().getId());
-			ps.setInt(5, computer.getId());
-		} else
-			ps.setInt(4, computer.getId());
+			ps.setInt(position, computer.getCompany().getId());
+			position++;
+		} 
+
+		ps.setInt(position, computer.getId());
 
 		ps.execute();
 
 		ps.close();
 
 		logger.info("Quit editComputer method");
-
 	}
 
 	public void delete(int id) throws SQLException {
-
 		logger.info("In deleteComputer method with id argument");
 		
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
@@ -284,7 +344,6 @@ public class ComputerDAO {
 		ps.close();
 
 		logger.info("Quit deleteComputer method");
-
 	}
 
 	public ComputerDTO find(int id) throws SQLException {
@@ -306,8 +365,14 @@ public class ComputerDAO {
 
 		while (results.next()) {
 			String name = results.getString("compu_name");
-			Date introduced = results.getDate("introduced");
-			Date discontinued = results.getDate("discontinued");
+			LocalDate introduced = null;
+			
+			if(results.getDate("introduced") != null)
+				introduced = LocalDate.fromDateFields(results.getDate("introduced"));
+			
+			LocalDate discontinued = null;
+			if(results.getDate("discontinued") != null)
+				discontinued = LocalDate.fromDateFields(results.getDate("discontinued"));
 
 			int compaId = results.getInt("compaID");
 			String compaName = results.getString("compa_name");
@@ -411,8 +476,13 @@ public class ComputerDAO {
 		while (results.next()) {
 			int id = results.getInt("compu_id");
 			String name = results.getString("compu_name");
-			Date introduced = results.getDate("introduced");
-			Date discontinued = results.getDate("discontinued");
+			LocalDate introduced = null;
+			if(results.getDate("introduced") != null)
+				introduced = LocalDate.fromDateFields(results.getDate("introduced"));
+			
+			LocalDate discontinued = null;
+			if(results.getDate("discontinued") != null)
+				discontinued = LocalDate.fromDateFields(results.getDate("discontinued"));
 
 			int compaId = results.getInt("compaId");
 			String compaName = results.getString("compa_name");

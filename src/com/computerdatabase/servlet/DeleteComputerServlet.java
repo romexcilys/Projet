@@ -1,7 +1,6 @@
 package com.computerdatabase.servlet;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,8 +19,6 @@ import com.computerdatabase.service.ComputerServices;
 public class DeleteComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private static ComputerServices computerServices = ComputerServices
-			.getInstance();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -52,22 +49,15 @@ public class DeleteComputerServlet extends HttpServlet {
 		// CHOIX DE SUPPRESSION MULTIPLE
 		if (request.getParameter("id") == null) {
 
-			List<ComputerDTO> computers;
-			int numberComputer = computerServices.getCount();
+			Page<ComputerDTO> page = Page.<ComputerDTO>builder().typeGene("ComputerDTO").elementSearch(-1).numberElement(-1).sort(sort).ordre(ordre).build();
 			
-			Page<ComputerDTO> page = Page.<ComputerDTO>builder().typeGene("ComputerDTO").elementSearch(-1).numberElement(-1).sort(sort).ordre(ordre).numberComputer(numberComputer).build();
-			
-			
-			computers = computerServices.get(page);
+			ComputerServices
+			.getInstance().get(page);
 
-			System.out.println(computers.size());
-			page.setComputers(computers);
+			System.out.println(page.getComputers().size());
 			
 			request.setAttribute("infoPage", page);
 			
-			request.setAttribute("computers", computers);
-			request.setAttribute("number_computer", computers.size());
-
 			this.getServletContext()
 					.getRequestDispatcher("/WEB-INF/delete.jsp")
 					.forward(request, response);
@@ -75,7 +65,8 @@ public class DeleteComputerServlet extends HttpServlet {
 
 			int idComputer = Integer
 					.parseInt(request.getParameter("id").trim());
-			computerServices.delete(idComputer);
+			ComputerServices
+			.getInstance().delete(idComputer);
 
 			response.sendRedirect("affichage?page=1");
 		}
@@ -94,7 +85,8 @@ public class DeleteComputerServlet extends HttpServlet {
 		if (checkboxes != null) {
 			for (int i = 0; i < checkboxes.length; i++) {
 				int idComputer = Integer.parseInt(checkboxes[i]);
-				computerServices.delete(idComputer);
+				ComputerServices
+				.getInstance().delete(idComputer);
 			}
 		}
 

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.computerdatabase.domain.Company;
 import com.computerdatabase.domain.Computer;
 import com.computerdatabase.dto.ComputerDTO;
-import com.computerdatabase.dto.Mapper;
+import com.computerdatabase.mapper.Mapper;
 import com.computerdatabase.service.CompanyServices;
 import com.computerdatabase.service.ComputerServices;
 import com.computerdatabase.validator.ComputerValidator;
@@ -24,11 +24,6 @@ import com.computerdatabase.validator.ComputerValidator;
 @WebServlet("/UpdateComputerServlet")
 public class UpdateComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	private static ComputerServices computerServices = ComputerServices
-			.getInstance();
-	private static CompanyServices companyServices = CompanyServices
-			.getInstance();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -50,10 +45,12 @@ public class UpdateComputerServlet extends HttpServlet {
 
 		if (idComputer != null) {
 			int id = Integer.parseInt(idComputer.trim());
-			ComputerDTO computerDTO = computerServices.find(id);
+			ComputerDTO computerDTO = ComputerServices
+					.getInstance().find(id);
 			List<Company> companys = new ArrayList<Company>();
 
-			companys = companyServices.get();
+			companys = CompanyServices
+					.getInstance().get();
 
 			
 			request.setAttribute("companys", companys);
@@ -75,8 +72,6 @@ public class UpdateComputerServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
-		ComputerValidator validation = new ComputerValidator();
-		
 		String idString = null;
 		if (request.getParameter("idComputer") != null)
 			idString = request.getParameter("idComputer");
@@ -105,33 +100,32 @@ public class UpdateComputerServlet extends HttpServlet {
 				&& request.getParameter("company").compareTo("") != 0)
 			idCompany = Integer.parseInt(request.getParameter("company"));
 		
-		Company company = Company.builder().id(idCompany).build();
-
 		ComputerDTO computerDTO = ComputerDTO.Builder().id(idComputer).nom(nom)
 				.introducedDate(introducedDate)
-				.discontinuedDate(discontinuedDate).company(company)
+				.discontinuedDate(discontinuedDate).companyId(idCompany)
 				.build();
 
-		validation.test(computerDTO);
+		ComputerValidator.getInstance().test(computerDTO);
 		
-		if(validation.getTableau().size() > 0)
+		if(ComputerValidator.getInstance().getTableau().size() > 0)
 		{
 			List<Company> companys = new ArrayList<Company>();
 
-			companys = companyServices.get();
+			companys = CompanyServices
+					.getInstance().get();
 			request.setAttribute("companys", companys);
 			
 			request.setAttribute("computer", computerDTO);
-			request.setAttribute("error", validation);
+			request.setAttribute("error", ComputerValidator.getInstance());
 			
 			this.getServletContext().getRequestDispatcher("/WEB-INF/Formulaire.jsp").forward(request, response);
-			
 		}
 		else
 		{
 			Computer computer = Mapper.fromDTO(computerDTO);
 			
-			computerServices.update(computer);
+			ComputerServices
+			.getInstance().update(computer);
 	
 			response.sendRedirect("affichage?page=1");
 		}

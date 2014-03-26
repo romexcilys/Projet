@@ -81,7 +81,7 @@
 					<td><c:out value="${computer.nom}" /></td>
 					<td><c:out value="${computer.introducedDate }" /></td>
 					<td><c:out value="${computer.discontinuedDate }" /></td>
-					<td><c:out value="${computer.company.nom }" /></td>
+					<td><c:out value="${computer.companyName }" /></td>
 						<td><a class="btn primary"
 						href="PageUpdate?id= <c:out value='${ computer.id }'/>">Update</a>
 						<a class="btn error"

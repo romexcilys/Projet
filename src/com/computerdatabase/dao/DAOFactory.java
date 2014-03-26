@@ -86,7 +86,7 @@ public class DAOFactory {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			logger.info("Probleme dans getConnection");
+			logger.error("Probleme dans getConnection");
 		}
 		
 		try {
@@ -107,6 +107,7 @@ public class DAOFactory {
 					ps.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
+				logger.error("Error in closePreparedStatement");
 				e.printStackTrace();
 			}
 	}
@@ -118,17 +119,7 @@ public class DAOFactory {
 				results.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public void closeConnection(Connection conn)
-	{
-		try {
-			if(conn != null)
-				conn.close();
-		} catch (SQLException e) {
-			// TODO Auto-generaconfigurePoolted catch block
+			logger.error("Error in closeResultSet");
 			e.printStackTrace();
 		}
 	}
@@ -155,6 +146,7 @@ public class DAOFactory {
 			connection.commit();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			logger.error("Error in commitConnection");
 			e.printStackTrace();
 		}
 	}
@@ -165,6 +157,7 @@ public class DAOFactory {
 			connection.rollback();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			logger.error("Error in rollbackConnection");
 			e.printStackTrace();
 		}
 	}
@@ -182,6 +175,7 @@ public class DAOFactory {
 			threadLocal.get().setAutoCommit(false);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			logger.error("Error in getConnectionThread");
 			e.printStackTrace();
 		}
 		
@@ -194,6 +188,7 @@ public class DAOFactory {
 			threadLocal.get().close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			logger.error("Error in closeConnection");
 			e.printStackTrace();
 		}
 		

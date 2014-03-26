@@ -1,7 +1,6 @@
 package com.computerdatabase.servlet;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,8 +20,6 @@ import com.computerdatabase.service.ComputerServices;
 public class SearchComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private static ComputerServices computerServices = ComputerServices
-			.getInstance();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -63,19 +60,6 @@ public class SearchComputerServlet extends HttpServlet {
 
 			session.setAttribute("search", true);
 
-			int nombreComputer = computerServices.getCount(nom); // nombre dans
-																	// la base
-																	// pour
-																	// cette
-																	// recherche
-
-
-			int numberPage = (int) (Math.ceil((double) nombreComputer
-					/ nombreElement));
-			
-			if(numberPage == 0)
-				numberPage = 1;
-
 			int currentPage = 1;
 			try{
 				
@@ -89,19 +73,24 @@ public class SearchComputerServlet extends HttpServlet {
 
 			int elementSearch = (currentPage - 1) * nombreElement;
 
-			List<ComputerDTO> computers;
-
-			request.setAttribute("number_page", numberPage);
 			Page<ComputerDTO> page = Page.<ComputerDTO>builder().elementSearch(elementSearch)
 					.currentPage(currentPage).numberElement(nombreElement)
 					.sort(sort).ordre(ordre).name(nom).searchName(nom)
-					.numberComputer(nombreComputer).numberPage(numberPage).typeGene("ComputerDTO")
+					.typeGene("ComputerDTO")
 					.build();
 
-			computers = computerServices.find(page);
+			ComputerServices
+			.getInstance().find(page);
 
-			// ajouter computers a page
-			page.setComputers(computers);
+			int nombreComputer = page.getNumberComputer();
+			
+			int numberPage = (int) (Math.ceil((double) nombreComputer
+					/ nombreElement));
+			
+			if(numberPage == 0)
+				numberPage = 1;
+			
+			page.setNumberPage(numberPage);
 
 			request.setAttribute("infoPage", page);
 

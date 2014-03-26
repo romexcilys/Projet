@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.computerdatabase.dao.CompanyDAO;
 import com.computerdatabase.dao.DAOFactory;
 import com.computerdatabase.dao.LogDAO;
@@ -16,6 +19,7 @@ public class CompanyServices {
 	private static LogDAO logDAO = DAOFactory.getInstance().getLogDAO();
 	
 	private static CompanyServices companyServices = null;
+	private final Logger logger = LoggerFactory.getLogger(CompanyServices.class);
 	
 	private CompanyServices()
 	{
@@ -40,15 +44,13 @@ public class CompanyServices {
 			DAOFactory.getInstance().commitConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			logger.error("Error in get CompanyServices");
 			DAOFactory.getInstance().rollbackConnection(connection);
 			e.printStackTrace();
 		}finally{
 			DAOFactory.getInstance().closeConnection();
 		}
 
-		
-		
-		
 		return companys;
 	}
 }

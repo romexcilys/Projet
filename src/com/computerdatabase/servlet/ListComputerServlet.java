@@ -1,7 +1,6 @@
 package com.computerdatabase.servlet;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,9 +20,6 @@ import com.computerdatabase.service.ComputerServices;
 public class ListComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private static ComputerServices computerServices = ComputerServices
-			.getInstance();
-
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -41,7 +37,6 @@ public class ListComputerServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		
-		
 		final int nombreElement = 11;
 		int currentPage = 1;
 
@@ -57,16 +52,11 @@ public class ListComputerServlet extends HttpServlet {
 				&& request.getParameter("ordre").compareTo("") != 0)
 			ordre = request.getParameter("ordre");
 
-		int nombreComputer = computerServices.getCount();
-		int numberPage = (int) Math.ceil((double) nombreComputer
-				/ nombreElement);
-		
 		try {
 
 			if (request.getParameter("page") != null
 					&& request.getParameter("page").compareTo("") != 0
-					&& Integer.parseInt(request.getParameter("page")) >= 1
-					&& Integer.parseInt(request.getParameter("page")) <= numberPage)
+					&& Integer.parseInt(request.getParameter("page")) >= 1)
 				currentPage = Integer.parseInt(request.getParameter("page"));
 
 		} catch (NumberFormatException e) {
@@ -74,18 +64,20 @@ public class ListComputerServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
+		
 		int elementSearch = (currentPage - 1) * nombreElement;
-
-		List<ComputerDTO> computers;
 		
+		Page<ComputerDTO> page = Page.<ComputerDTO>builder().typeGene("ComputerDTO").elementSearch(elementSearch).currentPage(currentPage).sort(sort).ordre(ordre).numberElement(nombreElement).build();
 		
-		Page<ComputerDTO> page = Page.<ComputerDTO>builder().typeGene("ComputerDTO").elementSearch(elementSearch).currentPage(currentPage).numberPage(numberPage).sort(sort).ordre(ordre).numberElement(nombreElement).numberComputer(nombreComputer).build();
-
-		computers = computerServices
-				.get(page);
+		ComputerServices.getInstance().get(page);
 		
-		//Ajouter a page computers
-		page.setComputers(computers);
+		int nombreComputer = page.getNumberComputer();
+		
+		int numberPage = (int) Math.ceil((double) nombreComputer
+				/ nombreElement);
+		
+		page.setNumberPage(numberPage);
+		
 		
 		request.setAttribute("infoPage", page);
 		

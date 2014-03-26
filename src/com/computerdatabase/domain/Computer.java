@@ -1,13 +1,14 @@
 package com.computerdatabase.domain;
 
-import java.util.Date;
+
+import org.joda.time.LocalDate;
 
 public class Computer {
 
 	private int id;
 	private String nom;
-	private Date introducedDate;
-	private Date discontinuedDate;
+	private LocalDate introducedDate;
+	private LocalDate discontinuedDate;
 	private Company company;
 
 	public Computer() {
@@ -18,8 +19,8 @@ public class Computer {
 		company = null;
 	}
 
-	public Computer(int id, String nom, Date introducedDate,
-			Date discontinuedDate, Company company) {
+	public Computer(int id, String nom, LocalDate introducedDate,
+			LocalDate discontinuedDate, Company company) {
 		this.id = id;
 		this.nom = nom;
 		this.introducedDate = introducedDate;
@@ -43,19 +44,19 @@ public class Computer {
 		this.nom = nom;
 	}
 
-	public Date getIntroducedDate() {
+	public LocalDate getIntroducedDate() {
 		return introducedDate;
 	}
 
-	public void setIntroducedDate(Date introducedDate) {
+	public void setIntroducedDate(LocalDate introducedDate) {
 		this.introducedDate = introducedDate;
 	}
 
-	public Date getDiscontinuedDate() {
+	public LocalDate getDiscontinuedDate() {
 		return discontinuedDate;
 	}
 
-	public void setDiscontinuedDate(Date discontinuedDate) {
+	public void setDiscontinuedDate(LocalDate discontinuedDate) {
 		this.discontinuedDate = discontinuedDate;
 	}
 
@@ -85,12 +86,12 @@ public class Computer {
 			return this;
 		}
 
-		public Builder introduced(Date introduced) {
+		public Builder introduced(LocalDate introduced) {
 			this.computer.introducedDate = introduced;
 			return this;
 		}
 
-		public Builder discontinued(Date discontinued) {
+		public Builder discontinued(LocalDate discontinued) {
 			this.computer.discontinuedDate = discontinued;
 			return this;
 		}

@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.computerdatabase.dao.ComputerDAO;
 import com.computerdatabase.dao.DAOFactory;
@@ -17,6 +19,8 @@ public class ComputerServices {
 	private static ComputerDAO computerDAO = DAOFactory.getInstance().getComputerDAO();
 	private static LogDAO logDAO = DAOFactory.getInstance().getLogDAO();
 	private static ComputerServices computerServices = null;
+	private final Logger logger = LoggerFactory.getLogger(CompanyServices.class);
+	
 	
 	private ComputerServices()
 	{
@@ -41,6 +45,7 @@ public class ComputerServices {
 			DAOFactory.getInstance().commitConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			logger.error("Error in put ComputerServices");
 			DAOFactory.getInstance().rollbackConnection(connection);
 			e.printStackTrace();
 		}finally
@@ -48,22 +53,25 @@ public class ComputerServices {
 			DAOFactory.getInstance().closeConnection();
 		}
 		
-		
-		
 	}
 
 	
-	public <T>List<T> get(Page<T> page)
+	public <T>void get(Page<T> page)
 	{
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
 		List<T> computers = null;
+		int nombreComputers = 0;
 		try {
 			Logs log = Logs.builder().operation("Get Computer").name(null).idComputer(-1).build();
 			logDAO.logOperation(log);
 			computers = computerDAO.get(page);
+			
+			nombreComputers = computerDAO.getNumber();
+			
 			DAOFactory.getInstance().commitConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			logger.error("Error in get ComputerServices");
 			DAOFactory.getInstance().rollbackConnection(connection);
 			e.printStackTrace();
 		} finally
@@ -71,10 +79,9 @@ public class ComputerServices {
 			DAOFactory.getInstance().closeConnection();
 		}
 		
+		page.setComputers(computers);
+		page.setNumberComputer(nombreComputers);
 		
-		
-		
-		return computers;
 	}
 	
 	public int getCount()
@@ -88,14 +95,12 @@ public class ComputerServices {
 			DAOFactory.getInstance().commitConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			logger.error("Error in count ComputerServices");
 			DAOFactory.getInstance().rollbackConnection(connection);
 			e.printStackTrace();
 		} finally{
 			DAOFactory.getInstance().closeConnection();
 		}
-		
-		
-		
 		
 		return number;
 	}
@@ -112,16 +117,13 @@ public class ComputerServices {
 			DAOFactory.getInstance().commitConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			logger.error("Error in count with name ComputerServices");
 			DAOFactory.getInstance().rollbackConnection(connection);
 			e.printStackTrace();
 		} finally
 		{
 			DAOFactory.getInstance().closeConnection();
 		}
-		
-		
-		
-		
 		
 		return number;
 	}
@@ -137,41 +139,43 @@ public class ComputerServices {
 			DAOFactory.getInstance().commitConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			logger.error("Error in find with id ComputerServices");
 			DAOFactory.getInstance().rollbackConnection(connection);
 			e.printStackTrace();
 		} finally{
 			DAOFactory.getInstance().closeConnection();
 		}
-		
-		
-		
 		
 		return computerDTO;
 	}
 	
 
 	
-	public <T>List<T> find(Page<T> page)
+	public <T>void find(Page<T> page)
 	{
 		Connection connection = DAOFactory.getInstance().getConnectionThread();
 		List<T> computers = null;
+		int nombreComputers = 0;
+		
 		try {
 			Logs log = Logs.builder().operation("Find computer").name(page.getName()).idComputer(-1).build();
 			logDAO.logOperation(log);
 			computers = computerDAO.find(page);
+			nombreComputers = computerDAO.getNumber(page.getName());
+			
 			DAOFactory.getInstance().commitConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			logger.error("Error in find ComputerServices");
 			DAOFactory.getInstance().rollbackConnection(connection);
 			e.printStackTrace();
 		} finally{
 			DAOFactory.getInstance().closeConnection();
 		}
 		
+		page.setComputers(computers);
+		page.setNumberComputer(nombreComputers);
 		
-		
-		
-		return computers;
 	}
 	
 	public void update(Computer computer)
@@ -183,6 +187,7 @@ public class ComputerServices {
 			computerDAO.update(computer);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			logger.error("Error in update ComputerServices");
 			DAOFactory.getInstance().rollbackConnection(connection);
 			e.printStackTrace();
 		}
@@ -201,13 +206,12 @@ public class ComputerServices {
 			DAOFactory.getInstance().commitConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			logger.error("Error in delete ComputerServices");
 			DAOFactory.getInstance().rollbackConnection(connection);
 			e.printStackTrace();
 		} finally{
 			DAOFactory.getInstance().closeConnection();
 		}
-		
-		
 		
 	}
 }

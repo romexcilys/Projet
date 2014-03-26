@@ -1,15 +1,13 @@
 package com.computerdatabase.dto;
 
-import com.computerdatabase.domain.Company;
-
-
 public class ComputerDTO {
 	
 	private int id;
 	private String nom;
 	private String introducedDate;
 	private String discontinuedDate;
-	private Company company;
+	private String companyName;
+	private int companyId;
 	
 	public int getId() {
 		return id;
@@ -36,15 +34,18 @@ public class ComputerDTO {
 		this.discontinuedDate = discontinuedDate;
 	}
 	
-	public Company getCompany() {
-		return company;
+	public String getCompanyName() {
+		return companyName;
 	}
-	
-	public void setCompany(Company company) {
-		this.company = company;
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
-
-
+	public int getCompanyId() {
+		return companyId;
+	}
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
+	}
 	public static class Builder
 	{
 		ComputerDTO computerDTO;
@@ -78,9 +79,15 @@ public class ComputerDTO {
 			return this;
 		}
 		
-		public Builder company(Company company)
+		public Builder companyName(String companyName)
 		{
-			this.computerDTO.company = company;
+			this.computerDTO.companyName = companyName;
+			return this;
+		}
+		
+		public Builder companyId(int companyId)
+		{
+			this.computerDTO.companyId = companyId;
 			return this;
 		}
 		

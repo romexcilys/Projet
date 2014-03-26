@@ -45,7 +45,7 @@
 								value="${computer.nom}" /></td>
 						<td><c:out value="${computer.introducedDate }" /></td>
 						<td><c:out value="${computer.discontinuedDate }" /></td>
-						<td><c:out value="${computer.company.nom }" /></td>
+						<td><c:out value="${computer.companyName }" /></td>
 
 					</tr>
 

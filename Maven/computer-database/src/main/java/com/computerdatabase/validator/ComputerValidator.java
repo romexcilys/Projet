@@ -5,12 +5,22 @@ import java.util.Map;
 
 import com.computerdatabase.dto.ComputerDTO;
 
-public class ComputerValidator implements Validator {
+public class ComputerValidator {
 
 	private Map<String, String> tableau;
+	
+	private static ComputerValidator computerValidator =null;
 
 	public ComputerValidator() {
 		tableau = new HashMap<String, String>();
+	}
+	
+	public static ComputerValidator getInstance()
+	{
+		if(computerValidator == null)
+			computerValidator = new ComputerValidator();
+		
+		return computerValidator;
 	}
 
 	public Map<String, String> getTableau() {
@@ -22,6 +32,9 @@ public class ComputerValidator implements Validator {
 	}
 
 	public void test(ComputerDTO computerDTO) {
+		
+		tableau.clear();
+		
 		if (computerDTO.getDiscontinuedDate() != null) {
 			if (!verifierDate(computerDTO.getDiscontinuedDate())) {
 				errorDateDiscontinued();
@@ -75,7 +88,6 @@ public class ComputerValidator implements Validator {
 		tableau.put("company", "Error in the company");
 	}
 
-	@Override
 	public boolean verifierDate(String date) {
 		// TODO Auto-generated method stub
 
@@ -103,7 +115,6 @@ public class ComputerValidator implements Validator {
 		return false;
 	}
 
-	@Override
 	public boolean verifierName(String name) {
 		// TODO Auto-generated method stub
 
@@ -113,7 +124,6 @@ public class ComputerValidator implements Validator {
 		return true;
 	}
 
-	@Override
 	public boolean comparerDate(String date1, String date2) {
 		// TODO Auto-generated method stub
 
