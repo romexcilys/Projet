@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.joda.time.LocalDate;
@@ -19,27 +18,15 @@ import com.computerdatabase.domain.Page;
 import com.computerdatabase.dto.ComputerDTO;
 import com.computerdatabase.mapper.Mapper;
 
-public class ComputerDAO {
-
-	private final Logger logger;
-	private static ComputerDAO computerDao = null;
-
-	private ComputerDAO() {
-		logger = LoggerFactory.getLogger(ComputerDAO.class);
-	}
-
-	public static <T>ComputerDAO getInstance() {
-		if (computerDao == null)
-			computerDao = new ComputerDAO();
-
-		return computerDao;
-	}
+public enum ComputerDAO {
+	INSTANCE;
+	private final Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 
 	public void put(Computer computer)
 			throws SQLException {
 		logger.info("In insererComputer with computer argument");
 		
-		Connection connection = DAOFactory.getInstance().getConnectionThread();
+		Connection connection = DAOFactory.INSTANCE.getConnectionThread();
 		
 		StringBuilder query = new StringBuilder();
 		
@@ -73,13 +60,13 @@ public class ComputerDAO {
 		
 		if(computer.getIntroducedDate() != null)
 		{
-			ps.setDate(position, new java.sql.Date(computer.getIntroducedDate().toDateMidnight().toDate().getTime()));
+			ps.setDate(position, new java.sql.Date(computer.getIntroducedDate().toDate().getTime()));
 			position++;
 		}
 		
 		if(computer.getDiscontinuedDate() != null)
 		{
-			ps.setDate(position, new java.sql.Date(computer.getDiscontinuedDate().toDateMidnight().toDate()
+			ps.setDate(position, new java.sql.Date(computer.getDiscontinuedDate().toDate()
 				.getTime()));
 			position++;
 		}
@@ -101,7 +88,7 @@ public class ComputerDAO {
 		logger.info("Quit insererComputer method");
 	}
 
-	public <T>List<T> get(Page<T> page) throws SQLException {
+	public void get(Page page) throws SQLException {
 		logger.info("In getListComputer with arguments");
 		
 		int debut = page.getElementSearch();
@@ -109,8 +96,8 @@ public class ComputerDAO {
 		String sort = page.getSort();
 		String ordre = page.getOrdre();
 		
-		Connection connection = DAOFactory.getInstance().getConnectionThread();
-		List<T> computers = new ArrayList<T>();
+		Connection connection = DAOFactory.INSTANCE.getConnectionThread();
+		List<Computer> computers = new ArrayList<Computer>();
 
 		StringBuilder query = new StringBuilder();
 		
@@ -193,23 +180,21 @@ public class ComputerDAO {
 							Company.builder().id(compaId).nom(compaName)
 									.build()).build();
 			
-			if(page.getTypeGene().compareTo("ComputerDTO") == 0)
-				computers.add((T) Mapper.toDTO(computer));
-			else
-				computers.add((T) computer);
+			computers.add(computer);
 		}
 
 		ps.close();
 		results.close();
+		
+		page.setComputers(computers);
 
 		logger.info("Quit getListComputer method");
-		return computers;
 	}
 
 	public int getNumber() throws SQLException {
 		logger.info("In getNumberComputer method");
 		
-		Connection connection = DAOFactory.getInstance().getConnectionThread();
+		Connection connection = DAOFactory.INSTANCE.getConnectionThread();
 		int total = 0;
 
 		String query = "SELECT COUNT(*) as nombre FROM computer;";
@@ -233,7 +218,7 @@ public class ComputerDAO {
 	public int getNumber(String nom) throws SQLException {
 		logger.info("In getNumberComputer method with arguments");
 		
-		Connection connection = DAOFactory.getInstance().getConnectionThread();
+		Connection connection = DAOFactory.INSTANCE.getConnectionThread();
 		int total = 0;
 
 		String query = "SELECT COUNT(*) AS nombre FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?;";
@@ -263,7 +248,7 @@ public class ComputerDAO {
 			throws SQLException {
 		logger.info("In editComputer method");
 		
-		Connection connection = DAOFactory.getInstance().getConnectionThread();
+		Connection connection = DAOFactory.INSTANCE.getConnectionThread();
 		StringBuilder query = new StringBuilder();
 		
 		query.append("UPDATE computer SET name = ?, introduced = ");
@@ -302,13 +287,13 @@ public class ComputerDAO {
 	
 		if(computer.getIntroducedDate() != null)
 		{
-			ps.setDate(position, new java.sql.Date(computer.getIntroducedDate().toDateMidnight().toDate().getTime()));
+			ps.setDate(position, new java.sql.Date(computer.getIntroducedDate().toDate().getTime()));
 			position++;
 		}
 		
 		if(computer.getDiscontinuedDate() != null)
 		{
-			ps.setDate(position, new java.sql.Date(computer.getDiscontinuedDate().toDateMidnight().toDate().getTime()));
+			ps.setDate(position, new java.sql.Date(computer.getDiscontinuedDate().toDate().getTime()));
 			position++;
 		}
 				
@@ -330,7 +315,8 @@ public class ComputerDAO {
 	public void delete(int id) throws SQLException {
 		logger.info("In deleteComputer method with id argument");
 		
-		Connection connection = DAOFactory.getInstance().getConnectionThread();
+		Connection connection = DAOFactory.INSTANCE
+				.getConnectionThread();
 		
 		String query = "DELETE FROM computer WHERE id = ?;";
 
@@ -349,7 +335,7 @@ public class ComputerDAO {
 	public ComputerDTO find(int id) throws SQLException {
 		logger.info("In findComputer method with id argument");
 		
-		Connection connection = DAOFactory.getInstance().getConnectionThread();
+		Connection connection = DAOFactory.INSTANCE.getConnectionThread();
 		ComputerDTO computerDTO = null;
 		Computer computer = null;
 
@@ -399,7 +385,7 @@ public class ComputerDAO {
 		return computerDTO;
 	}
 
-	public <T> List<T> find(Page<T> page)
+	public void findPage(Page page)
 			throws SQLException {
 		
 		int debut = page.getElementSearch();
@@ -410,8 +396,8 @@ public class ComputerDAO {
 		
 		logger.info("In searchComputer method");
 		
-		Connection connection = DAOFactory.getInstance().getConnectionThread();
-		List<T> computers = new ArrayList<T>();
+		Connection connection = DAOFactory.INSTANCE.getConnectionThread();
+		List<Computer> computers = new ArrayList<Computer>();
 
 		StringBuilder query = new StringBuilder();
 		
@@ -497,17 +483,15 @@ public class ComputerDAO {
 							Company.builder().id(compaId).nom(compaName)
 									.build()).build();
 			
-			if(page.getTypeGene().compareTo("ComputerDTO") == 0)
-				computers.add((T) Mapper.toDTO(computer));
-			else
-				computers.add((T) computer);
+			computers.add(computer);
 
 		}
-
+		
+		page.setComputers(computers);
+		
 		results.close();
 		ps.close();
 
 		logger.info("Quit searchComputer method");
-		return computers;
 	}
 }

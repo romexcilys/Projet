@@ -13,42 +13,32 @@ import com.computerdatabase.dao.LogDAO;
 import com.computerdatabase.domain.Company;
 import com.computerdatabase.domain.Logs;
 
-public class CompanyServices {
+public enum CompanyServices {
 
-	private static  CompanyDAO companyDAO = DAOFactory.getInstance().getCompanyDAO();
-	private static LogDAO logDAO = DAOFactory.getInstance().getLogDAO();
+	INSTANCE;
 	
-	private static CompanyServices companyServices = null;
+	private static  CompanyDAO companyDAO = DAOFactory.INSTANCE.getCompanyDAO();
+	private static LogDAO logDAO = DAOFactory.INSTANCE.getLogDAO();
+	
 	private final Logger logger = LoggerFactory.getLogger(CompanyServices.class);
 	
-	private CompanyServices()
-	{
-	}
-			
-	public static CompanyServices getInstance()
-	{
-		if(companyServices == null)
-			companyServices = new CompanyServices();
-		
-		return companyServices;
-	}
 	
 	public List<Company> get() {
-		Connection connection = DAOFactory.getInstance().getConnectionThread();
+		Connection connection = DAOFactory.INSTANCE.getConnectionThread();
 		
 		List<Company> companys = null;
 		try {
 			Logs log = Logs.builder().operation("SELECT Companys").name(null).idComputer(-1).build();
 			logDAO.logOperation(log);
 			companys = companyDAO.get();
-			DAOFactory.getInstance().commitConnection(connection);
+			DAOFactory.INSTANCE.commitConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			logger.error("Error in get CompanyServices");
-			DAOFactory.getInstance().rollbackConnection(connection);
+			DAOFactory.INSTANCE.rollbackConnection(connection);
 			e.printStackTrace();
 		}finally{
-			DAOFactory.getInstance().closeConnection();
+			DAOFactory.INSTANCE.closeConnection();
 		}
 
 		return companys;

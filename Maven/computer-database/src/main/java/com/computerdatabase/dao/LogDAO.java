@@ -6,16 +6,9 @@ import java.sql.SQLException;
 
 import com.computerdatabase.domain.Logs;
 
-public class LogDAO {
+public enum LogDAO {
 
-	private static LogDAO logDAO = null;
-
-	public static LogDAO getInstance() {
-		if (logDAO == null)
-			logDAO = new LogDAO();
-
-		return logDAO;
-	}
+	INSTANCE;
 
 	public void logOperation(Logs log) throws SQLException {
 		String query = null;
@@ -26,7 +19,7 @@ public class LogDAO {
 			query = "INSERT INTO log (operation, name, date, idComputer) VALUES (?, ?, NOW(), ?);";
 			
 		
-		Connection connection = DAOFactory.getInstance().getConnectionThread();
+		Connection connection = DAOFactory.INSTANCE.getConnectionThread();
 
 		PreparedStatement ps = connection.prepareStatement(query);
 		ps.setString(1, log.getOperation());

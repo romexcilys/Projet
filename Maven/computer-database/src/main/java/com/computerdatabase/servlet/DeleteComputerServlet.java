@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.computerdatabase.domain.Page;
-import com.computerdatabase.dto.ComputerDTO;
 import com.computerdatabase.service.ComputerServices;
 
 /**
@@ -49,10 +48,10 @@ public class DeleteComputerServlet extends HttpServlet {
 		// CHOIX DE SUPPRESSION MULTIPLE
 		if (request.getParameter("id") == null) {
 
-			Page<ComputerDTO> page = Page.<ComputerDTO>builder().typeGene("ComputerDTO").elementSearch(-1).numberElement(-1).sort(sort).ordre(ordre).build();
+			Page page = Page.builder().elementSearch(-1).numberElement(-1).sort(sort).ordre(ordre).build();
 			
 			ComputerServices
-			.getInstance().get(page);
+			.INSTANCE.get(page);
 
 			System.out.println(page.getComputers().size());
 			
@@ -66,7 +65,7 @@ public class DeleteComputerServlet extends HttpServlet {
 			int idComputer = Integer
 					.parseInt(request.getParameter("id").trim());
 			ComputerServices
-			.getInstance().delete(idComputer);
+			.INSTANCE.delete(idComputer);
 
 			response.sendRedirect("affichage?page=1");
 		}
@@ -86,7 +85,7 @@ public class DeleteComputerServlet extends HttpServlet {
 			for (int i = 0; i < checkboxes.length; i++) {
 				int idComputer = Integer.parseInt(checkboxes[i]);
 				ComputerServices
-				.getInstance().delete(idComputer);
+				.INSTANCE.delete(idComputer);
 			}
 		}
 

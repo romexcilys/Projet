@@ -11,10 +11,13 @@ import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
 import com.mysql.jdbc.ResultSet;
 
-public class DAOFactory {
-	private static CompanyDAO companyDAO = CompanyDAO.getInstance();
-	private static ComputerDAO computerDAO = ComputerDAO.getInstance();
-	private static LogDAO logDAO = LogDAO.getInstance();
+public enum DAOFactory {
+	
+	INSTANCE;
+	
+	private static CompanyDAO companyDAO = CompanyDAO.INSTANCE;
+	private static ComputerDAO computerDAO = ComputerDAO.INSTANCE;
+	private static LogDAO logDAO = LogDAO.INSTANCE;
 	private ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>();
 	
 	private static String url = "jdbc:mysql://127.0.0.1/computer-database-db?zeroDateTimeBehavior=convertToNull";
@@ -23,13 +26,6 @@ public class DAOFactory {
 	private static BoneCP connectionPool = null;
 	
 	final static Logger logger = LoggerFactory.getLogger(DAOFactory.class);
-	
-	private static DAOFactory daoFactory = null;
-	
-	private DAOFactory()
-	{
-		
-	}
 	
 	//PARTIE POOL DE CONNECTION
 	
@@ -197,14 +193,6 @@ public class DAOFactory {
 	
 	
 	//PARTIE DAO
-	
-	public static DAOFactory getInstance()
-	{
-		if(daoFactory == null)
-			daoFactory = new DAOFactory();
-		
-		return daoFactory;
-	}
 	
 	
 	public CompanyDAO getCompanyDAO()

@@ -12,25 +12,17 @@ import org.slf4j.LoggerFactory;
 
 import com.computerdatabase.domain.Company;
 
-public class CompanyDAO {
+public enum CompanyDAO {
+	
+	INSTANCE;
+	
+	private final Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 
-	private final Logger logger;
-	private static CompanyDAO computerDao = null;
 
-	private CompanyDAO() {
-		logger = LoggerFactory.getLogger(CompanyDAO.class);
-	}
-
-	public static CompanyDAO getInstance() {
-		if (computerDao == null)
-			computerDao = new CompanyDAO();
-
-		return computerDao;
-	}
 
 	public List<Company> get() throws SQLException {
 		logger.info("In getListCompany method");
-		Connection connection = DAOFactory.getInstance().getConnectionThread();
+		Connection connection = DAOFactory.INSTANCE.getConnectionThread();
 		
 		List<Company> companys = new ArrayList<Company>();
 

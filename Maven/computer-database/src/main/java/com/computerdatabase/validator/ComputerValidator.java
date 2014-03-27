@@ -5,23 +5,12 @@ import java.util.Map;
 
 import com.computerdatabase.dto.ComputerDTO;
 
-public class ComputerValidator {
+public enum ComputerValidator {
 
-	private Map<String, String> tableau;
+	INSTANCE;
 	
-	private static ComputerValidator computerValidator =null;
-
-	public ComputerValidator() {
-		tableau = new HashMap<String, String>();
-	}
+	private Map<String, String> tableau = new HashMap<String, String>();
 	
-	public static ComputerValidator getInstance()
-	{
-		if(computerValidator == null)
-			computerValidator = new ComputerValidator();
-		
-		return computerValidator;
-	}
 
 	public Map<String, String> getTableau() {
 		return tableau;

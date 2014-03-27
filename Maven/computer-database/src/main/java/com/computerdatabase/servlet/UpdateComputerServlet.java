@@ -46,11 +46,11 @@ public class UpdateComputerServlet extends HttpServlet {
 		if (idComputer != null) {
 			int id = Integer.parseInt(idComputer.trim());
 			ComputerDTO computerDTO = ComputerServices
-					.getInstance().find(id);
+					.INSTANCE.find(id);
 			List<Company> companys = new ArrayList<Company>();
 
 			companys = CompanyServices
-					.getInstance().get();
+					.INSTANCE.get();
 
 			
 			request.setAttribute("companys", companys);
@@ -105,18 +105,18 @@ public class UpdateComputerServlet extends HttpServlet {
 				.discontinuedDate(discontinuedDate).companyId(idCompany)
 				.build();
 
-		ComputerValidator.getInstance().test(computerDTO);
+		ComputerValidator.INSTANCE.test(computerDTO);
 		
-		if(ComputerValidator.getInstance().getTableau().size() > 0)
+		if(ComputerValidator.INSTANCE.getTableau().size() > 0)
 		{
 			List<Company> companys = new ArrayList<Company>();
 
 			companys = CompanyServices
-					.getInstance().get();
+					.INSTANCE.get();
 			request.setAttribute("companys", companys);
 			
 			request.setAttribute("computer", computerDTO);
-			request.setAttribute("error", ComputerValidator.getInstance());
+			request.setAttribute("error", ComputerValidator.INSTANCE);
 			
 			this.getServletContext().getRequestDispatcher("/WEB-INF/Formulaire.jsp").forward(request, response);
 		}
@@ -125,7 +125,7 @@ public class UpdateComputerServlet extends HttpServlet {
 			Computer computer = Mapper.fromDTO(computerDTO);
 			
 			ComputerServices
-			.getInstance().update(computer);
+			.INSTANCE.update(computer);
 	
 			response.sendRedirect("affichage?page=1");
 		}

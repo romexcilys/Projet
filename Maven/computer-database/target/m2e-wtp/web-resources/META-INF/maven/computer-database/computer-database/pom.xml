@@ -55,15 +55,8 @@
 			<version>1.2</version>
 		</dependency>
 
-<!--  
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<scope>provided</scope>
-		</dependency>
-		
--->
+		<!-- <dependency> <groupId>javax.servlet</groupId> <artifactId>servlet-api</artifactId> 
+			<version>2.5</version> <scope>provided</scope> </dependency> -->
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -72,9 +65,15 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.op4j</groupId>
-			<artifactId>op4j-jodatime</artifactId>
-			<version>1.1</version>
+			<groupId>jspapi</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.3</version>
 		</dependency>
 	</dependencies>
 
