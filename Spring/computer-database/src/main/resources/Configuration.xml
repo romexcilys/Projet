@@ -11,24 +11,8 @@
         http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	
 	<context:annotation-config /> 
+	<context:component-scan base-package="com.computerdatabase.dao"/>
+	<context:component-scan base-package="com.computerdatabase.service"/>
 	
-	<bean name="companyDAO" class="com.computerdatabase.dao.CompanyDAO">
-	</bean>
 	
-	<bean name="daoFactory" class="com.computerdatabase.dao.DAOFactory">
-	</bean>
-	
-	<bean name="computerDAO" class="com.computerdatabase.dao.ComputerDAO">
-	</bean>
-	
-	<bean name="logDAO" class="com.computerdatabase.dao.LogDAO">
-	</bean>
-	
-	<bean name="companyServices" class="com.computerdatabase.service.CompanyServices">
-		
-	</bean>
-	
-	<bean name="computerServices" class="com.computerdatabase.service.ComputerServices">
-		
-	</bean>
 </beans>

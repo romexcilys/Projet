@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.computerdatabase.domain.Page;
 import com.computerdatabase.service.ComputerServices;
@@ -21,6 +21,8 @@ import com.computerdatabase.service.ComputerServices;
 @WebServlet("/ListComputerServlet")
 public class ListComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
+	private ApplicationContext applicationContext = null;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -38,11 +40,18 @@ public class ListComputerServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
+
+		if (applicationContext == null) {
+			applicationContext = WebApplicationContextUtils
+					.getWebApplicationContext(this.getServletContext());
+		}
 		
-		
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("Configuration.xml");	
-		ComputerServices computerServices = (ComputerServices) applicationContext.getBean("computerServices");
-		
+/*
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("Configuration.xml");
+*/
+		ComputerServices computerServices = (ComputerServices) applicationContext
+				.getBean("computerServices");
+
 		final int nombreElement = 11;
 		int currentPage = 1;
 
@@ -69,25 +78,26 @@ public class ListComputerServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
 		int elementSearch = (currentPage - 1) * nombreElement;
-		
-		Page page = Page.builder().elementSearch(elementSearch).currentPage(currentPage).sort(sort).ordre(ordre).numberElement(nombreElement).build();
-		
+
+		Page page = Page.builder().elementSearch(elementSearch)
+				.currentPage(currentPage).sort(sort).ordre(ordre)
+				.numberElement(nombreElement).build();
+
 		computerServices.get(page);
-		
+
 		int nombreComputer = page.getNumberComputer();
-		
+
 		int numberPage = (int) Math.ceil((double) nombreComputer
 				/ nombreElement);
-		
+
 		page.setNumberPage(numberPage);
-		
-		
+
 		request.setAttribute("infoPage", page);
+
+		//((ClassPathXmlApplicationContext)applicationContext).close();
 		
-		((ClassPathXmlApplicationContext)applicationContext).close();
 		this.getServletContext().getRequestDispatcher("/WEB-INF/dashboard.jsp")
 				.forward(request, response);
 	}

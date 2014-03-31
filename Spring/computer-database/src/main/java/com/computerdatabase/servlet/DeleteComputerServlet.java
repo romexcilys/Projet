@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.computerdatabase.domain.Page;
 import com.computerdatabase.service.ComputerServices;
@@ -21,6 +22,8 @@ import com.computerdatabase.service.ComputerServices;
 public class DeleteComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	private ApplicationContext applicationContext = null;
+	
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -37,7 +40,11 @@ public class DeleteComputerServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("Configuration.xml");	
+		if (applicationContext == null) {
+			applicationContext = WebApplicationContextUtils
+					.getWebApplicationContext(this.getServletContext());
+		}
+		
 		ComputerServices computerServices = (ComputerServices) applicationContext.getBean("computerServices");
 
 		String sort = "compu_name";
@@ -61,7 +68,7 @@ public class DeleteComputerServlet extends HttpServlet {
 			
 			request.setAttribute("infoPage", page);
 			
-			((ClassPathXmlApplicationContext)applicationContext).close();
+			//((ClassPathXmlApplicationContext)applicationContext).close();
 			
 			this.getServletContext()
 					.getRequestDispatcher("/WEB-INF/delete.jsp")
@@ -72,7 +79,7 @@ public class DeleteComputerServlet extends HttpServlet {
 					.parseInt(request.getParameter("id").trim());
 			computerServices.delete(idComputer);
 
-			((ClassPathXmlApplicationContext)applicationContext).close();
+			//((ClassPathXmlApplicationContext)applicationContext).close();
 
 			response.sendRedirect("affichage?page=1");
 		}
@@ -86,7 +93,11 @@ public class DeleteComputerServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("Configuration.xml");	
+		if (applicationContext == null) {
+			applicationContext = WebApplicationContextUtils
+					.getWebApplicationContext(this.getServletContext());
+		}
+		
 		ComputerServices computerServices = (ComputerServices) applicationContext.getBean("computerServices");
 
 		String[] checkboxes = request.getParameterValues("idComputer");

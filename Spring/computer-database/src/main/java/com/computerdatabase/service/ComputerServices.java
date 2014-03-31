@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.computerdatabase.dao.ComputerDAO;
 import com.computerdatabase.dao.DAOFactory;
@@ -15,6 +16,7 @@ import com.computerdatabase.domain.Logs;
 import com.computerdatabase.domain.Page;
 import com.computerdatabase.dto.ComputerDTO;
 
+@Service
 public class ComputerServices {
 	@Autowired
 	private DAOFactory daoFactory;

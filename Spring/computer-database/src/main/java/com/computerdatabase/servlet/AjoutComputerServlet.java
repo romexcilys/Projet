@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.computerdatabase.domain.Company;
 import com.computerdatabase.domain.Computer;
@@ -28,6 +28,8 @@ import com.computerdatabase.validator.ComputerValidator;
 public class AjoutComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	
+	private ApplicationContext applicationContext = null;
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -43,7 +45,12 @@ public class AjoutComputerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("Configuration.xml");	
+		
+		if (applicationContext == null) {
+			applicationContext = WebApplicationContextUtils
+					.getWebApplicationContext(this.getServletContext());
+		}
+		
 		CompanyServices companyService = (CompanyServices) applicationContext.getBean("companyServices");
 
 		List<Company> companys = new ArrayList<Company>();
@@ -51,7 +58,7 @@ public class AjoutComputerServlet extends HttpServlet {
 		companys = companyService.get();
 		request.setAttribute("companys", companys);
 		
-		((ClassPathXmlApplicationContext)applicationContext).close();
+		//((ClassPathXmlApplicationContext)applicationContext).close();
 
 		this.getServletContext()
 				.getRequestDispatcher("/WEB-INF/addComputer.jsp")
@@ -67,7 +74,11 @@ public class AjoutComputerServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("Configuration.xml");	
+		if (applicationContext == null) {
+			applicationContext = WebApplicationContextUtils
+					.getWebApplicationContext(this.getServletContext());
+		}
+		
 		CompanyServices companyService = (CompanyServices) applicationContext.getBean("companyServices");
 		ComputerServices computerService = (ComputerServices) applicationContext.getBean("computerServices");
 		
@@ -109,14 +120,14 @@ public class AjoutComputerServlet extends HttpServlet {
 			request.setAttribute("computer", computerDTO);
 			request.setAttribute("error", ComputerValidator.INSTANCE);
 			
-			((ClassPathXmlApplicationContext)applicationContext).close();
+			//((ClassPathXmlApplicationContext)applicationContext).close();
 			
 			this.getServletContext().getRequestDispatcher("/WEB-INF/addComputer.jsp").forward(request, response);
 		}
 		else
 		{
 			computerService.put(computer);
-			((ClassPathXmlApplicationContext)applicationContext).close();
+			//((ClassPathXmlApplicationContext)applicationContext).close();
 			response.sendRedirect("affichage?page=1");
 		}
 	}

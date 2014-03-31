@@ -5,9 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.computerdatabase.domain.Logs;
 
+@Component
 public class LogDAO {
 	@Autowired
 	DAOFactory daoFactory;

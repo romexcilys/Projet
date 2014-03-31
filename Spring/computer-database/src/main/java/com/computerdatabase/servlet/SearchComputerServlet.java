@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.computerdatabase.domain.Page;
 import com.computerdatabase.service.ComputerServices;
@@ -22,6 +22,8 @@ import com.computerdatabase.service.ComputerServices;
 public class SearchComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	private ApplicationContext applicationContext = null;
+	
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -40,7 +42,11 @@ public class SearchComputerServlet extends HttpServlet {
 		
 		final int nombreElement = 11;
 		
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("Configuration.xml");	
+		if (applicationContext == null) {
+			applicationContext = WebApplicationContextUtils
+					.getWebApplicationContext(this.getServletContext());
+		}
+		
 		ComputerServices computerServices = (ComputerServices) applicationContext.getBean("computerServices");
 		
 		String nom = "";
@@ -96,7 +102,7 @@ public class SearchComputerServlet extends HttpServlet {
 
 			request.setAttribute("infoPage", page);
 			
-			((ClassPathXmlApplicationContext)applicationContext).close();
+			//((ClassPathXmlApplicationContext)applicationContext).close();
 
 			this.getServletContext()
 					.getRequestDispatcher("/WEB-INF/dashboard.jsp")
@@ -106,7 +112,7 @@ public class SearchComputerServlet extends HttpServlet {
 		{
 			session.setAttribute("search", false);
 			
-			((ClassPathXmlApplicationContext)applicationContext).close();
+			//((ClassPathXmlApplicationContext)applicationContext).close();
 			response.sendRedirect("affichage?page=1");
 		}
 	}
