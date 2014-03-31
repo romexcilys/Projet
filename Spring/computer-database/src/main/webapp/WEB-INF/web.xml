@@ -11,52 +11,19 @@
 	       org.springframework.web.context.ContextLoaderListener
 	   </listener-class>
 	</listener> 
-
+	
 	<servlet>
-		<servlet-name>AjoutComputerServlet</servlet-name>
-		<servlet-class>com.computerdatabase.servlet.AjoutComputerServlet</servlet-class>
+		<servlet-name>mvcDispatcher</servlet-name>
+		<servlet-class>
+                       org.springframework.web.servlet.DispatcherServlet
+                </servlet-class>
+		<load-on-startup>1</load-on-startup>
 	</servlet>
+	
 	<servlet-mapping>
-		<servlet-name>AjoutComputerServlet</servlet-name>
-		<url-pattern>/AjoutComputer</url-pattern>
+		<servlet-name>mvcDispatcher</servlet-name>
+		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>AjoutComputerServlet</servlet-name>
-		<url-pattern>/PageAjout</url-pattern>
-	</servlet-mapping>
-	<servlet>
-		<servlet-name>ListComputerServlet</servlet-name>
-		<servlet-class>com.computerdatabase.servlet.ListComputerServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ListComputerServlet</servlet-name>
-		<url-pattern>/affichage</url-pattern>
-	</servlet-mapping>
-	<servlet>
-		<servlet-name>SearchComputerServlet</servlet-name>
-		<servlet-class>com.computerdatabase.servlet.SearchComputerServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>SearchComputerServlet</servlet-name>
-		<url-pattern>/SearchComputer</url-pattern>
-	</servlet-mapping>
-	<servlet>
-		<servlet-name>DeleteComputerServlet</servlet-name>
-		<servlet-class>com.computerdatabase.servlet.DeleteComputerServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>DeleteComputerServlet</servlet-name>
-		<url-pattern>/PageDelete</url-pattern>
-	</servlet-mapping>
-	<servlet>
-		<servlet-name>UpdateComputerServlet</servlet-name>
-		<servlet-class>com.computerdatabase.servlet.UpdateComputerServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>UpdateComputerServlet</servlet-name>
-		<url-pattern>/PageUpdate</url-pattern>
-	</servlet-mapping>
-
 
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

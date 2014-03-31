@@ -9,108 +9,126 @@
 	<url>http://maven.apache.org</url>
 
 
+	<properties>
+		<version-slf4j>1.7.6</version-slf4j>
+		<version-bonecp>0.7.1.RELEASE</version-bonecp>
+		<version-mysql>3.1.12</version-mysql>
+		<version-guava>13.0.1</version-guava>
+		<version-ecj>3.7</version-ecj>
+		<version-jstl>1.2</version-jstl>
+		<version-servlet>3.0.1</version-servlet>
+		<version-servlettag>2.0</version-servlettag>
+		<version-joda>2.3</version-joda>
+		<version-spring>4.0.2.RELEASE</version-spring>
+		<version-aspectjrt>1.7.4</version-aspectjrt>
+	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.6</version>
+			<version>${version-slf4j}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.6</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>com.jolbox</groupId>
 			<artifactId>bonecp</artifactId>
-			<version>0.7.1.RELEASE</version>
+			<version>${version-bonecp}</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>3.1.12</version>
+			<version>${version-mysql}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>13.0.1</version>
+			<version>${version-guava}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jdt.core.compiler</groupId>
 			<artifactId>ecj</artifactId>
-			<version>3.7</version>
+			<version>${version-ecj}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
-			<version>1.2</version>
+			<version>${version-jstl}</version>
 		</dependency>
-
-		<!-- <dependency> <groupId>javax.servlet</groupId> <artifactId>servlet-api</artifactId> 
-			<version>2.5</version> <scope>provided</scope> </dependency> -->
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>3.0.1</version>
+			<version>${version-servlet}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jsp-api</artifactId>
-			<version>2.0</version>
+			<version>${version-servlettag}</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
-			<version>2.3</version>
+			<version>${version-joda}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
-			<version>4.0.2.RELEASE</version>
+			<version>${version-spring}</version>
 			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>4.0.2.RELEASE</version>
+			<version>${version-spring}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
-			<version>1.7.4</version>
+			<version>${version-aspectjrt}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>1.7.4</version>
+			<version>${version-aspectjrt}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>4.0.3.RELEASE</version>
+			<version>${version-spring}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>4.0.3.RELEASE</version>
+			<version>${version-spring}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>4.0.3.RELEASE</version>
+			<version>${version-spring}</version>
+		</dependency>
+		<!-- <dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback</artifactId>
+			<version>0.5</version>
+			<type>pom</type>
+		</dependency> -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${version-spring}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.6</version>
 		</dependency>
 	</dependencies>
 

@@ -4,14 +4,17 @@ import java.io.IOException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.computerdatabase.domain.Page;
 import com.computerdatabase.service.ComputerServices;
@@ -19,7 +22,9 @@ import com.computerdatabase.service.ComputerServices;
 /**
  * Servlet implementation class SearchComputerServlet
  */
-@WebServlet("/SearchComputerServlet")
+//@0WebServlet("/SearchComputerServlet")
+@Controller
+@RequestMapping("/SearchComputer")
 public class SearchComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -39,7 +44,8 @@ public class SearchComputerServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request,
+	@RequestMapping(method = RequestMethod.GET)
+	protected ModelAndView fonctionGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
@@ -97,17 +103,18 @@ public class SearchComputerServlet extends HttpServlet {
 			page.setNumberPage(numberPage);
 
 			request.setAttribute("infoPage", page);
-			
-
+			return new ModelAndView("dashboard");
+/*
 			this.getServletContext()
 					.getRequestDispatcher("/WEB-INF/dashboard.jsp")
-					.forward(request, response);
+					.forward(request, response);*/
 
 		} else// SI STRING VIDE ALORS ON REVIENT SUR PAGE AFFICHAGE
 		{
 			session.setAttribute("search", false);
 			
-			response.sendRedirect("affichage?page=1");
+			return new ModelAndView("redirect:affichage?page=1");
+			//response.sendRedirect("affichage?page=1");
 		}
 	}
 	
