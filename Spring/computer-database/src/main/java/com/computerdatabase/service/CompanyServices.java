@@ -15,6 +15,7 @@ import com.computerdatabase.dao.LogDAO;
 import com.computerdatabase.domain.Company;
 import com.computerdatabase.domain.Logs;
 
+//@Transactional
 @Service
 public class CompanyServices {
 
@@ -51,6 +52,7 @@ public class CompanyServices {
 		this.logDAO = logDAO;
 	}
 
+	//@Transactional(readOnly=true)
 	public List<Company> get() {
 		Connection connection = daoFactory.getConnectionThread();
 		

@@ -2,6 +2,7 @@ package com.computerdatabase.servlet;
 
 import java.io.IOException;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.computerdatabase.domain.Page;
 import com.computerdatabase.service.ComputerServices;
@@ -22,7 +23,9 @@ import com.computerdatabase.service.ComputerServices;
 public class SearchComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private ApplicationContext applicationContext = null;
+	
+	@Autowired
+	ComputerServices computerServices;
 	
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -41,13 +44,6 @@ public class SearchComputerServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		final int nombreElement = 11;
-		
-		if (applicationContext == null) {
-			applicationContext = WebApplicationContextUtils
-					.getWebApplicationContext(this.getServletContext());
-		}
-		
-		ComputerServices computerServices = (ComputerServices) applicationContext.getBean("computerServices");
 		
 		String nom = "";
 		if (request.getParameter("search") != null)
@@ -102,7 +98,6 @@ public class SearchComputerServlet extends HttpServlet {
 
 			request.setAttribute("infoPage", page);
 			
-			//((ClassPathXmlApplicationContext)applicationContext).close();
 
 			this.getServletContext()
 					.getRequestDispatcher("/WEB-INF/dashboard.jsp")
@@ -112,8 +107,13 @@ public class SearchComputerServlet extends HttpServlet {
 		{
 			session.setAttribute("search", false);
 			
-			//((ClassPathXmlApplicationContext)applicationContext).close();
 			response.sendRedirect("affichage?page=1");
 		}
 	}
+	
+	public void init(ServletConfig config) throws ServletException {
+	    super.init(config);
+	    SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
+	      config.getServletContext());
+	  }
 }
