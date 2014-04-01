@@ -65,7 +65,7 @@ public class ComputerServices {
 		
 		try {
 			computerDAO.put(computer);
-			Logs log = Logs.builder().operation("INSERT Computer").name(computer.getNom()).idComputer(computer.getId()).build();
+			Logs log = Logs.builder().operation("INSERT Computer").name(computer.getName()).idComputer(computer.getId()).build();
 			logDAO.logOperation(log);
 			daoFactory.commitConnection(connection);
 		} catch (SQLException e) {
@@ -198,7 +198,7 @@ public class ComputerServices {
 	{
 		Connection connection = daoFactory.getConnectionThread();
 		try {
-			Logs log = Logs.builder().operation("Update computer").name(computer.getNom()).idComputer(computer.getId()).build();
+			Logs log = Logs.builder().operation("Update computer").name(computer.getName()).idComputer(computer.getId()).build();
 			logDAO.logOperation(log);
 			computerDAO.update(computer);
 		} catch (SQLException e) {

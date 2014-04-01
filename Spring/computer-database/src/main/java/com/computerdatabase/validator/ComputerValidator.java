@@ -1,81 +1,11 @@
 package com.computerdatabase.validator;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
 import com.computerdatabase.dto.ComputerDTO;
 
-public enum ComputerValidator {
-
-	INSTANCE;
-	
-	private Map<String, String> tableau = new HashMap<String, String>();
-	
-
-	public Map<String, String> getTableau() {
-		return tableau;
-	}
-
-	public void setTableau(Map<String, String> tableau) {
-		this.tableau = tableau;
-	}
-
-	public void test(ComputerDTO computerDTO) {
-		
-		tableau.clear();
-		
-		if (computerDTO.getDiscontinuedDate() != null) {
-			if (!verifierDate(computerDTO.getDiscontinuedDate())) {
-				errorDateDiscontinued();
-				computerDTO.setDiscontinuedDate(null);
-			}
-
-		}
-
-		if (computerDTO.getIntroducedDate() != null) {
-			if (!verifierDate(computerDTO.getIntroducedDate())) {
-				errorDateIntroduced();
-				computerDTO.setIntroducedDate(null);
-			}
-		}
-
-		if (computerDTO.getIntroducedDate() != null
-				&& computerDTO.getDiscontinuedDate() != null) {
-			if (!comparerDate(computerDTO.getIntroducedDate(),
-					computerDTO.getDiscontinuedDate())) {
-				errorCompareDate();
-			}
-		}
-
-		if (!verifierName(computerDTO.getNom())) {
-			errorName();
-			computerDTO.setNom(null);
-		}
-
-	}
-
-	public void errorCompareDate() {
-		
-		tableau.put("introducedDate", "Introduced date > Discontinued date");
-		tableau.put("discontinuedDate", "Introduced date > Discontinued date");
-
-	}
-
-	public void errorName() {
-		tableau.put("name", "Error in the name");
-	}
-
-	public void errorDateIntroduced() {
-		tableau.put("introducedDate", "Error in the introduced date");
-	}
-
-	public void errorDateDiscontinued() {
-		tableau.put("discontinuedDate", "Error in the discontinued date");
-	}
-
-	public void errorCompany() {
-		tableau.put("company", "Error in the company");
-	}
+public class ComputerValidator implements Validator{
 
 	public boolean verifierDate(String date) {
 		// TODO Auto-generated method stub
@@ -140,6 +70,51 @@ public enum ComputerValidator {
 		}
 
 		return true;
+	}
+
+	@Override
+	public boolean supports(Class<?> arg0) {
+		// TODO Auto-generated method stub
+		return ComputerDTO.class.equals(arg0);
+	}
+
+	@Override
+	public void validate(Object obj, Errors e) {
+		// TODO Auto-generated method stub
+		
+		ComputerDTO computerDTO = (ComputerDTO) obj;
+		
+
+		if (computerDTO.getDiscontinuedDate() != null && computerDTO.getDiscontinuedDate().compareTo("") != 0) {
+			if (!verifierDate(computerDTO.getDiscontinuedDate())) {
+				e.rejectValue("discontinuedDate", "Error in the discontinued date", "Error in the discontinued date");
+				computerDTO.setDiscontinuedDate(null);
+			}
+
+		}
+
+		if (computerDTO.getIntroducedDate() != null && computerDTO.getIntroducedDate().compareTo("") != 0) {
+			if (!verifierDate(computerDTO.getIntroducedDate())) {
+				e.rejectValue("introducedDate", "Error in the introduced date", "Error in the introduced date");
+				computerDTO.setIntroducedDate(null);
+			}
+		}
+
+		if (computerDTO.getIntroducedDate() != null
+				&& computerDTO.getDiscontinuedDate() != null && computerDTO.getDiscontinuedDate().compareTo("") != 0 && computerDTO.getIntroducedDate().compareTo("") != 0) {
+			if (!comparerDate(computerDTO.getIntroducedDate(),
+					computerDTO.getDiscontinuedDate())) {
+				e.rejectValue("introducedDate", "Introduced date > Discontinued date", "Introduced date > Discontinued date");
+				e.rejectValue("discontinuedDate", "Introduced date > Discontinued date", "Introduced date > Discontinued date");
+			}
+		}
+
+		if (!verifierName(computerDTO.getName())) {
+			e.rejectValue("name", "Error in the name", "Error in the name");
+			computerDTO.setName(null);
+		}
+
+		
 	}
 
 }

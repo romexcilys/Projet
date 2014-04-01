@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <jsp:include page="/include/header.jsp" />
 
@@ -8,66 +9,66 @@
 
 <div id="formulaireAdd">
 
-	<form action="AjoutComputer" method="POST" >
+	<form:form action="AjoutComputer" method="POST" modelattribute="computerDTO" commandName="computerDTO">
 		<fieldset>
 			<div class="clearfix">
-				<label for="name">Computer name:</label>
+				<label for="nameInput">Computer name:</label>
 				<div class="input">
-					<input type="text" name="name" value="${ computer.nom }" required /> <span
-						class="help-inline">Required</span><span class="couleur-rouge"><c:out value="${ error.tableau.name }"/></span>
+					<form:input path="name" id="nameInput"></form:input>
+					<form:errors path="name" cssclath="error"></form:errors>
 				</div>
 			</div>
 
 			<div class="clearfix">
-				<label for="introduced">Introduced date:</label>
+				<label for="introducedDateInput">Introduced date:</label>
 				<div class="input">
-					<input type="date" name="introducedDate"
-						pattern="^(19|20)\d\d([-])(0[1-9]|1[012])([-])(0[1-9]|[12][0-9]|3[01])$" value="${ computer.introducedDate }"/>
+					<form:input id="introducedDateInput" path="introducedDate"
+						pattern="^(19|20)\d\d([-])(0[1-9]|1[012])([-])(0[1-9]|[12][0-9]|3[01])$" ></form:input><!-- ${ computer.introducedDate } -->
 					<!--  pattern="YY-MM-dd" -->
-					<span class="help-inline">YYYY-MM-DD</span><span class="couleur-rouge"><c:out value="${ error.tableau.introducedDate }"/></span>
+					<span class="help-inline">YYYY-MM-DD</span><form:errors path="introducedDate" cssclath="error"></form:errors>
 				</div>
 			</div>
 			<div class="clearfix">
-				<label for="discontinued">Discontinued date:</label>
+				<label for="discontinuedDateInput">Discontinued date:</label>
 				<div class="input">
-					<input type="date" name="discontinuedDate" data-validation="date"
-						data-validation-format="yyyy-mm-dd" pattern = "^(19|20)\d\d([-])(0[1-9]|1[012])([-])(0[1-9]|[12][0-9]|3[01])$"  value="${ computer.discontinuedDate }"/>
+					<form:input  id="discontinuedDateInput" path="discontinuedDate" data-validation="date"
+						data-validation-format="yyyy-mm-dd" pattern = "^(19|20)\d\d([-])(0[1-9]|1[012])([-])(0[1-9]|[12][0-9]|3[01])$"></form:input><!-- ${ computer.discontinuedDate } -->
 					<!--  pattern="YY-MM-dd" -->
-					<span class="help-inline">YYYY-MM-DD</span><span class="couleur-rouge"><c:out value="${ error.tableau.discontinuedDate }"/></span>
+					<span class="help-inline">YYYY-MM-DD</span><form:errors path="discontinuedDate" cssclath="error"></form:errors>
 				</div>
 			</div>
 			<div class="clearfix">
-				<label for="company">Company Name:</label>
+				<label for="companyOptions">Company Name:</label>
 				<div class="input">
-					<select name="company">
-						<option value="0">--</option>
-
+					<form:select id="companyOptions" path="companyId">
+						<form:option value="0">--</form:option>
+<!-- selected="true" -->
 						<c:forEach items="${ companys }" var="company">
 							<c:choose>
 								<c:when test="${ company.id == computer.companyId }">
-									<option value="<c:out value='${ company.id}'/>" selected>
-										<c:out value="${ company.nom }" />
-									</option>
+									<form:option value="<c:out value='${ company.id}'/>" >
+										<c:out value="${ company.name }" />
+									</form:option>
 								</c:when>
 								<c:otherwise>
-									<option value="<c:out value='${ company.id}'/>">
-										<c:out value="${ company.nom }" />
-									</option>
+									<form:option value="<c:out value='${ company.id}'/>">
+										<c:out value="${ company.name }" />
+									</form:option>
 								</c:otherwise>
 							</c:choose>
 
 						</c:forEach>
-					</select><span class="couleur-rouge"><c:out value="${ error.tableau.company }"/></span>
+					</form:select><form:errors path="companyId" cssclath="error"></form:errors>
 				</div>
 			</div>
 		</fieldset>
 		<div id="barreValideAdd" >
-			<input type="submit" value="Add" class="btn primary"> or <a
+			<input type="submit" value="Add" class="btn primary"/> or <a
 				href="affichage?page=1" class="btn">Cancel</a>
 
 
 		</div>
-	</form>
+	</form:form>
 	
 	</div>
 </section>

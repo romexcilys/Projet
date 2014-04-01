@@ -72,7 +72,7 @@ public class ComputerDAO {
 		
 		
 		ps = connection.prepareStatement(query.toString(),Statement.RETURN_GENERATED_KEYS);
-		ps.setString(1, computer.getNom());
+		ps.setString(1, computer.getName());
 		int position = 2;
 		
 		if(computer.getIntroducedDate() != null)
@@ -194,7 +194,7 @@ public class ComputerDAO {
 					.introduced(introduced)
 					.discontinued(discontinued)
 					.company(
-							Company.builder().id(compaId).nom(compaName)
+							Company.builder().id(compaId).name(compaName)
 									.build()).build();
 			
 			computers.add(computer);
@@ -297,7 +297,7 @@ public class ComputerDAO {
 		PreparedStatement ps = null;
 
 		ps = connection.prepareStatement(query.toString());
-		ps.setString(1, computer.getNom());
+		ps.setString(1, computer.getName());
 
 		
 		int position = 2;
@@ -387,7 +387,7 @@ public class ComputerDAO {
 					.introduced(introduced)
 					.discontinued(discontinued)
 					.company(
-							Company.builder().id(compaId).nom(compaName)
+							Company.builder().id(compaId).name(compaName)
 									.build()).build();
 
 			computerDTO = Mapper.toDTO(computer);
@@ -497,7 +497,7 @@ public class ComputerDAO {
 					.introduced(introduced)
 					.discontinued(discontinued)
 					.company(
-							Company.builder().id(compaId).nom(compaName)
+							Company.builder().id(compaId).name(compaName)
 									.build()).build();
 			
 			computers.add(computer);

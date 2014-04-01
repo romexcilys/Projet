@@ -2,7 +2,6 @@ package com.computerdatabase.servlet;
 
 import java.io.IOException;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.computerdatabase.domain.Page;
@@ -25,8 +23,7 @@ import com.computerdatabase.service.ComputerServices;
 //@0WebServlet("/SearchComputerServlet")
 @Controller
 @RequestMapping("/SearchComputer")
-public class SearchComputerServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+public class SearchComputerServlet{
 
 	
 	@Autowired
@@ -104,23 +101,12 @@ public class SearchComputerServlet extends HttpServlet {
 
 			request.setAttribute("infoPage", page);
 			return new ModelAndView("dashboard");
-/*
-			this.getServletContext()
-					.getRequestDispatcher("/WEB-INF/dashboard.jsp")
-					.forward(request, response);*/
 
 		} else// SI STRING VIDE ALORS ON REVIENT SUR PAGE AFFICHAGE
 		{
 			session.setAttribute("search", false);
 			
 			return new ModelAndView("redirect:affichage?page=1");
-			//response.sendRedirect("affichage?page=1");
 		}
 	}
-	
-	public void init(ServletConfig config) throws ServletException {
-	    super.init(config);
-	    SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
-	      config.getServletContext());
-	  }
 }

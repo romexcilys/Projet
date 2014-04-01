@@ -55,7 +55,7 @@ public class CompanyDAO {
 		while (results.next()) {
 			int id = results.getInt("id");
 			String nom = results.getString("name");
-			companys.add(Company.builder().id(id).nom(nom).build());
+			companys.add(Company.builder().id(id).name(nom).build());
 		}
 
 		stmt.close();

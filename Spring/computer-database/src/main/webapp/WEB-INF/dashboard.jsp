@@ -33,28 +33,28 @@
 				<!-- Table header for Computer Name -->
 				<th id="computerName" >Computer Name  <pag:UrlMaker
 						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
-						sort="compu_name" ordre="asc" /><img src="images/fleche_bas.png" /></a>
+						sort="compu_name" ordre="asc" /><img src="<c:url value="/images/fleche_bas.png"  />"/></a>
 					<pag:UrlMaker searchName="${ infoPage.searchName }"
 						search="${ sessionScope.search }" sort="compu_name" ordre="desc" />
-					<img src="images/fleche_haut.png" /> </a>
+					<img src="<c:url value="/images/fleche_haut.png"  />" /> </a>
 
 				</th>
 
 				<th id="introducedDate" >Introduced Date <pag:UrlMaker searchName="${ infoPage.searchName }"
 						search="${ sessionScope.search }" sort="intro_date" ordre="asc" />
-					<img src="images/fleche_bas.png" /></a> <pag:UrlMaker
+					<img src="<c:url value="/images/fleche_bas.png"  />" /></a> <pag:UrlMaker
 						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
-						sort="intro_date" ordre="desc" /><img src="images/fleche_haut.png" />
+						sort="intro_date" ordre="desc" /><img src="<c:url value="/images/fleche_haut.png"  />" />
 					</a>
 				</th>
 
 				<!-- Table header for Discontinued Date -->
 				<th id="discontinuedDate" >Discontinued Date <pag:UrlMaker
 						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
-						sort="discon_date" ordre="asc" /><img src="images/fleche_bas.png" /></a>
+						sort="discon_date" ordre="asc" /><img src="<c:url value="/images/fleche_bas.png"  />" /></a>
 					<pag:UrlMaker searchName="${ infoPage.searchName }"
 						search="${ sessionScope.search }" sort="discon_date" ordre="desc" /><img
-					src="images/fleche_haut.png" /> </a>
+					src="<c:url value="/images/fleche_haut.png"  />" /> </a>
 
 				</th>
 				<!-- Table header for Company -->
@@ -62,9 +62,9 @@
 
 				<th id="companyName" >Company <pag:UrlMaker searchName="${ infoPage.searchName }"
 						search="${ sessionScope.search }" sort="compa_name" ordre="asc" /><img
-					src="images/fleche_bas.png" /></a> <pag:UrlMaker
+					src="<c:url value="/images/fleche_bas.png"  />" /></a> <pag:UrlMaker
 						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
-						sort="compa_name" ordre="desc" /><img src="images/fleche_haut.png" />
+						sort="compa_name" ordre="desc" /><img src="<c:url value="/images/fleche_haut.png"  />" />
 					</a>
 
 				</th>
@@ -78,10 +78,10 @@
 
 				<tr>
 
-					<td><c:out value="${computer.nom}" /></td>
+					<td><c:out value="${computer.name}" /></td>
 					<td><c:out value="${computer.introducedDate }" /></td>
 					<td><c:out value="${computer.discontinuedDate }" /></td>
-					<td><c:out value="${computer.company.nom }" /></td>
+					<td><c:out value="${computer.company.name }" /></td>
 						<td><a class="btn primary"
 						href="PageUpdate?id= <c:out value='${ computer.id }'/>">Update</a>
 						<a class="btn error"

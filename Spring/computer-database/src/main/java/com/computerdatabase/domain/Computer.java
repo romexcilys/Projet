@@ -6,23 +6,26 @@ import org.joda.time.LocalDate;
 public class Computer {
 
 	private int id;
-	private String nom;
+	
+	private String name;
+	
 	private LocalDate introducedDate;
+	
 	private LocalDate discontinuedDate;
 	private Company company;
 
 	public Computer() {
 		id = 0;
-		nom = null;
+		name = null;
 		introducedDate = null;
 		discontinuedDate = null;
 		company = null;
 	}
 
-	public Computer(int id, String nom, LocalDate introducedDate,
+	public Computer(int id, String name, LocalDate introducedDate,
 			LocalDate discontinuedDate, Company company) {
 		this.id = id;
-		this.nom = nom;
+		this.name = name;
 		this.introducedDate = introducedDate;
 		this.discontinuedDate = discontinuedDate;
 		this.company = company;
@@ -36,12 +39,12 @@ public class Computer {
 		this.id = id;
 	}
 
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public LocalDate getIntroducedDate() {
@@ -82,7 +85,7 @@ public class Computer {
 		}
 
 		public Builder name(String name) {
-			this.computer.nom = name;
+			this.computer.name = name;
 			return this;
 		}
 
@@ -113,7 +116,7 @@ public class Computer {
 
 	@Override
 	public String toString() {
-		return "Computer [id=" + id + ", nom=" + nom + ", introducedDate="
+		return "Computer [id=" + id + ", nom=" + name + ", introducedDate="
 				+ introducedDate + ", discontinuedDate=" + discontinuedDate
 				+ ", company=" + company + "]";
 	}

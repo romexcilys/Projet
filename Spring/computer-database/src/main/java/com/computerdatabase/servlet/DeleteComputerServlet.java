@@ -2,7 +2,6 @@ package com.computerdatabase.servlet;
 
 import java.io.IOException;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.computerdatabase.domain.Page;
@@ -24,8 +22,7 @@ import com.computerdatabase.service.ComputerServices;
 //@WebServlet("/UpdateComputerServlet")
 @Controller
 @RequestMapping("/PageDelete")
-public class DeleteComputerServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+public class DeleteComputerServlet{
 
 	
 	@Autowired
@@ -84,7 +81,6 @@ public class DeleteComputerServlet extends HttpServlet {
 			computerServices.delete(idComputer);
 
 			return new ModelAndView("redirect:affichage?page=1");
-			//response.sendRedirect("affichage?page=1");
 		}
 	}
 
@@ -109,12 +105,5 @@ public class DeleteComputerServlet extends HttpServlet {
 		}
 
 		return new ModelAndView("redirect:affichage?page=1");
-		//response.sendRedirect("affichage?page=1");
 	}
-	
-	public void init(ServletConfig config) throws ServletException {
-	    super.init(config);
-	    SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
-	      config.getServletContext());
-	  }
 }

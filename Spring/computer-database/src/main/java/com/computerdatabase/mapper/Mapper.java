@@ -13,7 +13,7 @@ public class Mapper {
 	public static Computer fromDTO(ComputerDTO computerDTO)
 	{
 		int id = computerDTO.getId();
-		String name = computerDTO.getNom();
+		String name = computerDTO.getName();
 		String introducedDate = computerDTO.getIntroducedDate();
 		String discontinuedDate = computerDTO.getDiscontinuedDate();
 		int idCompany = computerDTO.getCompanyId();
@@ -23,17 +23,17 @@ public class Mapper {
 		LocalDate dateIntroduced = null;
 		LocalDate dateDiscontinued = null;
 		
-		if (introducedDate != null) {
+		if (introducedDate != null && introducedDate.compareTo("") != 0) {
 			dateIntroduced = new LocalDate(introducedDate);
 			System.out.println(dateIntroduced);
 		} 
 
-		if (discontinuedDate != null) {
+		if (discontinuedDate != null && discontinuedDate.compareTo("") != 0) {
 			dateDiscontinued = new LocalDate(discontinuedDate);
 			System.out.println(dateDiscontinued);
 		}
 		
-		Company company = Company.builder().id(idCompany).nom(nomCompany).build();
+		Company company = Company.builder().id(idCompany).name(nomCompany).build();
 		Computer computer = Computer.builder().id(id).name(name).company(company).introduced(dateIntroduced).discontinued(dateDiscontinued).build();
 		
 		return computer;
@@ -43,7 +43,7 @@ public class Mapper {
 	public static ComputerDTO toDTO(Computer computer)
 	{
 		int id = computer.getId();
-		String nom = computer.getNom();
+		String nom = computer.getName();
 		LocalDate introducedDate = computer.getIntroducedDate();
 		LocalDate discontinuedDate = computer.getDiscontinuedDate();
 		
@@ -59,7 +59,7 @@ public class Mapper {
 		
 		
 		
-		ComputerDTO computerDTO = ComputerDTO.Builder().id(id).nom(nom).introducedDate(dateIntroduced).discontinuedDate(dateDiscontinued).companyId(computer.getCompany().getId()).companyName(computer.getCompany().getNom()).build();
+		ComputerDTO computerDTO = ComputerDTO.Builder().id(id).name(nom).introducedDate(dateIntroduced).discontinuedDate(dateDiscontinued).companyId(computer.getCompany().getId()).companyName(computer.getCompany().getName()).build();
 		
 		
 		return computerDTO;

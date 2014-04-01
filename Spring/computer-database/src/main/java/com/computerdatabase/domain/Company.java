@@ -4,17 +4,17 @@ package com.computerdatabase.domain;
 public class Company {
 	
 	private int id;
-	private String nom;
+	private String name;
 	
 	public Company()
 	{
 		id = 0;
-		nom = null;
+		name = null;
 	}
 	
-	public Company(int id, String nom) {
+	public Company(int id, String name) {
 		this.id = id;
-		this.nom = nom;
+		this.name = name;
 	}
 
 	public int getId() {
@@ -25,17 +25,17 @@ public class Company {
 		this.id = id;
 	}
 
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override
 	public String toString() {
-		return "Company [id=" + id + ", nom=" + nom + "]";
+		return "Company [id=" + id + ", nom=" + name + "]";
 	}
 	
 	public static class Builder {
@@ -51,9 +51,9 @@ public class Company {
 			return this;
 		}
 		
-		public Builder nom(String nom)
+		public Builder name(String name)
 		{
-			this.company.nom = nom;
+			this.company.name = name;
 			return this;
 		}
 

@@ -1,13 +1,21 @@
 package com.computerdatabase.dto;
 
+
 public class ComputerDTO {
 	
 	private int id;
-	private String nom;
+	
+	private String name;
+	
 	private String introducedDate;
+	
 	private String discontinuedDate;
+	
 	private String companyName;
+	
 	private int companyId;
+	
+	
 	
 	public int getId() {
 		return id;
@@ -15,11 +23,11 @@ public class ComputerDTO {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getIntroducedDate() {
 		return introducedDate;
@@ -61,9 +69,9 @@ public class ComputerDTO {
 			return this;
 		}
 		
-		public Builder nom(String nom)
+		public Builder name(String name)
 		{
-			this.computerDTO.nom = nom;
+			this.computerDTO.name = name;
 			return this;
 		}
 		
