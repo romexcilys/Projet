@@ -8,13 +8,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.computerdatabase.domain.Company;
@@ -28,17 +32,24 @@ import com.computerdatabase.validator.ComputerValidator;
 /**
  * Servlet implementation class UpdateComputerServlet
  */
-//@WebServlet("/UpdateComputerServlet")
 @Controller
 @RequestMapping("/PageUpdate")
 public class UpdateComputerServlet{
 
 	@Autowired
-	ComputerServices computerServices;
+	private ComputerServices computerServices;
 	
 	@Autowired
-	CompanyServices companyServices;
+	private CompanyServices companyServices;
 	
+	@Autowired  
+    private ComputerValidator computerValidator;  
+      
+    @InitBinder  
+    private void initBinder(WebDataBinder binder) {  
+        binder.setValidator(computerValidator);  
+    } 
+    
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -53,31 +64,25 @@ public class UpdateComputerServlet{
 	 */
 	
 	@RequestMapping(method = RequestMethod.GET)
-	protected ModelAndView fonctionGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected ModelAndView fonctionGet(@RequestParam(value="id", required=false) Integer id, @ModelAttribute("computerDTO") ComputerDTO computerDTO) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
+		ModelAndView model = new ModelAndView("Formulaire");
 
-		String idComputer = request.getParameter("id");
-
-		if (idComputer != null) {
-			int id = Integer.parseInt(idComputer.trim());
-			ComputerDTO computerDTO = computerServices.find(id);
-			List<Company> companys = new ArrayList<Company>();
-
-			companys = companyServices.get();
-
+		if (id != null) {
 			
-			request.setAttribute("companys", companys);
-			request.setAttribute("computer", computerDTO);
-
+			computerDTO = computerServices.find(id);
+			
+			List<Company> companys = new ArrayList<Company>();
+			companys = companyServices.get();
+			model.addObject("companys", companys);
+			model.addObject("computer", computerDTO);
+			
+			model.addObject("computerDTO", computerDTO);
+			return model;
 		}
-		
-		return new ModelAndView("Formulaire");
-		/*this.getServletContext()
-				.getRequestDispatcher("/WEB-INF/Formulaire.jsp")
-				.forward(request, response);*/
-
+		else
+			return new ModelAndView("redirect:affichage?page=1");
 	}
 
 	/**
@@ -86,35 +91,29 @@ public class UpdateComputerServlet{
 	 */
 	
 	@RequestMapping(method = RequestMethod.POST)
-	protected ModelAndView fonctionPost(HttpServletRequest request,
-			HttpServletResponse response, @ModelAttribute("computerDTO") ComputerDTO computerDTO, BindingResult result) throws ServletException, IOException {
+	protected ModelAndView fonctionPost(@RequestParam(value="company", required= false) String company, @ModelAttribute("computerDTO") @Valid ComputerDTO computerDTO, BindingResult result) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		ComputerValidator computerValidator = new ComputerValidator();
+		ModelAndView model = new ModelAndView("Formulaire");
 		
-		computerValidator.validate(computerDTO, result);
+		computerDTO.setCompanyId(Integer.parseInt(company));
 		
 		if(result.hasErrors())
 		{
 			List<Company> companys = new ArrayList<Company>();
 
 			companys = companyServices.get();
-			request.setAttribute("companys", companys);
+			model.addObject("companys", companys);
+			model.addObject("computer", computerDTO);
 			
-			request.setAttribute("computer", computerDTO);
-			
-			return new ModelAndView("Formulaire");
+			return model;
 		}
 		else
 		{
-Computer computer = Mapper.fromDTO(computerDTO);
-			
+			Computer computer = Mapper.fromDTO(computerDTO);
 			computerServices.update(computer);
-			
 			return new ModelAndView("redirect:affichage?page=1");
 		}
-
-	
 	}
 	
 }

@@ -264,7 +264,6 @@ public class ComputerDAO {
 	public void update(Computer computer)
 			throws SQLException {
 		logger.info("In editComputer method");
-		
 		Connection connection = daoFactory.getConnectionThread();
 		StringBuilder query = new StringBuilder();
 		

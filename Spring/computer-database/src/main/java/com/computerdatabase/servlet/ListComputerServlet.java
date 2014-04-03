@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.computerdatabase.domain.Page;
@@ -20,13 +21,12 @@ import com.computerdatabase.service.ComputerServices;
 /**
  * Servlet implementation class ListComputerServlet
  */
-//@WebServlet("/ListComputerServlet")
 @Controller
 @RequestMapping("/affichage")
 public class ListComputerServlet{
 	
 	@Autowired
-	ComputerServices computerServices;
+	private ComputerServices computerServices;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -40,42 +40,20 @@ public class ListComputerServlet{
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	
 	@RequestMapping(method = RequestMethod.GET)
-	protected ModelAndView fonctionGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected ModelAndView fonctionGet(@RequestParam(value = "sort", required = false) String sort, @RequestParam(value = "ordre", required = false) String ordre, @RequestParam(value = "page", required = false) Integer currentPage, HttpServletRequest request
+			) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		System.out.println("cocuou");
 		HttpSession session = request.getSession();
-
+		ModelAndView model = new ModelAndView("dashboard");
 
 		final int nombreElement = 11;
-		int currentPage = 1;
 
 		session.setAttribute("search", false);
 
-		String sort = "compu_name";
-		if (request.getParameter("sort") != null
-				&& request.getParameter("sort").compareTo("") != 0)
-			sort = request.getParameter("sort");
-
-		String ordre = "ASC";
-		if (request.getParameter("ordre") != null
-				&& request.getParameter("ordre").compareTo("") != 0)
-			ordre = request.getParameter("ordre");
-
-		try {
-
-			if (request.getParameter("page") != null
-					&& request.getParameter("page").compareTo("") != 0
-					&& Integer.parseInt(request.getParameter("page")) >= 1)
-				currentPage = Integer.parseInt(request.getParameter("page"));
-
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		if(currentPage == null)
+			currentPage = 1;
 
 		int elementSearch = (currentPage - 1) * nombreElement;
 
@@ -92,11 +70,8 @@ public class ListComputerServlet{
 
 		page.setNumberPage(numberPage);
 
-		request.setAttribute("infoPage", page);
+		model.addObject("infoPage", page);
 
-		
-		System.out.println("I'm here");
-		
-		return new ModelAndView("dashboard");
+		return model;
 	}
 }

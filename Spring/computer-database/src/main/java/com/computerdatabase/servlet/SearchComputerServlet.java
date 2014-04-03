@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.computerdatabase.domain.Page;
@@ -20,15 +21,13 @@ import com.computerdatabase.service.ComputerServices;
 /**
  * Servlet implementation class SearchComputerServlet
  */
-//@0WebServlet("/SearchComputerServlet")
 @Controller
 @RequestMapping("/SearchComputer")
-public class SearchComputerServlet{
+public class SearchComputerServlet {
 
-	
 	@Autowired
-	ComputerServices computerServices;
-	
+	private ComputerServices computerServices;
+
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -42,71 +41,47 @@ public class SearchComputerServlet{
 	 *      response)
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	protected ModelAndView fonctionGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected ModelAndView fonctionGet(
+			@RequestParam(value = "search", required = false) String nom,
+			@RequestParam(value = "sort", required = false) String sort,
+			@RequestParam(value = "ordre", required = false) String ordre,
+			@RequestParam(value = "page", required = false) Integer currentPage,
+			HttpServletRequest request)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
+		ModelAndView model = new ModelAndView("dashboard");
+
 		final int nombreElement = 11;
 		
-		String nom = "";
-		if (request.getParameter("search") != null)
-			nom = request.getParameter("search").toLowerCase();
 
 		HttpSession session = request.getSession();
+		session.setAttribute("search", true);
 
-		String sort = "compu_name";
-		if (request.getParameter("sort") != null
-				&& request.getParameter("sort").compareTo("") != 0)
-			sort = request.getParameter("sort");
+		if(currentPage == null)
+			currentPage = 1;
 
-		String ordre = "ASC";
-		if (request.getParameter("ordre") != null
-				&& request.getParameter("ordre").compareTo("") != 0)
-			ordre = request.getParameter("ordre");
+		int elementSearch = (currentPage - 1) * nombreElement;
 
-		// EST CE QUE LA VALEUR DE RECHERCHE N'EST PAS VIDE
-		if (nom.length() != 0) {
+		Page page = Page.builder().elementSearch(elementSearch)
+				.currentPage(currentPage).numberElement(nombreElement)
+				.sort(sort).ordre(ordre).name(nom)
+				.searchName(nom.toLowerCase()).build();
 
-			session.setAttribute("search", true);
+		computerServices.find(page);
 
-			int currentPage = 1;
-			try{
-				
-				if (request.getParameter("page") != null)
-				currentPage = Integer.parseInt(request.getParameter("page"));
-				
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		int nombreComputer = page.getNumberComputer();
 
-			int elementSearch = (currentPage - 1) * nombreElement;
+		int numberPage = (int) (Math.ceil((double) nombreComputer
+				/ nombreElement));
 
-			Page page = Page.builder().elementSearch(elementSearch)
-					.currentPage(currentPage).numberElement(nombreElement)
-					.sort(sort).ordre(ordre).name(nom).searchName(nom)
-					.build();
+		if (numberPage == 0)
+			numberPage = 1;
 
-			computerServices.find(page);
+		page.setNumberPage(numberPage);
 
-			int nombreComputer = page.getNumberComputer();
-			
-			int numberPage = (int) (Math.ceil((double) nombreComputer
-					/ nombreElement));
-			
-			if(numberPage == 0)
-				numberPage = 1;
-			
-			page.setNumberPage(numberPage);
+		model.addObject("infoPage", page);
+		return model;
 
-			request.setAttribute("infoPage", page);
-			return new ModelAndView("dashboard");
-
-		} else// SI STRING VIDE ALORS ON REVIENT SUR PAGE AFFICHAGE
-		{
-			session.setAttribute("search", false);
-			
-			return new ModelAndView("redirect:affichage?page=1");
-		}
 	}
 }

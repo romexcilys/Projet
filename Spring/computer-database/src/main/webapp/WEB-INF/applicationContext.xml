@@ -16,7 +16,9 @@
 	<context:annotation-config /> 
 	<context:component-scan base-package="com.computerdatabase.dao"/>
 	<context:component-scan base-package="com.computerdatabase.service"/>
+	<context:component-scan base-package="com.computerdatabase.validator"/>
 		
+	
 		
 	<!-- 
 	<bean id="txManager" class="org.springframework.transaction.jta.JtaTransactionManager"/>

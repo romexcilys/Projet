@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <!DOCTYPE html>
 <html>
@@ -16,6 +16,7 @@
 	<header class="topbar">
 		<h1 class="fill">
 			<a href="affichage?page=1"> Application - Computer Database </a>
-
+			Language : <a href="?lang=en">English</a>|<a href="?lang=fr">French</a>
 		</h1>
+		
 	</header>

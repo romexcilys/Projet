@@ -21,6 +21,9 @@
 		<version-joda>2.3</version-joda>
 		<version-spring>4.0.2.RELEASE</version-spring>
 		<version-aspectjrt>1.7.4</version-aspectjrt>
+		<version-logback>1.1.1</version-logback>
+		<version-hibernate-validator>5.1.0.Final</version-hibernate-validator>
+		<version-validation-api>1.1.0.Final</version-validation-api>
 	</properties>
 
 	<dependencies>
@@ -114,31 +117,30 @@
 			<artifactId>spring-aop</artifactId>
 			<version>${version-spring}</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback</artifactId>
-			<version>0.5</version>
-			<type>pom</type>
-		</dependency> -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${version-spring}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.6</version>
-		</dependency>
-		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
-			<version>1.1.0.Final</version>
+			<version>${version-validation-api}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>5.1.0.Final</version>
+			<version>${version-hibernate-validator}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${version-logback}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${version-logback}</version>
 		</dependency>
 	</dependencies>
 

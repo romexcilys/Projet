@@ -3,6 +3,7 @@
 <%@ attribute name="search" required="true" %> 
 <%@ attribute name="searchName" required="true" %> 
 <%@ attribute name="numberPage" required="true" %> 
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 
 <c:choose>
@@ -10,14 +11,14 @@
 		<c:choose>
 			<c:when test="${search == true }">
 				<a
-					href="SearchComputer?search=<c:out value='${ searchName }'/>&page=<c:out value='${ currentPage - 1 }'/>">Previous</a>
+					href="SearchComputer?search=<c:out value='${ searchName }'/>&page=<c:out value='${ currentPage - 1 }'/>"><spring:message code="prece.text" text="Computer default" /></a>
 			</c:when>
 			<c:otherwise>
-				<a href="affichage?page=<c:out value='${ currentPage - 1 }'/>">Previous</a>
+				<a href="affichage?page=<c:out value='${ currentPage - 1 }'/>"><spring:message code="prece.text" text="Computer default" /></a>
 			</c:otherwise>
 		</c:choose>
 	</c:when>
-	<c:otherwise>Previous</c:otherwise>
+	<c:otherwise><spring:message code="prece.text" text="Computer default" /></c:otherwise>
 </c:choose>
 /
 <c:choose>
@@ -25,14 +26,14 @@
 		<c:choose>
 			<c:when test="${search == true }">
 				<a
-					href="SearchComputer?search=<c:out value='${ searchName }'/>&page=<c:out value='${ currentPage + 1 }'/>">Next</a>
+					href="SearchComputer?search=<c:out value='${ searchName }'/>&page=<c:out value='${ currentPage + 1 }'/>"><spring:message code="suiv.text" text="Computer default" /></a>
 			</c:when>
 			<c:otherwise>
-				<a href="affichage?page=<c:out value='${ currentPage + 1 }'/>">Next</a>
+				<a href="affichage?page=<c:out value='${ currentPage + 1 }'/>"><spring:message code="suiv.text" text="Computer default" /></a>
 			</c:otherwise>
 		</c:choose>
 	</c:when>
-	<c:otherwise>Next</c:otherwise>
+	<c:otherwise><spring:message code="suiv.text" text="Computer default" /></c:otherwise>
 </c:choose>
 &nbsp;&nbsp;
 Page

@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <%@ taglib tagdir="/WEB-INF/tags" prefix="pag"%>
 
@@ -8,20 +9,18 @@
 	<!-- AFFICHER NOMBRE EN BASE DE DONNEE OU QUI SONT RELIE A UNE COMPANY ? -->
 	<h1 id="homeTitle">
 		<c:out value="${ infoPage.numberComputer }" />
-		Computers found
+		<spring:message code="nbrCompu.text" text="Computer default" />
 	</h1>
 	<div id="actions">
 		<form action="SearchComputer" method="GET">
 			<input type="hidden" name="page" value="1" /> <input type="search"
-				id="searchbox" name="search" value="" placeholder="Search name">
-			<input type="submit" id="searchsubmit" value="Filter by name"
+				id="searchbox" name="search" value="" placeholder="<spring:message code='search_holer.text' text='Search Name' />">
+			<input type="submit" id="searchsubmit" value="<spring:message code='search.text' text='Search' />"
 				class="btn primary">
 		</form>
 
 		<div id="coincoin">
-			<a class="btn success" id="delete" href="PageDelete">Delete
-				Computer</a> <a class="btn success" id="addo" href="PageAjout">Add
-				Computer</a>
+			<a class="btn success" id="addo" href="PageAjout"><spring:message code='add.text' text='Add' /></a>
 
 		</div>
 	</div>
@@ -31,7 +30,7 @@
 			<tr>
 				<!-- Variable declarations for passing labels as parameters -->
 				<!-- Table header for Computer Name -->
-				<th id="computerName" >Computer Name  <pag:UrlMaker
+				<th id="computerName" > <spring:message code="comp.text" text="Computer" />  <pag:UrlMaker
 						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
 						sort="compu_name" ordre="asc" /><img src="<c:url value="/images/fleche_bas.png"  />"/></a>
 					<pag:UrlMaker searchName="${ infoPage.searchName }"
@@ -40,7 +39,7 @@
 
 				</th>
 
-				<th id="introducedDate" >Introduced Date <pag:UrlMaker searchName="${ infoPage.searchName }"
+				<th id="introducedDate" ><spring:message code="intro.text" text="Introduced Date" /> <pag:UrlMaker searchName="${ infoPage.searchName }"
 						search="${ sessionScope.search }" sort="intro_date" ordre="asc" />
 					<img src="<c:url value="/images/fleche_bas.png"  />" /></a> <pag:UrlMaker
 						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
@@ -49,7 +48,7 @@
 				</th>
 
 				<!-- Table header for Discontinued Date -->
-				<th id="discontinuedDate" >Discontinued Date <pag:UrlMaker
+				<th id="discontinuedDate" ><spring:message code="discon.text" text="Discontinued Date" /> <pag:UrlMaker
 						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
 						sort="discon_date" ordre="asc" /><img src="<c:url value="/images/fleche_bas.png"  />" /></a>
 					<pag:UrlMaker searchName="${ infoPage.searchName }"
@@ -60,7 +59,7 @@
 				<!-- Table header for Company -->
 
 
-				<th id="companyName" >Company <pag:UrlMaker searchName="${ infoPage.searchName }"
+				<th id="companyName" ><spring:message code="compa.text" text="Company" /> <pag:UrlMaker searchName="${ infoPage.searchName }"
 						search="${ sessionScope.search }" sort="compa_name" ordre="asc" /><img
 					src="<c:url value="/images/fleche_bas.png"  />" /></a> <pag:UrlMaker
 						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
@@ -83,10 +82,10 @@
 					<td><c:out value="${computer.discontinuedDate }" /></td>
 					<td><c:out value="${computer.company.name }" /></td>
 						<td><a class="btn primary"
-						href="PageUpdate?id= <c:out value='${ computer.id }'/>">Update</a>
+						href="PageUpdate?id= <c:out value='${ computer.id }'/>"><spring:message code='update.text' text='Update' /></a>
 						<a class="btn error"
 						href="PageDelete?id= <c:out value='${ computer.id }'/>"
-						onclick="return confirm('Are you sure ?');">Delete</a></td>
+						onclick="return confirm('Are you sure ?');"><spring:message code='delete.text' text='Delete' /></a></td>
 				</tr>
 
 			</c:forEach>
