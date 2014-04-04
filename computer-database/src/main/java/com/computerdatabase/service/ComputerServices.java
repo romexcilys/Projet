@@ -23,6 +23,7 @@ public class ComputerServices {
 	
 	@Autowired
 	private ComputerDAO computerDAO;
+	
 	@Autowired
 	private LogDAO logDAO;
 	private final Logger logger = LoggerFactory.getLogger(CompanyServices.class);
@@ -207,7 +208,7 @@ public class ComputerServices {
 			logger.error("Error in update ComputerServices");
 			daoFactory.rollbackConnection(connection);
 			e.printStackTrace();
-		} fianlly{
+		} finally{
 			daoFactory.closeConnection();
 		}
 		

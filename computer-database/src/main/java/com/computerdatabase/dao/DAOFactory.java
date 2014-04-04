@@ -2,7 +2,10 @@ package com.computerdatabase.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +14,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.jolbox.bonecp.BoneCP;
-import com.jolbox.bonecp.BoneCPConfig;
-import com.mysql.jdbc.ResultSet;
 
 @Component
 public class DAOFactory {
-	
 	
 	@Autowired
 	@Qualifier("companyDAO")
@@ -27,12 +27,11 @@ public class DAOFactory {
 	private ComputerDAO computerDAO;
 	@Autowired
 	private LogDAO logDAO;
-	private ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>();
 	
-	private static String url = "jdbc:mysql://127.0.0.1/computer-database-db?zeroDateTimeBehavior=convertToNull";
-	private static String user = "jee-cdb";
-	private static String password = "password";
-	private static BoneCP connectionPool = null;
+	private ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>();
+		
+	@Autowired
+	private DataSource connectionPool;
 	
 	final static Logger logger = LoggerFactory.getLogger(DAOFactory.class);
 	
@@ -50,7 +49,7 @@ public class DAOFactory {
 	}
 	
 	//PARTIE POOL DE CONNECTION
-	
+	/*
 	public static void configureConnPool()
 	{
 		logger.info("In configurePool");
@@ -84,13 +83,14 @@ public class DAOFactory {
 		
 		logger.info("Quit configurePool");
 	}
+	*/
 	
-	public static void shutdownConnPool()
+	public void shutdownConnPool()
 	{
-		BoneCP connectionPool = getConnectionPool();
+		//BoneCP connectionPool = getConnectionPool();
 		if(connectionPool != null)
 		{
-			connectionPool.shutdown();
+			((BoneCP) connectionPool).shutdown();
 		}
 	}
 	
@@ -100,7 +100,7 @@ public class DAOFactory {
 		Connection conn = null;
 			
 		try {
-			conn = getConnectionPool().getConnection();
+			conn = connectionPool.getConnection();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -115,7 +115,6 @@ public class DAOFactory {
 		}
 		logger.info("Quit getConnection method");
 		return conn;
-		
 	}
 	
 	public void closePreparedStatement(PreparedStatement ps)
@@ -141,7 +140,7 @@ public class DAOFactory {
 			e.printStackTrace();
 		}
 	}
-	
+	/*
 	public static BoneCP getConnectionPool()
 	{
 		logger.info("In getConnectionPool");
@@ -150,8 +149,8 @@ public class DAOFactory {
 		logger.info("Quit getConnectionPool");
 		return connectionPool;
 	}
-	
-	public void setConnectionPool(BoneCP connectionPools) 
+*/
+	public void setConnectionPool(DataSource connectionPools) 
 	{
 		logger.info("In setConnectionPool");
 		connectionPool = connectionPools;
@@ -213,10 +212,7 @@ public class DAOFactory {
 		threadLocal.set(null);
 	}
 	
-	
 	//PARTIE DAO
-	
-	
 	public CompanyDAO getCompanyDAO()
 	{
 		return companyDAO;

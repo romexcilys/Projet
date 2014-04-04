@@ -12,7 +12,7 @@
 	<properties>
 		<version-slf4j>1.7.6</version-slf4j>
 		<version-bonecp>0.7.1.RELEASE</version-bonecp>
-		<version-mysql>3.1.12</version-mysql>
+		<version-mysql>5.1.30</version-mysql>
 		<version-guava>13.0.1</version-guava>
 		<version-ecj>3.7</version-ecj>
 		<version-jstl>1.2</version-jstl>
