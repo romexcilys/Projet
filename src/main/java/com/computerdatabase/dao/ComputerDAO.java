@@ -37,59 +37,34 @@ public class ComputerDAO {
 		
 		StringBuilder query = new StringBuilder();
 		
-		query.append("INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?,");
-		if(computer.getIntroducedDate() != null)
-			query.append("?,");
-		else
-			query.append("'0000-00-00',");
-		
-		if(computer.getDiscontinuedDate() != null)
-			query.append("?,");
-		else
-			query.append("'0000-00-00',");
-		
-		if (computer.getCompany().getId() != 0)
-			query.append("?);");
-		else
-			query.append("null);");
-/*
-		if (computer.getCompany().getId() != 0)
-			query = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?,?,?,?);";
-		else
-			query = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?,?,?,null);";
-*/
+		query.append("INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?);");
+
 		PreparedStatement ps = null;
-		
-		
+	
 		ps = connection.prepareStatement(query.toString(),Statement.RETURN_GENERATED_KEYS);
 		ps.setString(1, computer.getName());
-		int position = 2;
 		
 		if(computer.getIntroducedDate() != null)
-		{
-			ps.setDate(position, new java.sql.Date(computer.getIntroducedDate().toDate().getTime()));
-			position++;
-		}
+			ps.setDate(2, new java.sql.Date(computer.getIntroducedDate().toDate().getTime()));
+		else
+			ps.setNull(2, java.sql.Types.DATE);
 		
 		if(computer.getDiscontinuedDate() != null)
-		{
-			ps.setDate(position, new java.sql.Date(computer.getDiscontinuedDate().toDate()
+			ps.setDate(3, new java.sql.Date(computer.getDiscontinuedDate().toDate()
 				.getTime()));
-			position++;
-		}
+		else
+			ps.setNull(3, java.sql.Types.DATE);
 
 		if (computer.getCompany().getId() != 0)
-		{
-			ps.setInt(position, computer.getCompany().getId());
-			position++;
-		}
+			ps.setInt(4, computer.getCompany().getId());
+		else
+			ps.setNull(4, java.sql.Types.BIGINT);
 		
 		int idComputer = ps.executeUpdate();
 		ps.close();
 		
 		
-		//RECHERCHE DE L'ID DU COMPUTER AJOUTER
-		
+		//EDIT DE L'ID DU COMPUTER AJOUTER
 		computer.setId(idComputer);
 
 		logger.info("Quit insererComputer method");
@@ -258,29 +233,7 @@ public class ComputerDAO {
 		Connection connection = DataSourceUtils.getConnection(connectionPool);
 		StringBuilder query = new StringBuilder();
 		
-		query.append("UPDATE computer SET name = ?, introduced = ");
-		
-		if(computer.getIntroducedDate() == null)
-			query.append("'0000-00-00', ");
-		else
-			query.append("?, ");
-		
-		
-		query.append("discontinued = ");
-		
-		if(computer.getDiscontinuedDate() == null)
-			query.append("'0000-00-00', ");
-		else
-			query.append("?, ");
-		
-		query.append("company_id = ");
-		
-		if(computer.getCompany().getId() != 0)
-			query.append("? ");
-		else
-			query.append("null ");
-		
-		query.append(" WHERE id = ?;");
+		query.append("UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?;");
 		
 			//String query = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?;";
 
@@ -289,28 +242,24 @@ public class ComputerDAO {
 		ps = connection.prepareStatement(query.toString());
 		ps.setString(1, computer.getName());
 
-		
-		int position = 2;
-	
 		if(computer.getIntroducedDate() != null)
-		{
-			ps.setDate(position, new java.sql.Date(computer.getIntroducedDate().toDate().getTime()));
-			position++;
-		}
+			ps.setDate(2, new java.sql.Date(computer.getIntroducedDate().toDate().getTime()));
+		else
+			ps.setNull(2, java.sql.Types.DATE);
 		
 		if(computer.getDiscontinuedDate() != null)
-		{
-			ps.setDate(position, new java.sql.Date(computer.getDiscontinuedDate().toDate().getTime()));
-			position++;
-		}
+			ps.setDate(3, new java.sql.Date(computer.getDiscontinuedDate().toDate().getTime()));
+		else
+			ps.setNull(3, java.sql.Types.DATE);
+		
 				
 
-		if (computer.getCompany().getId() != 0) {
-			ps.setInt(position, computer.getCompany().getId());
-			position++;
-		} 
+		if (computer.getCompany().getId() != 0)
+			ps.setInt(4, computer.getCompany().getId());
+		else
+			ps.setNull(4, java.sql.Types.VARCHAR);
 
-		ps.setInt(position, computer.getId());
+		ps.setInt(5, computer.getId());
 
 		ps.execute();
 

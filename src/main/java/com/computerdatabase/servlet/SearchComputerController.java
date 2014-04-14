@@ -54,34 +54,38 @@ public class SearchComputerController {
 
 		final int nombreElement = 11;
 		
-
-		HttpSession session = request.getSession();
-		session.setAttribute("search", true);
-
-		if(currentPage == null)
-			currentPage = 1;
-
-		int elementSearch = (currentPage - 1) * nombreElement;
-
-		Page  page = Page.builder().elementSearch(elementSearch)
-				.currentPage(currentPage).numberElement(nombreElement)
-				.sort(sort).ordre(ordre).name(nom)
-				.searchName(nom.toLowerCase()).build();
-
-		computerServices.find(page);
-		
-		int nombreComputer = page.getNumberComputer();
-
-		int numberPage = (int) (Math.ceil((double) nombreComputer
-				/ nombreElement));
-
-		if (numberPage == 0)
-			numberPage = 1;
-
-		page.setNumberPage(numberPage);
-
-		model.addObject("infoPage", page);
-		return model;
+		if(nom != null)
+		{
+			HttpSession session = request.getSession();
+			session.setAttribute("search", true);
+	
+			if(currentPage == null)
+				currentPage = 1;
+	
+			int elementSearch = (currentPage - 1) * nombreElement;
+	
+			Page  page = Page.builder().elementSearch(elementSearch)
+					.currentPage(currentPage).numberElement(nombreElement)
+					.sort(sort).ordre(ordre).name(nom)
+					.searchName(nom.toLowerCase()).build();
+			
+			computerServices.find(page);
+			
+			int nombreComputer = page.getNumberComputer();
+	
+			int numberPage = (int) (Math.ceil((double) nombreComputer
+					/ nombreElement));
+	
+			if (numberPage == 0)
+				numberPage = 1;
+	
+			page.setNumberPage(numberPage);
+	
+			model.addObject("infoPage", page);
+			return model;
+		}
+		else
+			return new ModelAndView("redirect:affichage?page=1");
 
 	}
 }
