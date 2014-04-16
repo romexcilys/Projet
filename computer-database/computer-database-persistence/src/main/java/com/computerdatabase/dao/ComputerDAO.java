@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -14,7 +13,11 @@ import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import com.computerdatabase.domain.Company;
@@ -27,45 +30,51 @@ public class ComputerDAO {
 	@Autowired
 	private DataSource connectionPool;
 	
+	JdbcTemplate jdbcTemplate;
+	
 	private final Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 
 	public void put(Computer computer)
 			throws SQLException {
 		logger.info("In insererComputer with computer argument");
 		
-		Connection connection = DataSourceUtils.getConnection(connectionPool);
+		jdbcTemplate = new JdbcTemplate(connectionPool);
 		
-		StringBuilder query = new StringBuilder();
+		final String query = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?);";
+		final Computer computerer = computer;
 		
-		query.append("INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?);");
+		System.out.println(computerer);
+		System.out.println(computer);
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		
+		jdbcTemplate.update(new PreparedStatementCreator(){
+			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException
+			{
+				PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+				ps.setString(1, computerer.getName());
+				
+				if(computerer.getIntroducedDate() != null)
+					ps.setDate(2, new java.sql.Date(computerer.getIntroducedDate().toDate().getTime()));
+				else
+					ps.setDate(2, null);
+				
+				if(computerer.getDiscontinuedDate() != null)
+					ps.setDate(3, new java.sql.Date(computerer.getDiscontinuedDate().toDate()
+						.getTime()));
+				else
+					ps.setNull(3, java.sql.Types.DATE);
 
-		PreparedStatement ps = null;
-	
-		ps = connection.prepareStatement(query.toString(),Statement.RETURN_GENERATED_KEYS);
-		ps.setString(1, computer.getName());
-		
-		if(computer.getIntroducedDate() != null)
-			ps.setDate(2, new java.sql.Date(computer.getIntroducedDate().toDate().getTime()));
-		else
-			ps.setNull(2, java.sql.Types.DATE);
-		
-		if(computer.getDiscontinuedDate() != null)
-			ps.setDate(3, new java.sql.Date(computer.getDiscontinuedDate().toDate()
-				.getTime()));
-		else
-			ps.setNull(3, java.sql.Types.DATE);
-
-		if (computer.getCompany().getId() != 0)
-			ps.setInt(4, computer.getCompany().getId());
-		else
-			ps.setNull(4, java.sql.Types.BIGINT);
-		
-		int idComputer = ps.executeUpdate();
-		ps.close();
-		
+				if (computerer.getCompany().getId() != 0)
+					ps.setInt(4, computerer.getCompany().getId());
+				else
+					ps.setNull(4, java.sql.Types.BIGINT);
+			
+				return ps;
+			}	
+		}, keyHolder);
 		
 		//EDIT DE L'ID DU COMPUTER AJOUTER
-		computer.setId(idComputer);
+		computer.setId(keyHolder.getKey().intValue());
 
 		logger.info("Quit insererComputer method");
 	}
@@ -77,9 +86,6 @@ public class ComputerDAO {
 		int number = page.getNumberElement();
 		String sort = page.getSort();
 		String ordre = page.getOrdre();
-		
-		Connection connection = DataSourceUtils.getConnection(connectionPool);
-		List<Computer> computers = new ArrayList<Computer>();
 
 		StringBuilder query = new StringBuilder();
 		
@@ -131,139 +137,108 @@ public class ComputerDAO {
 		}
 		
 		query.append(";");
+	
+		jdbcTemplate = new JdbcTemplate(connectionPool);
 		
-		PreparedStatement ps = null;
-		ResultSet results = null;
-
-		ps = connection.prepareStatement(query.toString());
-		results = ps.executeQuery();
-
-		while (results.next()) {
-			int id = results.getInt("compu_id");
-			String name = results.getString("compu_name");
-			LocalDate introduced = null;
-			if(results.getDate("introduced") != null)
-				introduced = LocalDate.fromDateFields(results.getDate("introduced"));
+		List<Computer> computers = this.jdbcTemplate.query(query.toString(),
+				new RowMapper<Computer>(){
 			
-			LocalDate discontinued = null;
-			if(results.getDate("discontinued") != null)
-				discontinued = LocalDate.fromDateFields(results.getDate("discontinued"));
-
-			int compaId = results.getInt("id");
-			String compaName = results.getString("compa_name");
-
-			Computer computer = Computer
-					.builder()
-					.id(id)
-					.name(name)
-					.introduced(introduced)
-					.discontinued(discontinued)
-					.company(
-							Company.builder().id(compaId).name(compaName)
-									.build()).build();
+			public Computer mapRow(ResultSet rs, int rowNum) throws SQLException{
+				Computer computer = Computer
+						.builder()
+						.id(rs.getInt("compu_id"))
+						.name(rs.getString("compu_name"))
+						.company(
+								Company.builder().id(rs.getInt("id")).name(rs.getString("compa_name"))
+										.build()).build();
+				
+				if(rs.getDate("introduced") != null)
+					computer.setIntroducedDate(LocalDate.fromDateFields(rs.getDate("introduced")));
+				
+				if(rs.getDate("discontinued") != null)
+					computer.setDiscontinuedDate(LocalDate.fromDateFields(rs.getDate("discontinued")));
+				
+				
+				return computer;
+			}
 			
-			computers.add(computer);
-		}
-
-		ps.close();
-		results.close();
-
+		});
+		
 		logger.info("Quit getListComputer method");
 		
 		return computers;
-
 	}
 
 	public int getNumber() throws SQLException {
 		logger.info("In getNumberComputer method");
 		
-		Connection connection = DataSourceUtils.getConnection(connectionPool);
-		int total = 0;
-
+		jdbcTemplate = new JdbcTemplate(connectionPool);
+		
 		String query = "SELECT COUNT(*) as nombre FROM computer;";
-
-		Statement stmt = null;
-		ResultSet results = null;
-
-		stmt = connection.createStatement();
-		results = stmt.executeQuery(query);
-		results.next();
-		total = results.getInt("nombre");
-
-		stmt.close();
-		results.close();
-
+		int total =0;
+		
+		total = jdbcTemplate.queryForObject(query, Long.class).intValue();
+		
 		logger.info("Quit getNumberComputer method");
-
+		
 		return total;
 	}
 
 	public int getNumber(String nom) throws SQLException {
 		logger.info("In getNumberComputer method with arguments");
 		
-		Connection connection = DataSourceUtils.getConnection(connectionPool);
 		int total = 0;
-
+		
+		jdbcTemplate = new JdbcTemplate(connectionPool);
+		
 		String query = "SELECT COUNT(*) AS nombre FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ?;";
 
-		PreparedStatement ps = null;
-		ResultSet results = null;
-
-		ps = connection.prepareStatement(query);
-		ps.setString(1, "%" + nom + "%");
-		ps.setString(2, "%" + nom + "%");
-
-		results = ps.executeQuery();
-		results.next();
-		total = results.getInt("nombre");
-
-		ps.close();
-		results.close();
-
+		total = jdbcTemplate.queryForObject(query, new Object[]{"%" + nom + "%", "%" + nom + "%"}, Long.class).intValue();
+		
 		logger.info("Quit getNumberComputer method");
 
 		return total;
 	}
-
 	
 	///VOIR PROBLEME D'UPDATE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public void update(Computer computer)
 			throws SQLException {
 		logger.info("In editComputer method");
-		Connection connection = DataSourceUtils.getConnection(connectionPool);
-		StringBuilder query = new StringBuilder();
+		jdbcTemplate = new JdbcTemplate(connectionPool);
 		
-		query.append("UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?;");
-		
+		final String query = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?;";
+		final Computer computerer = computer;
 			//String query = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?;";
 
-		PreparedStatement ps = null;
-
-		ps = connection.prepareStatement(query.toString());
-		ps.setString(1, computer.getName());
-
-		if(computer.getIntroducedDate() != null)
-			ps.setDate(2, new java.sql.Date(computer.getIntroducedDate().toDate().getTime()));
-		else
-			ps.setNull(2, java.sql.Types.DATE);
 		
-		if(computer.getDiscontinuedDate() != null)
-			ps.setDate(3, new java.sql.Date(computer.getDiscontinuedDate().toDate().getTime()));
-		else
-			ps.setNull(3, java.sql.Types.DATE);
-		
+		jdbcTemplate.update(new PreparedStatementCreator(){
+			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException
+			{
+				PreparedStatement ps = connection.prepareStatement(query);
+				ps.setString(1, computerer.getName());
 				
+				if(computerer.getIntroducedDate() != null)
+					ps.setDate(2, new java.sql.Date(computerer.getIntroducedDate().toDate().getTime()));
+				else
+					ps.setDate(2, null);
+				
+				if(computerer.getDiscontinuedDate() != null)
+					ps.setDate(3, new java.sql.Date(computerer.getDiscontinuedDate().toDate()
+						.getTime()));
+				else
+					ps.setNull(3, java.sql.Types.DATE);
 
-		if (computer.getCompany().getId() != 0)
-			ps.setInt(4, computer.getCompany().getId());
-		else
-			ps.setNull(4, java.sql.Types.VARCHAR);
-
-		ps.setInt(5, computer.getId());
-
-		ps.execute();
-
-		ps.close();
+				if (computerer.getCompany().getId() != 0)
+					ps.setInt(4, computerer.getCompany().getId());
+				else
+					ps.setNull(4, java.sql.Types.BIGINT);
+			
+				ps.setInt(5, computerer.getId());
+				
+				return ps;
+			}	
+		});
+		
 
 		logger.info("Quit editComputer method");
 	}
@@ -271,68 +246,45 @@ public class ComputerDAO {
 	public void delete(int id) throws SQLException {
 		logger.info("In deleteComputer method with id argument");
 		
-		Connection connection = DataSourceUtils.getConnection(connectionPool);
-		
 		String query = "DELETE FROM computer WHERE id = ?;";
+		
+		jdbcTemplate = new JdbcTemplate(connectionPool);
 
-		PreparedStatement ps = null;
-
-		ps = connection.prepareStatement(query);
-		ps.setInt(1, id);
-
-		ps.execute();
-
-		ps.close();
-
+		jdbcTemplate.update(query, new Object[]{id});
+		
 		logger.info("Quit deleteComputer method");
 	}
 
 	public Computer find(int id) throws SQLException {
 		logger.info("In findComputer method with id argument");
 		
-		Connection connection = DataSourceUtils.getConnection(connectionPool);
-		Computer computer = null;
-
 		String query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued,  compa.name AS compa_name, compa.id AS compaID FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE compu.id = ?;";
 
-		PreparedStatement ps = null;
-		ResultSet results = null;
-
-		ps = connection.prepareStatement(query);
-		ps.setInt(1, id);
-
-		results = ps.executeQuery();
-
-		while (results.next()) {
-			String name = results.getString("compu_name");
-			LocalDate introduced = null;
+		jdbcTemplate = new JdbcTemplate(connectionPool);
+		
+		Computer computer = (Computer) jdbcTemplate.queryForObject(query.toString(), new Object[]{id},
+				new RowMapper<Computer>(){
 			
-			if(results.getDate("introduced") != null)
-				introduced = LocalDate.fromDateFields(results.getDate("introduced"));
-			
-			LocalDate discontinued = null;
-			if(results.getDate("discontinued") != null)
-				discontinued = LocalDate.fromDateFields(results.getDate("discontinued"));
-
-			int compaId = results.getInt("compaID");
-			String compaName = results.getString("compa_name");
-
-			computer = Computer
-					.builder()
-					.id(id)
-					.name(name)
-					.introduced(introduced)
-					.discontinued(discontinued)
-					.company(
-							Company.builder().id(compaId).name(compaName)
-									.build()).build();
-
-
-		}
-
-		ps.close();
-		results.close();
-
+			public Computer mapRow(ResultSet rs, int rowNum) throws SQLException{
+				Computer comput = Computer
+						.builder()
+						.id(rs.getInt("compu_id"))
+						.name(rs.getString("compu_name"))
+						.company(
+								Company.builder().id(rs.getInt("compaID")).name(rs.getString("compa_name"))
+										.build()).build();
+				
+				if(rs.getDate("introduced") != null)
+					comput.setIntroducedDate(LocalDate.fromDateFields(rs.getDate("introduced")));
+				
+				if(rs.getDate("discontinued") != null)
+					comput.setDiscontinuedDate(LocalDate.fromDateFields(rs.getDate("discontinued")));
+				
+				
+				return comput;
+			}
+		});
+		
 		logger.info("Quit findComputer method");
 
 		return computer;
@@ -340,7 +292,6 @@ public class ComputerDAO {
 
 	public List<Computer> findPage(Page page)
 			throws SQLException {
-		
 		int debut = page.getElementSearch();
 		int number = page.getNumberElement();
 		String sort = page.getSort();
@@ -349,9 +300,6 @@ public class ComputerDAO {
 		
 		logger.info("In searchComputer method");
 		
-		Connection connection = DataSourceUtils.getConnection(connectionPool);
-		List<Computer> computers = new ArrayList<Computer>();
-
 		StringBuilder query = new StringBuilder();
 		
 		query.append("SELECT compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued, compa.id AS compaID, compa.name AS compa_name FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE LOWER(compa.name) LIKE ? OR LOWER(compu.name) LIKE ? ");
@@ -403,46 +351,32 @@ public class ComputerDAO {
 		
 		query.append(";");
 		
-		PreparedStatement ps = null;
-		ResultSet results = null;
-
-		ps = connection.prepareStatement(query.toString());
-		ps.setString(1, "%" + nom + "%");
-		ps.setString(2, "%" + nom + "%");
-
-		results = ps.executeQuery();
-
-		while (results.next()) {
-			int id = results.getInt("compu_id");
-			String name = results.getString("compu_name");
-			LocalDate introduced = null;
-			if(results.getDate("introduced") != null)
-				introduced = LocalDate.fromDateFields(results.getDate("introduced"));
-			
-			LocalDate discontinued = null;
-			if(results.getDate("discontinued") != null)
-				discontinued = LocalDate.fromDateFields(results.getDate("discontinued"));
-
-			int compaId = results.getInt("compaId");
-			String compaName = results.getString("compa_name");
-				
-			Computer computer = Computer
-					.builder()
-					.id(id)
-					.name(name)
-					.introduced(introduced)
-					.discontinued(discontinued)
-					.company(
-							Company.builder().id(compaId).name(compaName)
-									.build()).build();
-			
-			computers.add(computer);
-
-		}
+		jdbcTemplate = new JdbcTemplate(connectionPool);
 		
-		results.close();
-		ps.close();
-
+		List<Computer> computers = this.jdbcTemplate.query(query.toString(), new Object[]{"%" + nom + "%","%" + nom + "%"},
+				new RowMapper<Computer>(){
+			
+			public Computer mapRow(ResultSet rs, int rowNum) throws SQLException{
+				Computer computer = Computer
+						.builder()
+						.id(rs.getInt("compu_id"))
+						.name(rs.getString("compu_name"))
+						.company(
+								Company.builder().id(rs.getInt("compaID")).name(rs.getString("compa_name"))
+										.build()).build();
+				
+				if(rs.getDate("introduced") != null)
+					computer.setIntroducedDate(LocalDate.fromDateFields(rs.getDate("introduced")));
+				
+				if(rs.getDate("discontinued") != null)
+					computer.setDiscontinuedDate(LocalDate.fromDateFields(rs.getDate("discontinued")));
+				
+				
+				return computer;
+			}
+			
+		});
+		
 		logger.info("Quit searchComputer method");
 		
 		return computers;

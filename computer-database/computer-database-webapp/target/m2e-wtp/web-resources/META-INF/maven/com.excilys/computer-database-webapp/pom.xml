@@ -49,25 +49,6 @@ xmlns="http://maven.apache.org/POM/4.0.0"
 			<artifactId>logback-classic</artifactId>
 			<version>${version-logback}</version>
 		</dependency>
-		
-		<!-- BONECP -->
-		<dependency>
-			<groupId>com.jolbox</groupId>
-			<artifactId>bonecp</artifactId>
-			<version>${version-bonecp}</version>
-		</dependency>
-		
-		<!-- JDBC -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${version-mysql}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${version-spring}</version>
-		</dependency>
 
 		<!--  JSTL -->
 		<dependency>
@@ -84,13 +65,6 @@ xmlns="http://maven.apache.org/POM/4.0.0"
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- JODATIME -->
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-			<version>${version-joda}</version>
-		</dependency>
-
 		<!-- SPRING -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -98,17 +72,6 @@ xmlns="http://maven.apache.org/POM/4.0.0"
 			<version>${version-spring}</version>
 		</dependency>
 		
-		<!-- VALIDATION -->
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-			<version>${version-validation-api}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>${version-hibernate-validator}</version>
-		</dependency>
   </dependencies>
   
 </project>

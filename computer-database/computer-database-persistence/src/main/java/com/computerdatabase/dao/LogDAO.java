@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
@@ -18,26 +19,17 @@ public class LogDAO {
 	@Autowired
 	private DataSource connectionPool;
 	
+	private JdbcTemplate jdbcTemplate;
 
 	public void logOperation(Logs log) throws SQLException {
-		String query = null;
+		
+		jdbcTemplate = new JdbcTemplate(connectionPool);
 		
 		if(log.getIdComputer() == -1)
-			query = "INSERT INTO log (operation, name, date, idComputer) VALUES (?, ?, NOW(), null);";
+			this.jdbcTemplate.update("INSERT INTO log (operation, name, date, idComputer) VALUES (?, ?, NOW(), null)", new Object[] {log.getOperation(), log.getName()});
 		else
-			query = "INSERT INTO log (operation, name, date, idComputer) VALUES (?, ?, NOW(), ?);";
-			
-		Connection connection = DataSourceUtils.getConnection(connectionPool);
-
-		PreparedStatement ps = connection.prepareStatement(query);
-		ps.setString(1, log.getOperation());
-		ps.setString(2, log.getName());
+			this.jdbcTemplate.update("INSERT INTO log (operation, name, date, idComputer) VALUES (?, ?, NOW(), ?)", new Object[] {log.getOperation(), log.getName(), new Long(log.getIdComputer()) });
 		
-		if(log.getIdComputer() != -1)
-			ps.setInt(3, log.getIdComputer());
-		
-		ps.execute();
-
 	}
 
 }

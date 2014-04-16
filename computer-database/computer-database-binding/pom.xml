@@ -40,52 +40,11 @@
 			<version>${version-logback}</version>
 		</dependency>
 		
-		<!-- BONECP -->
-		<dependency>
-			<groupId>com.jolbox</groupId>
-			<artifactId>bonecp</artifactId>
-			<version>${version-bonecp}</version>
-		</dependency>
-		
-		<!-- JDBC -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${version-mysql}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${version-spring}</version>
-		</dependency>
-
-		<!--  JSTL -->
-		<dependency>
-			<groupId>jstl</groupId>
-			<artifactId>jstl</artifactId>
-			<version>${version-jstl}</version>
-		</dependency>
-
-		<!-- JAVAX SERVLET PROVIDED BY TOMCAT -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>${version-servlettag}</version>
-			<scope>provided</scope>
-		</dependency>
-
 		<!-- JODATIME -->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 			<version>${version-joda}</version>
-		</dependency>
-
-		<!-- SPRING -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>${version-spring}</version>
 		</dependency>
 		
 		<!-- VALIDATION -->
