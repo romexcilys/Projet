@@ -13,8 +13,8 @@ import com.computerdatabase.dao.ComputerDAO;
 import com.computerdatabase.dao.LogDAO;
 import com.computerdatabase.domain.Computer;
 import com.computerdatabase.domain.Logs;
-import com.computerdatabase.domain.Page;
 import com.computerdatabase.mapper.Mapper;
+import com.computerdatabase.wrapper.Page;
 
 @Service
 @Transactional
@@ -40,9 +40,9 @@ public class ComputerServices {
 	{
 		
 		try {
-			computerDAO.put(computer);
+			computerDAO.create(computer);
 			Logs log = Logs.builder().operation("INSERT Computer").name(computer.getName()).idComputer(computer.getId()).build();
-			logDAO.logOperation(log);
+			logDAO.create(log);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			logger.error("Error in put ComputerServices");
@@ -55,7 +55,7 @@ public class ComputerServices {
 		int nombreComputers = 0;
 		try {
 			Logs log = Logs.builder().operation("Get Computer").name(null).idComputer(-1).build();
-			logDAO.logOperation(log);
+			logDAO.create(log);
 			List<Computer> computers = computerDAO.get(page);
 			
 			page.setComputers(Mapper.toDTO(computers));
@@ -76,7 +76,7 @@ public class ComputerServices {
 		int number = 0;
 		try {
 			Logs log = Logs.builder().operation("Get numbers computer").name(null).idComputer(-1).build();
-			logDAO.logOperation(log);
+			logDAO.create(log);
 			number = computerDAO.getNumber();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -93,7 +93,7 @@ public class ComputerServices {
 		
 		try {
 			Logs log = Logs.builder().operation("Get numbers computer : "+nom).name(null).idComputer(-1).build();
-			logDAO.logOperation(log);
+			logDAO.create(log);
 			number = computerDAO.getNumber(nom);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -108,9 +108,9 @@ public class ComputerServices {
 	{
 		Computer  computer = null;
 		try {
-			computer = computerDAO.find(id);
+			computer = computerDAO.read(id);
 			Logs log = Logs.builder().operation("Find computer").name(null).idComputer(id).build();
-			logDAO.logOperation(log);
+			logDAO.create(log);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			logger.error("Error in find with id ComputerServices");
@@ -126,8 +126,8 @@ public class ComputerServices {
 		
 		try {
 			Logs log = Logs.builder().operation("Find computer").name(page.getName()).idComputer(-1).build();
-			logDAO.logOperation(log);
-			List<Computer> computers = computerDAO.findPage(page);
+			logDAO.create(log);
+			List<Computer> computers = computerDAO.readSearch(page);
 		
 			page.setComputers(Mapper.toDTO(computers));
 			nombreComputers = computerDAO.getNumber(page.getName());
@@ -145,7 +145,7 @@ public class ComputerServices {
 	{
 		try {
 			Logs log = Logs.builder().operation("Update computer").name(computer.getName()).idComputer(computer.getId()).build();
-			logDAO.logOperation(log);
+			logDAO.create(log);
 			computerDAO.update(computer);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -159,7 +159,7 @@ public class ComputerServices {
 	{
 		try {
 			Logs log = Logs.builder().operation("Delete computer").name(null).idComputer(id).build();
-			logDAO.logOperation(log);
+			logDAO.create(log);
 			computerDAO.delete(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -1,17 +1,38 @@
 package com.computerdatabase.domain;
 
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+
 import org.joda.time.LocalDate;
 
+@Entity
+@Table(name = "computer")
 public class Computer {
 
+	@Id
+	@GeneratedValue
+	@Column(name="id")
 	private int id;
 	
+	@Column(name="name")
 	private String name;
 	
+	//use hibernate jodira
+	@Column(name="introducedDate")
 	private LocalDate introducedDate;
 	
+	@Column(name="discontinuedDate")
 	private LocalDate discontinuedDate;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn
 	private Company company;
 
 	public Computer() {

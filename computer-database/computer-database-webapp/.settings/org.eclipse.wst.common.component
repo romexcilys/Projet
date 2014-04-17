@@ -10,10 +10,10 @@
         <dependent-module archiveName="computer-database-persistence-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/computer-database-persistence/computer-database-persistence">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="computer-database-core-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/computer-database-core/computer-database-core">
+        <dependent-module archiveName="computer-database-binding-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/computer-database-binding/computer-database-binding">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="computer-database-binding-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/computer-database-binding/computer-database-binding">
+        <dependent-module archiveName="computer-database-core-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/computer-database-core/computer-database-core">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/computer-database-webapp/target/classes"/>

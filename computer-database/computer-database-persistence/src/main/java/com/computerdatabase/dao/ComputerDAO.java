@@ -22,11 +22,10 @@ import org.springframework.stereotype.Component;
 
 import com.computerdatabase.domain.Company;
 import com.computerdatabase.domain.Computer;
-import com.computerdatabase.domain.Page;
+import com.computerdatabase.wrapper.Page;
 
 @Component
 public class ComputerDAO {
-
 	@Autowired
 	private DataSource connectionPool;
 	
@@ -34,7 +33,7 @@ public class ComputerDAO {
 	
 	private final Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 
-	public void put(Computer computer)
+	public void create(Computer computer)
 			throws SQLException {
 		logger.info("In insererComputer with computer argument");
 		
@@ -53,22 +52,17 @@ public class ComputerDAO {
 				PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 				ps.setString(1, computerer.getName());
 				
-				if(computerer.getIntroducedDate() != null)
-					ps.setDate(2, new java.sql.Date(computerer.getIntroducedDate().toDate().getTime()));
-				else
-					ps.setDate(2, null);
+				ps.setDate(2, (computerer.getIntroducedDate() != null)? new java.sql.Date(computerer.getIntroducedDate().toDate().getTime()) : null);
 				
-				if(computerer.getDiscontinuedDate() != null)
-					ps.setDate(3, new java.sql.Date(computerer.getDiscontinuedDate().toDate()
-						.getTime()));
-				else
-					ps.setNull(3, java.sql.Types.DATE);
+				
+				ps.setDate(3, (computerer.getDiscontinuedDate() != null)? new java.sql.Date(computerer.getDiscontinuedDate().toDate()
+					.getTime()) : null);
 
 				if (computerer.getCompany().getId() != 0)
 					ps.setInt(4, computerer.getCompany().getId());
 				else
 					ps.setNull(4, java.sql.Types.BIGINT);
-			
+				
 				return ps;
 			}	
 		}, keyHolder);
@@ -200,7 +194,6 @@ public class ComputerDAO {
 		return total;
 	}
 	
-	///VOIR PROBLEME D'UPDATE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public void update(Computer computer)
 			throws SQLException {
 		logger.info("In editComputer method");
@@ -217,29 +210,19 @@ public class ComputerDAO {
 				PreparedStatement ps = connection.prepareStatement(query);
 				ps.setString(1, computerer.getName());
 				
-				if(computerer.getIntroducedDate() != null)
-					ps.setDate(2, new java.sql.Date(computerer.getIntroducedDate().toDate().getTime()));
-				else
-					ps.setDate(2, null);
+				ps.setDate(2, (computerer.getIntroducedDate() != null) ? new java.sql.Date(computerer.getIntroducedDate().toDate().getTime()) : null);
 				
-				if(computerer.getDiscontinuedDate() != null)
-					ps.setDate(3, new java.sql.Date(computerer.getDiscontinuedDate().toDate()
-						.getTime()));
-				else
-					ps.setNull(3, java.sql.Types.DATE);
+				ps.setDate(3, (computerer.getDiscontinuedDate() != null) ? new java.sql.Date(computerer.getDiscontinuedDate().toDate()
+					.getTime()) : null);
 
-				if (computerer.getCompany().getId() != 0)
-					ps.setInt(4, computerer.getCompany().getId());
-				else
-					ps.setNull(4, java.sql.Types.BIGINT);
-			
+				ps.setInt(4, (computerer.getCompany().getId() != 0) ? computerer.getCompany().getId() : 0);
+				
 				ps.setInt(5, computerer.getId());
 				
 				return ps;
 			}	
 		});
 		
-
 		logger.info("Quit editComputer method");
 	}
 
@@ -255,7 +238,7 @@ public class ComputerDAO {
 		logger.info("Quit deleteComputer method");
 	}
 
-	public Computer find(int id) throws SQLException {
+	public Computer read(int id) throws SQLException {
 		logger.info("In findComputer method with id argument");
 		
 		String query = "SELECT  compu.id AS compu_id, compu.name AS compu_name, compu.introduced, compu.discontinued,  compa.name AS compa_name, compa.id AS compaID FROM computer AS compu LEFT OUTER JOIN company AS compa ON compu.company_id = compa.id WHERE compu.id = ?;";
@@ -290,7 +273,7 @@ public class ComputerDAO {
 		return computer;
 	}
 
-	public List<Computer> findPage(Page page)
+	public List<Computer> readSearch(Page page)
 			throws SQLException {
 		int debut = page.getElementSearch();
 		int number = page.getNumberElement();

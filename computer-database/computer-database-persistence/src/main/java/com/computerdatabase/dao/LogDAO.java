@@ -1,14 +1,11 @@
 package com.computerdatabase.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
 import com.computerdatabase.domain.Logs;
@@ -21,7 +18,7 @@ public class LogDAO {
 	
 	private JdbcTemplate jdbcTemplate;
 
-	public void logOperation(Logs log) throws SQLException {
+	public void create(Logs log) throws SQLException {
 		
 		jdbcTemplate = new JdbcTemplate(connectionPool);
 		

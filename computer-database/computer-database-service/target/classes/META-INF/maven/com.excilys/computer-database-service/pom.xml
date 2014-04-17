@@ -6,70 +6,46 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   
-  <properties>
-		<version-slf4j>1.7.6</version-slf4j>
-		<version-bonecp>0.7.1.RELEASE</version-bonecp>
-		<version-mysql>5.1.30</version-mysql>
-		<version-jstl>1.2</version-jstl>
-		<version-servlettag>2.0</version-servlettag>
-		<version-joda>2.3</version-joda>
-		<version-spring>4.0.2.RELEASE</version-spring>
-		<version-logback>1.1.1</version-logback>
-		<version-hibernate-validator>5.1.0.Final</version-hibernate-validator>
-		<version-validation-api>1.1.0.Final</version-validation-api>
-	</properties>
 	
   <dependencies>
     
-	
 	<dependency>
 	    <groupId>${project.groupId}</groupId>
 	    <artifactId>computer-database-persistence</artifactId>
 	    <version>${project.version}</version>
 	</dependency>
 	
-	<dependency>
-	    <groupId>${project.groupId}</groupId>
-	    <artifactId>computer-database-binding</artifactId>
-	    <version>${project.version}</version>
-	</dependency>
 	
 	<!-- LOGBACK -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${version-slf4j}</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>${version-logback}</version>
 		</dependency>
 		
 		<!-- JDBC -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>${version-mysql}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>${version-spring}</version>
 		</dependency>
 
 		<!-- JODATIME -->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
-			<version>${version-joda}</version>
 		</dependency>
 
 		<!-- SPRING -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${version-spring}</version>
 		</dependency>
 		
   </dependencies>

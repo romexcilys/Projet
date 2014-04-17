@@ -19,6 +19,7 @@ public class CompanyServices {
 
 	@Autowired
 	private CompanyDAO companyDAO;
+	
 	@Autowired
 	private LogDAO logDAO;
 	
@@ -46,8 +47,8 @@ public class CompanyServices {
 		List<Company> companys = null;
 		try {
 			Logs log = Logs.builder().operation("SELECT Companys").name(null).idComputer(-1).build();
-			logDAO.logOperation(log);
-			companys = companyDAO.get();
+			logDAO.create(log);
+			companys = companyDAO.read();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			logger.error("Error in get CompanyServices");

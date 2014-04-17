@@ -14,13 +14,8 @@
         http://www.springframework.org/schema/tx 
         http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 	
-	
 	<!-- applicationContext xml config -->
 	<context:annotation-config />
-	
-	<context:component-scan base-package="com.computerdatabase.dao"/>
-	<context:component-scan base-package="com.computerdatabase.service"/>
-	<context:component-scan base-package="com.computerdatabase.validator"/>
 	
 	<!-- Pour utiliser les annotations transactionnelles <tx:annotation-driven  transaction-manager="txManager"/>-->
 	<tx:annotation-driven transaction-manager="txManager"/>
@@ -28,6 +23,17 @@
 	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"/>	
 	</bean>
+<!-- 
+	<bean id="entityManager" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceXmlLocation" value="classpath:persistence.xml" />
+        <property name="persistenceUnitName" value="demoRestPersistenceLegacy" />
+        <property name="dataSource" ref="dataSource" />
+    </bean>        
+ -->
+    
+	<import resource="classpath:/spring-conf/Spring-Service.xml"/>
+	<import resource="classpath:/spring-conf/Spring-Binding.xml"/>
+	<import resource="classpath:/spring-conf/Spring-Persistence.xml"/>
 	
 	<import resource="classpath:database/Spring-Datasource.xml"/>
 </beans>

@@ -1,6 +1,6 @@
 /home/excilys/workspace/Spring/computer-database/computer-database-webapp/src/main/java/com/computerdatabase/servlet/UpdateComputerController.java
 /home/excilys/workspace/Spring/computer-database/computer-database-webapp/src/main/java/com/computerdatabase/servlet/HTTPErrorController.java
-/home/excilys/workspace/Spring/computer-database/computer-database-webapp/src/main/java/com/computerdatabase/servlet/AjoutComputerController.java
+/home/excilys/workspace/Spring/computer-database/computer-database-webapp/src/main/java/com/computerdatabase/servlet/AddComputerController.java
 /home/excilys/workspace/Spring/computer-database/computer-database-webapp/src/main/java/com/computerdatabase/servlet/ListComputerController.java
 /home/excilys/workspace/Spring/computer-database/computer-database-webapp/src/main/java/com/computerdatabase/servlet/DeleteComputerController.java
 /home/excilys/workspace/Spring/computer-database/computer-database-webapp/src/main/java/com/computerdatabase/servlet/SearchComputerController.java

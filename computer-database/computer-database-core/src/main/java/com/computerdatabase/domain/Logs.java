@@ -1,10 +1,22 @@
 package com.computerdatabase.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="log")
 public class Logs {
+	
+	@Column(name="operation")
 	private String operation;
+	
+	@Column(name="idComputer")
 	private int idComputer;
+	
+	@Column(name="name")
 	private String name;
+	
 	public String getOperation() {
 		return operation;
 	}

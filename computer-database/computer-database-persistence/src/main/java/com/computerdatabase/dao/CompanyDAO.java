@@ -3,6 +3,7 @@ package com.computerdatabase.dao;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
@@ -16,33 +17,32 @@ import com.computerdatabase.domain.Company;
 
 @Repository
 public class CompanyDAO {
-	
-	
+
 	@Autowired
 	private DataSource connectionPool;
-	
-	private JdbcTemplate jdbcTemplate;
 
+	private JdbcTemplate jdbcTemplate;
+/*
+	@Autowired
+	private EntityManager entityManager;
+*/
 	private final Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 
-	public List<Company> get() throws SQLException {
+	public List<Company> read() throws SQLException {
 		logger.info("In getListCompany method");
+		//sessionFactory = new AnnotationConfiguration().addAnnotatedClass(Company.class).configure().buildSessionFactory();
+		/*Query query = entityManager..createQuery("from Company order by name");
+
+		List<Company> companys = (List<Company>) query.list();*/
 		
-		jdbcTemplate = new JdbcTemplate(connectionPool);
-		
-		List<Company> companys = this.jdbcTemplate.query("select * from company order by name",
-				new BeanPropertyRowMapper<Company>(Company.class));
-		/*
-		List<Company> companys = this.jdbcTemplate.query("select * from company order by name",
-				new RowMapper<Company>(){
-			
-			public Company mapRow(ResultSet rs, int rowNum) throws SQLException{
-				Company company = Company.builder().id(rs.getInt("id")).name(rs.getString("name")).build();
-				return company;
-			}
-			
-		});*/
-		
+		  
+		  
+		  jdbcTemplate = new JdbcTemplate(connectionPool);
+		  
+		  List<Company> companys =
+		  this.jdbcTemplate.query("select * from company order by name", new
+		  BeanPropertyRowMapper<Company>(Company.class));
+		 
 		logger.info("Quit getListCompany method");
 
 		return companys;
