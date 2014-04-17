@@ -1,5 +1,9 @@
 package com.computerdatabase.validator;
 
+import java.util.ResourceBundle;
+
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -9,54 +13,16 @@ import com.computerdatabase.dto.ComputerDTO;
 
 @Component
 public class ComputerValidator implements Validator{
-
+	
+	//Ne sert pas car regex 
 	public boolean verifierDate(String date) {
 		// TODO Auto-generated method stub
 
-		System.out.println(LocaleContextHolder.getLocale());
-		boolean bissextile = false;
-
-		
-		int annee;
-		int mois;
-		int jour;
-		
-		
-		String[] tableDate = date.split("-");
-		if(LocaleContextHolder.getLocale().getLanguage().equals("en"))
-		{
-			annee = Integer.parseInt(tableDate[0]);
-			mois = Integer.parseInt(tableDate[1]);
-			jour = Integer.parseInt(tableDate[2]);
-		}
-		else
-		{
-			annee = Integer.parseInt(tableDate[2]);
-			mois = Integer.parseInt(tableDate[1]);
-			jour = Integer.parseInt(tableDate[0]);
-		}
-
-		if (annee % 400 == 0)
-			bissextile = true;
-		else if (annee % 4 == 0 && annee % 100 != 0)
-			bissextile = true;
-
-		int tableJour[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-
-		if (bissextile)
-			tableJour[1] = 29;
-
-		System.out.println("Je suis la ");
-		if (tableJour[mois - 1] >= jour)
-			return true;
-		
-
-		return false;
+		return true;
 	}
 
 	public boolean verifierName(String name) {
 		// TODO Auto-generated method stub
-
 		if (name.length() < 4)
 			return false;
 
@@ -66,30 +32,10 @@ public class ComputerValidator implements Validator{
 	public boolean comparerDate(String date1, String date2) {
 		// TODO Auto-generated method stub
 
-		String[] tableDate = date1.split("-");
-
-		int annee = Integer.parseInt(tableDate[0]);
-		int mois = Integer.parseInt(tableDate[1]);
-		int jour = Integer.parseInt(tableDate[2]);
-
-		String[] tableDate2 = date2.split("-");
-
-		int annee2 = Integer.parseInt(tableDate2[0]);
-		int mois2 = Integer.parseInt(tableDate2[1]);
-		int jour2 = Integer.parseInt(tableDate2[2]);
-
-		if (annee > annee2)
-			return false;
-		else if (annee == annee2) {
-			if (mois > mois2)
-				return false;
-			else if (mois == mois2) {
-				if (jour > jour2)
-					return false;
-			}
-		}
-
-		return true;
+		String pattern = ResourceBundle.getBundle("message", LocaleContextHolder.getLocale()).getString("pattern.text");
+		DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
+		
+		return formatter.parseLocalDate(date1).isBefore(formatter.parseLocalDate(date2));
 	}
 
 	@Override
@@ -102,14 +48,12 @@ public class ComputerValidator implements Validator{
 	public void validate(Object obj, Errors e) {
 		// TODO Auto-generated method stub
 		ComputerDTO computerDTO = (ComputerDTO) obj;
-		
 
 		if (computerDTO.getDiscontinuedDate() != null && computerDTO.getDiscontinuedDate().compareTo("") != 0) {
 			if (!verifierDate(computerDTO.getDiscontinuedDate())) {
 				e.rejectValue("discontinuedDate", "error.discon", "Error in the discontinued date");
 				computerDTO.setDiscontinuedDate(null);
 			}
-
 		}
 
 		if (computerDTO.getIntroducedDate() != null && computerDTO.getIntroducedDate().compareTo("") != 0) {
@@ -132,7 +76,5 @@ public class ComputerValidator implements Validator{
 			e.rejectValue("name", "error.name", "Error in the name");
 			computerDTO.setName(null);
 		}
-
 	}
-
 }

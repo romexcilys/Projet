@@ -11,5 +11,6 @@
  
 	
 	<context:component-scan base-package="com.computerdatabase.service"/>
+	<import resource="classpath:/spring-conf/Spring-Persistence.xml"/>
 	 
 </beans>

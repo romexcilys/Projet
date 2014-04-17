@@ -1,9 +1,7 @@
 package com.computerdatabase.dao;
 
-import java.sql.SQLException;
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
@@ -19,8 +17,6 @@ import com.computerdatabase.domain.Company;
 public class CompanyDAO {
 
 	@Autowired
-	private DataSource connectionPool;
-
 	private JdbcTemplate jdbcTemplate;
 /*
 	@Autowired
@@ -28,17 +24,13 @@ public class CompanyDAO {
 */
 	private final Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 
-	public List<Company> read() throws SQLException {
+	public List<Company> read(){
 		logger.info("In getListCompany method");
 		//sessionFactory = new AnnotationConfiguration().addAnnotatedClass(Company.class).configure().buildSessionFactory();
 		/*Query query = entityManager..createQuery("from Company order by name");
 
 		List<Company> companys = (List<Company>) query.list();*/
 		
-		  
-		  
-		  jdbcTemplate = new JdbcTemplate(connectionPool);
-		  
 		  List<Company> companys =
 		  this.jdbcTemplate.query("select * from company order by name", new
 		  BeanPropertyRowMapper<Company>(Company.class));

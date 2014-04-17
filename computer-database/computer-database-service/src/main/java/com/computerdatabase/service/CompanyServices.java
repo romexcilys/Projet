@@ -1,6 +1,5 @@
 package com.computerdatabase.service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -19,12 +18,13 @@ public class CompanyServices {
 
 	@Autowired
 	private CompanyDAO companyDAO;
-	
+
 	@Autowired
 	private LogDAO logDAO;
-	
-	private final Logger logger = LoggerFactory.getLogger(CompanyServices.class);
-	
+
+	private final Logger logger = LoggerFactory
+			.getLogger(CompanyServices.class);
+
 	public CompanyDAO getCompanyDAO() {
 		return companyDAO;
 	}
@@ -43,18 +43,15 @@ public class CompanyServices {
 
 	@Transactional
 	public List<Company> get() {
+		logger.info("Get companies in method");
 		
 		List<Company> companys = null;
-		try {
-			Logs log = Logs.builder().operation("SELECT Companys").name(null).idComputer(-1).build();
-			logDAO.create(log);
-			companys = companyDAO.read();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			logger.error("Error in get CompanyServices");
-			e.printStackTrace();
-		}
-
+		Logs log = Logs.builder().operation("SELECT Companys").name(null)
+				.idComputer(-1).build();
+		logDAO.create(log);
+		companys = companyDAO.read();
+		
+		logger.info("Quit method get companies");
 		return companys;
 	}
 }

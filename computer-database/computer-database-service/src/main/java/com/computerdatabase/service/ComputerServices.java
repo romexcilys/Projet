@@ -1,6 +1,5 @@
 package com.computerdatabase.service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -19,152 +18,146 @@ import com.computerdatabase.wrapper.Page;
 @Service
 @Transactional
 public class ComputerServices {
-	
+
 	@Autowired
 	private ComputerDAO computerDAO;
-	
+
 	@Autowired
 	private LogDAO logDAO;
-	private final Logger logger = LoggerFactory.getLogger(CompanyServices.class);
-	
+	private final Logger logger = LoggerFactory
+			.getLogger(CompanyServices.class);
 
 	public void setComputerDAO(ComputerDAO computerDAO) {
 		this.computerDAO = computerDAO;
 	}
-	
+
 	public void setLogDAO(LogDAO logDAO) {
 		this.logDAO = logDAO;
 	}
-	
-	public void put(Computer computer)
-	{
+
+	public void put(Computer computer) {
+		logger.info("In create computer method");
 		
-		try {
-			computerDAO.create(computer);
-			Logs log = Logs.builder().operation("INSERT Computer").name(computer.getName()).idComputer(computer.getId()).build();
-			logDAO.create(log);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			logger.error("Error in put ComputerServices");
-			e.printStackTrace();
-		}
+		computerDAO.create(computer);
+		Logs log = Logs.builder().operation("INSERT Computer")
+				.name(computer.getName()).idComputer(computer.getId()).build();
+		logDAO.create(log);
+
+		logger.info("Quit create method");
 	}
-	
-	public void get(Page  page)
-	{
+
+	public void get(Page page) {
 		int nombreComputers = 0;
-		try {
-			Logs log = Logs.builder().operation("Get Computer").name(null).idComputer(-1).build();
-			logDAO.create(log);
-			List<Computer> computers = computerDAO.get(page);
-			
-			page.setComputers(Mapper.toDTO(computers));
-			
-			nombreComputers = computerDAO.getNumber();
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			logger.error("Error in get ComputerServices");
-			e.printStackTrace();
-		}
+		Logs log = Logs.builder().operation("Get Computer").name(null)
+				.idComputer(-1).build();
+		logDAO.create(log);
+
+		readSortSearch(page);
 		
+		List<Computer> computers = computerDAO.get(page);
+
+		page.setComputers(Mapper.toDTO(computers));
+
+		nombreComputers = computerDAO.getNumber();
+
 		page.setNumberComputer(nombreComputers);
 	}
 
-	public int getCount()
-	{
+	public int getCount() {
 		int number = 0;
-		try {
-			Logs log = Logs.builder().operation("Get numbers computer").name(null).idComputer(-1).build();
-			logDAO.create(log);
-			number = computerDAO.getNumber();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			logger.error("Error in count ComputerServices");
-			e.printStackTrace();
-		}
-		
+		Logs log = Logs.builder().operation("Get numbers computer").name(null)
+				.idComputer(-1).build();
+		logDAO.create(log);
+		number = computerDAO.getNumber();
+
 		return number;
 	}
 
-	public int getCount(String nom)
-	{
+	public int getCount(String nom) {
 		int number = 0;
-		
-		try {
-			Logs log = Logs.builder().operation("Get numbers computer : "+nom).name(null).idComputer(-1).build();
-			logDAO.create(log);
-			number = computerDAO.getNumber(nom);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			logger.error("Error in count with name ComputerServices");
-			e.printStackTrace();
-		}
-		
+
+		Logs log = Logs.builder().operation("Get numbers computer : " + nom)
+				.name(null).idComputer(-1).build();
+		logDAO.create(log);
+		number = computerDAO.getNumber(nom);
+
 		return number;
 	}
 
-	public Computer find(int id)
-	{
-		Computer  computer = null;
-		try {
-			computer = computerDAO.read(id);
-			Logs log = Logs.builder().operation("Find computer").name(null).idComputer(id).build();
-			logDAO.create(log);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			logger.error("Error in find with id ComputerServices");
-			e.printStackTrace();
-		}
-		
+	public Computer find(int id) {
+		Computer computer = null;
+
+		computer = computerDAO.read(id);
+		Logs log = Logs.builder().operation("Find computer").name(null)
+				.idComputer(id).build();
+		logDAO.create(log);
+
 		return computer;
 	}
 
-	public void find(Page  page)
-	{
+	public void find(Page page) {
 		int nombreComputers = 0;
+
+		Logs log = Logs.builder().operation("Find computer")
+				.name(page.getName()).idComputer(-1).build();
+		logDAO.create(log);
 		
-		try {
-			Logs log = Logs.builder().operation("Find computer").name(page.getName()).idComputer(-1).build();
-			logDAO.create(log);
-			List<Computer> computers = computerDAO.readSearch(page);
+		readSortSearch(page);
 		
-			page.setComputers(Mapper.toDTO(computers));
-			nombreComputers = computerDAO.getNumber(page.getName());
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			logger.error("Error in find ComputerServices");
-			e.printStackTrace();
-		}
-		
+		List<Computer> computers = computerDAO.readSearch(page);
+
+		page.setComputers(Mapper.toDTO(computers));
+		nombreComputers = computerDAO.getNumber(page.getName());
+
 		page.setNumberComputer(nombreComputers);
 	}
 
-	public void update(Computer computer)
-	{
-		try {
-			Logs log = Logs.builder().operation("Update computer").name(computer.getName()).idComputer(computer.getId()).build();
-			logDAO.create(log);
-			computerDAO.update(computer);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			logger.error("Error in update ComputerServices");
-			e.printStackTrace();
-		}
-		
+	public void update(Computer computer) {
+		Logs log = Logs.builder().operation("Update computer")
+				.name(computer.getName()).idComputer(computer.getId()).build();
+		logDAO.create(log);
+		computerDAO.update(computer);
+
 	}
-	
-	public void delete(int id)
-	{
-		try {
-			Logs log = Logs.builder().operation("Delete computer").name(null).idComputer(id).build();
-			logDAO.create(log);
-			computerDAO.delete(id);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			logger.error("Error in delete ComputerServices");
-			e.printStackTrace();
+
+	public void delete(int id) {
+		Logs log = Logs.builder().operation("Delete computer").name(null)
+				.idComputer(id).build();
+		logDAO.create(log);
+		computerDAO.delete(id);
+
+	}
+
+	private void readSortSearch(Page page) {
+		if (page.getSort() != null) {
+
+			switch (page.getSort()) {
+			case "compa_name":
+				page.setSort("compa_name");
+				break;
+			case "compu_name":
+				page.setSort("compu.name");
+				break;
+			case "intro_date":
+				page.setSort("compu.introduced");
+				break;
+			case "discon_date":
+				page.setSort("compu.discontinued");
+				break;
+			default:
+				page.setSort("compa_name, compu.name");
+				break;
+			}
 		}
+		else if(page.getSort() != null)
+			page.setSort("compa_name, compu.name");
+		
+		if (page.getOrdre() != null
+				&& !page.getOrdre().trim().equals("asc") && !page.getOrdre()
+						.trim().equals("desc"))
+			page.setOrdre("asc");
+		else if(page.getOrdre() == null)
+			page.setOrdre("asc");
+
 	}
 }

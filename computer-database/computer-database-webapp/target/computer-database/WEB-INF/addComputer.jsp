@@ -23,19 +23,19 @@
 			<div class="clearfix">
 				<label for="introducedDateInput"><spring:message code='intro.text' text='Introduced date' /> :</label>
 				<div class="input">
-					<form:input id="introducedDateInput" path="introducedDate"
-						 ></form:input>
+					<form:input id="introducedDateInput" path="introducedDate" pattern = "<spring:message code='pattern_date.pattern' text='((19|20)\d\d([-])(01|03|05|07|08|10|12)([-])(0[1-9]|[12][0-9]|3[01]))|((19|20)\d\d([-])(04|06|09|11)([-])(0[1-9]|[12][0-9]|30))|((19|20)\d\d([-])(02)([-])(0[1-9]|1[0-9]|2[0-8]))|((((18|19|20)(04|08|[2468][048]|[13579][26]))|2000)([-])02([-])29)' />"></form:input>
 					<span class="help-inline"><spring:message code='pattern.text' text='YYYY-MM-DD' /></span><form:errors path="introducedDate" cssclath="error"></form:errors>
 				</div>
 			</div>
 			<div class="clearfix">
 				<label for="discontinuedDateInput"><spring:message code='discon.text' text='Discontinued date' /> :</label>
 				<div class="input">
-					<form:input  id="discontinuedDateInput" path="discontinuedDate" data-validation="date"
-						data-validation-format="yyyy-mm-dd" pattern = "<spring:message code='pattern_date.pattern' text='^(19|20)\d\d([-])(0[1-9]|1[012])([-])(0[1-9]|[12][0-9]|3[01])$' />"></form:input>
+					<form:input  id="discontinuedDateInput" path="discontinuedDate"
+						 pattern = "<spring:message code='pattern_date.pattern' text='((19|20)\d\d([-])(01|03|05|07|08|10|12)([-])(0[1-9]|[12][0-9]|3[01]))|((19|20)\d\d([-])(04|06|09|11)([-])(0[1-9]|[12][0-9]|30))|((19|20)\d\d([-])(02)([-])(0[1-9]|1[0-9]|2[0-8]))|((((18|19|20)(04|08|[2468][048]|[13579][26]))|2000)([-])02([-])29)' />"></form:input>
 					<span class="help-inline"><spring:message code='pattern.text' text='YYYY-MM-DD' /></span><form:errors path="discontinuedDate" cssclath="error"></form:errors>
 				</div>
 			</div>
+			
 			<div class="clearfix">
 				<label for="company"><spring:message code='compa_name.text' text='Company name' /> :</label>
 				<div class="input">

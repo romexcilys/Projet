@@ -2,6 +2,7 @@ package com.computerdatabase.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -16,87 +17,41 @@ public class Mapper {
 	
 	public static Computer fromDTO(ComputerDTO computerDTO)
 	{
-		int id = computerDTO.getId();
-		String name = computerDTO.getName();
 		String introducedDate = computerDTO.getIntroducedDate();
 		String discontinuedDate = computerDTO.getDiscontinuedDate();
-		int idCompany = computerDTO.getCompanyId();
-		String nomCompany = computerDTO.getCompanyName();
 		
 		LocalDate dateIntroduced = null;
 		LocalDate dateDiscontinued = null;
 		
+		String pattern = ResourceBundle.getBundle("message", LocaleContextHolder.getLocale()).getString("pattern.text");
+		DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
 		
-		if (introducedDate != null && introducedDate.compareTo("") != 0) {
-	
-			if(LocaleContextHolder.getLocale().getLanguage().equals("fr"))
-			{
-				String[] tableDate = introducedDate.split("-");
-				
-				StringBuilder date = new StringBuilder();
-				date.append(tableDate[2]).append("-").append(tableDate[1]).append("-").append(tableDate[0]);
-				introducedDate = date.toString();
-			}
+		if (introducedDate != null && introducedDate.compareTo("") != 0) 
+			dateIntroduced = formatter.parseLocalDate(introducedDate);
 			
-			dateIntroduced = new LocalDate(introducedDate);
-			System.out.println(dateIntroduced);
-		} 
 
-		if (discontinuedDate != null && discontinuedDate.compareTo("") != 0) {
+		if (discontinuedDate != null && discontinuedDate.compareTo("") != 0)
+			dateDiscontinued = formatter.parseLocalDate(discontinuedDate);
 			
-			if(LocaleContextHolder.getLocale().getLanguage().equals("fr"))
-			{
-				String[] tableDate = discontinuedDate.split("-");
-				
-				StringBuilder date = new StringBuilder();
-				date.append(tableDate[2]).append("-").append(tableDate[1]).append("-").append(tableDate[0]);
-				discontinuedDate = date.toString();
-			}
-			
-			dateDiscontinued = new LocalDate(discontinuedDate);
-			System.out.println(dateDiscontinued);
-		}
-		
-		Company company = Company.builder().id(idCompany).name(nomCompany).build();
-		Computer computer = Computer.builder().id(id).name(name).company(company).introduced(dateIntroduced).discontinued(dateDiscontinued).build();
+		Company company = Company.builder().id(computerDTO.getCompanyId()).name(computerDTO.getCompanyName()).build();
+		Computer computer = Computer.builder().id(computerDTO.getId()).name(computerDTO.getName()).company(company).introduced(dateIntroduced).discontinued(dateDiscontinued).build();
 		
 		return computer;
 	}
 	
-	
 	public static ComputerDTO toDTO(Computer computer)
 	{
-		int id = computer.getId();
-		String nom = computer.getName();
 		LocalDate introducedDate = computer.getIntroducedDate();
 		LocalDate discontinuedDate = computer.getDiscontinuedDate();
 		
-		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
-		DateTimeFormatter fmt = DateTimeFormat.forPattern("dd-MM-yyyy");
+		String pattern = ResourceBundle.getBundle("message", LocaleContextHolder.getLocale()).getString("pattern.text");
+		DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
 		
-		String dateIntroduced = null;
-		if(introducedDate != null)
-		{
-			if(LocaleContextHolder.getLocale().getLanguage().equals("fr"))
-			{
-				dateIntroduced = introducedDate.toString(fmt);
-			}
-			else
-				dateIntroduced = formatter.print(introducedDate); 
-		}
+		String dateIntroduced = (introducedDate != null) ? introducedDate.toString(formatter) : null;
 		
-		String dateDiscontinued = null;
-		if(discontinuedDate != null)
-		{
-			if(LocaleContextHolder.getLocale().getLanguage().equals("fr"))
-			{
-				dateDiscontinued = discontinuedDate.toString(fmt);
-			}
-			else
-				dateDiscontinued = formatter.print(discontinuedDate); 
-		}
+		String dateDiscontinued = (discontinuedDate != null) ? discontinuedDate.toString(formatter) : null;
 		
-		ComputerDTO computerDTO = ComputerDTO.Builder().id(id).name(nom).introducedDate(dateIntroduced).discontinuedDate(dateDiscontinued).companyId(computer.getCompany().getId()).companyName(computer.getCompany().getName()).build();
+		ComputerDTO computerDTO = ComputerDTO.Builder().id(computer.getId()).name(computer.getName()).introducedDate(dateIntroduced).discontinuedDate(dateDiscontinued).companyId(computer.getCompany().getId()).companyName(computer.getCompany().getName()).build();
 		
 		return computerDTO;
 	}

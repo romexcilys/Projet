@@ -14,7 +14,6 @@
         http://www.springframework.org/schema/tx 
         http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 	
-	
 	<!-- applicationContext xml config -->
 	<context:annotation-config />
 	
@@ -24,18 +23,20 @@
 	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"/>	
 	</bean>
-	
-	<!-- Hibernate SessionFactory -->
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="annotatedClasses">
-            <list>
-                <value>com.computerdatabase.domain</value>
-                <value>com.computerdatabase.service</value>
-            </list>
-        </property>
+
+		<!-- JPA API HIBERNATE -->
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <!-- Default value for persistenceXmlLocation -->
+        <property name="packagesToScan" value="com.computerdatabase.domain"></property>
+        <property name="dataSource" ref="dataSource" />
+        <property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
+        <property name="jpaDialect" ref="jpaDialect" />
     </bean>
-	
+    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
+    </bean>
+    <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+    
 	<import resource="classpath:/spring-conf/Spring-Service.xml"/>
 	<import resource="classpath:/spring-conf/Spring-Binding.xml"/>
 	<import resource="classpath:/spring-conf/Spring-Persistence.xml"/>
