@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +17,6 @@ public class CompanyDAO {
 	
 	public List<Company> read(){
 		Session session = sessionFactory.getCurrentSession();
-		List<Company> companys = (List<Company>) session.createQuery("from Company order by name").list();
-		return companys;
+		return session.createCriteria(Company.class).addOrder(Order.asc("name")).list();
 	}
 }

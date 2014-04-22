@@ -48,6 +48,4 @@
 
 	<mvc:annotation-driven />
 	
-	
-	
 </beans>

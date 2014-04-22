@@ -49,7 +49,7 @@ public class ComputerServices {
 	public void get(Page page) {
 		int nombreComputers = 0;
 		Logs log = Logs.builder().operation("Get Computer").name(null)
-				.idComputer(-1).build();
+				.idComputer(0).build();
 		logDAO.create(log);
 
 		readSortSearch(page);
@@ -66,7 +66,7 @@ public class ComputerServices {
 	public int getCount() {
 		int number = 0;
 		Logs log = Logs.builder().operation("Get numbers computer").name(null)
-				.idComputer(-1).build();
+				.idComputer(0).build();
 		logDAO.create(log);
 		number = computerDAO.getNumber();
 
@@ -77,7 +77,7 @@ public class ComputerServices {
 		int number = 0;
 
 		Logs log = Logs.builder().operation("Get numbers computer : " + nom)
-				.name(null).idComputer(-1).build();
+				.name(null).idComputer(0).build();
 		logDAO.create(log);
 		number = computerDAO.getNumber(nom);
 
@@ -99,7 +99,7 @@ public class ComputerServices {
 		int nombreComputers = 0;
 
 		Logs log = Logs.builder().operation("Find computer")
-				.name(page.getName()).idComputer(-1).build();
+				.name(page.getName()).idComputer(0).build();
 		logDAO.create(log);
 		
 		readSortSearch(page);
@@ -136,21 +136,21 @@ public class ComputerServices {
 				page.setSort("company.name");
 				break;
 			case "compu_name":
-				page.setSort("computer.name");
+				page.setSort("name");
 				break;
 			case "intro_date":
-				page.setSort("computer.introducedDate");
+				page.setSort("introducedDate");
 				break;
 			case "discon_date":
-				page.setSort("computer.discontinuedDate");
+				page.setSort("discontinuedDate");
 				break;
 			default:
-				page.setSort("company.name, computer.name");
+				page.setSort("company.name");
 				break;
 			}
 		}
-		else if(page.getSort() != null)
-			page.setSort("company.name, computer.name");
+		else
+			page.setSort("company.name");
 		
 		if (page.getOrdre() != null
 				&& !page.getOrdre().trim().equals("asc") && !page.getOrdre()
