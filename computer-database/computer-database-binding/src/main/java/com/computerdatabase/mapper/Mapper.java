@@ -31,21 +31,12 @@ public class Mapper {
 		if (discontinuedDate != null && discontinuedDate.compareTo("") != 0)
 			dateDiscontinued = formatter.parseLocalDate(discontinuedDate);
 		
-		System.out.println("Id : "+computerDTO.getCompanyId()+" et nom : "+computerDTO.getCompanyName()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-		Company company = Company.builder().id(computerDTO.getCompanyId()).build();
+		Company company = null;
 		
 		
+		if(computerDTO.getCompanyId() != 0)
+			company = Company.builder().id(computerDTO.getCompanyId()).name(computerDTO.getCompanyName()).build();
 		
-		
-		
-		
-		/*
-		if(computerDTO.getCompanyId() == 0)
-			company.setName("NULL");
-		else
-			company.setName(computerDTO.getCompanyName());
-		*/
 		
 		Computer computer = Computer.builder().id(computerDTO.getId())
 				.name(computerDTO.getName()).company(company)

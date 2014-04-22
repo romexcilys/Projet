@@ -1,9 +1,11 @@
 package com.computerdatabase.dao;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.computerdatabase.domain.Logs;
@@ -12,14 +14,14 @@ import com.computerdatabase.domain.Logs;
 public class LogDAO {
 	
 	@Autowired
-	private SessionFactory sessionFactory;
+	private JdbcTemplate jdbcTemplate;
 	
+	@PersistenceContext
+	private EntityManager entityManager;
+
 	public void create(Logs log){
-		
 		log.setDate(DateTime.now());
-		
-		Session session = sessionFactory.getCurrentSession();
-		session.save(log);
+		entityManager.persist(log);
 	}
 
 }

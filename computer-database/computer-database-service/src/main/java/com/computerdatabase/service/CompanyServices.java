@@ -47,7 +47,7 @@ public class CompanyServices {
 		
 		List<Company> companys = null;
 		Logs log = Logs.builder().operation("SELECT Companys").name(null)
-				.idComputer(-1).build();
+				.idComputer(0).build();
 		logDAO.create(log);
 		companys = companyDAO.read();
 		
