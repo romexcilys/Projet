@@ -15,6 +15,15 @@
 			<artifactId>joda-time</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.jadira.usertype</groupId>
+			<artifactId>usertype.core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time-hibernate</artifactId>
+		</dependency>
+
 		<!-- HIBERNATE -->
 		<!-- <dependency> -->
 		<!-- <groupId>org.hibernate</groupId> -->
@@ -29,6 +38,8 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 		</dependency>
+
+
 
 		<!-- SPRING -->
 		<!-- <dependency> -->
