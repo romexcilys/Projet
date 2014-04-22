@@ -1,7 +1,6 @@
 package com.computerdatabase.domain;
 
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 
 @Entity
@@ -25,13 +25,15 @@ public class Computer {
 	private String name;
 	
 	//use hibernate jodira
-	@Column(name="introducedDate")
+	@Column(name="introduced")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	private LocalDate introducedDate;
 	
-	@Column(name="discontinuedDate")
+	@Column(name="discontinued")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	private LocalDate discontinuedDate;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(targetEntity=com.computerdatabase.domain.Company.class)
 	@PrimaryKeyJoinColumn
 	private Company company;
 

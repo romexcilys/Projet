@@ -9,7 +9,6 @@
 	<!-- <h1>Add Computer</h1> -->
 
 <div id="formulaireAdd">
-
 	<form:form action="AjoutComputer" method="POST" modelattribute="computerDTO" commandName="computerDTO">
 		<fieldset>
 			<div class="clearfix">
@@ -40,8 +39,6 @@
 				<label for="company"><spring:message code='compa_name.text' text='Company name' /> :</label>
 				<div class="input">
 					<select name="company">
-						<option value="0">--</option>
-
 						<c:forEach items="${ companys }" var="company">
 							<c:choose>
 								<c:when test="${ company.id == computer.companyId }">

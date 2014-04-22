@@ -1,36 +1,26 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.excilys</groupId>
-    <artifactId>computer-database</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-	
-  <dependencies>
-    
-    <dependency>
-	    <groupId>${project.groupId}</groupId>
-	    <artifactId>computer-database-binding</artifactId>
-	    <version>${project.version}</version>
-	</dependency>
-	
-	
-	<!-- LOGBACK -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.excilys</groupId>
+		<artifactId>computer-database</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<dependencies>
+
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>computer-database-binding</artifactId>
+			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-		</dependency>
-		
+
 		<!-- BONECP -->
 		<dependency>
 			<groupId>com.jolbox</groupId>
 			<artifactId>bonecp</artifactId>
 		</dependency>
-		
+
 		<!-- JDBC -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -41,29 +31,30 @@
 			<artifactId>spring-jdbc</artifactId>
 		</dependency>
 
-		<!-- JODATIME -->
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-		</dependency>
 
 		<!-- SPRING -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 		</dependency>
-		
-		<!-- HIBERNATE -->
+
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
 		</dependency>
 
-  </dependencies>
-  <build>
-    <finalName>computer-database-persistence</finalName>
-    
-    <plugins>
+		<!-- HIBERNATE ENTITY MANAGER -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+		</dependency>
+
+
+	</dependencies>
+	<build>
+		<finalName>computer-database-persistence</finalName>
+
+		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -74,7 +65,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-  </build>
-  
-  <artifactId>computer-database-persistence</artifactId>
+	</build>
+
+	<artifactId>computer-database-persistence</artifactId>
 </project>

@@ -133,24 +133,24 @@ public class ComputerServices {
 
 			switch (page.getSort()) {
 			case "compa_name":
-				page.setSort("compa_name");
+				page.setSort("company.name");
 				break;
 			case "compu_name":
-				page.setSort("compu.name");
+				page.setSort("computer.name");
 				break;
 			case "intro_date":
-				page.setSort("compu.introduced");
+				page.setSort("computer.introducedDate");
 				break;
 			case "discon_date":
-				page.setSort("compu.discontinued");
+				page.setSort("computer.discontinuedDate");
 				break;
 			default:
-				page.setSort("compa_name, compu.name");
+				page.setSort("company.name, computer.name");
 				break;
 			}
 		}
 		else if(page.getSort() != null)
-			page.setSort("compa_name, compu.name");
+			page.setSort("company.name, computer.name");
 		
 		if (page.getOrdre() != null
 				&& !page.getOrdre().trim().equals("asc") && !page.getOrdre()
