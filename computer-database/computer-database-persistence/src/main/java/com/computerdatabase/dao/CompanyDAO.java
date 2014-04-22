@@ -2,20 +2,21 @@ package com.computerdatabase.dao;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.computerdatabase.domain.Company;
 
 @Repository
 public class CompanyDAO {
-	@PersistenceContext
-	private EntityManager entityManager;
+	@Autowired
+	private SessionFactory sessionFactory;
 	
 	public List<Company> read(){
-		List<Company> companys = (List<Company>) entityManager.createQuery("from Company order by name").getResultList();
+		Session session = sessionFactory.getCurrentSession();
+		List<Company> companys = (List<Company>) session.createQuery("from Company order by name").list();
 		return companys;
 	}
 }

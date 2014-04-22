@@ -2,11 +2,20 @@ package com.computerdatabase.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 @Entity
 @Table(name="log")
 public class Logs {
+	@Id
+	@GeneratedValue
+	@Column(name="id")
+	private int id;
 	
 	@Column(name="operation")
 	private String operation;
@@ -16,6 +25,24 @@ public class Logs {
 	
 	@Column(name="name")
 	private String name;
+	
+	
+	@Column(name="date")
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime date;
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public DateTime getDate() {
+		return date;
+	}
+	public void setDate(DateTime date) {
+		this.date = date;
+	}
 	
 	public String getOperation() {
 		return operation;
