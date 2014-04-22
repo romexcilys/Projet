@@ -8,6 +8,9 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import com.computerdatabase.domain.Company;
+import com.computerdatabase.domain.QCompany;
+import com.mysema.query.jpa.JPQLQuery;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 @Repository
 public class CompanyDAO {
@@ -15,7 +18,9 @@ public class CompanyDAO {
 	private EntityManager entityManager;
 	
 	public List<Company> read(){
-		List<Company> companys = (List<Company>) entityManager.createQuery("from Company order by name").getResultList();
-		return companys;
+		QCompany company = QCompany.company;
+		JPQLQuery query = new JPAQuery (entityManager);
+		
+		return query.from(company).orderBy(company.name.asc()).list(company);
 	}
 }

@@ -145,11 +145,11 @@ public class ComputerServices {
 				page.setSort("computer.discontinuedDate");
 				break;
 			default:
-				page.setSort("company.name, computer.name");
+				page.setSort("computer.name");
 				break;
 			}
 		}
-		else if(page.getSort() != null)
+		else if(page.getSort() == null)
 			page.setSort("company.name, computer.name");
 		
 		if (page.getOrdre() != null

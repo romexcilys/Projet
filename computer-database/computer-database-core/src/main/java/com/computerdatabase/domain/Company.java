@@ -12,6 +12,7 @@ public class Company {
 	
 	@Id
 	@Column(name = "id",nullable = true)
+	@GeneratedValue
 	private int id;
 	
 	@Column(name = "name",nullable = true)

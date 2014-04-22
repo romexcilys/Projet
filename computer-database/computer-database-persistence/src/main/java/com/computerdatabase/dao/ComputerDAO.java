@@ -2,16 +2,23 @@ package com.computerdatabase.dao;
 
 import java.util.List;
 
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.computerdatabase.orderspecifier.OrderSpecifierImpl;
 import com.computerdatabase.domain.Computer;
+import com.computerdatabase.domain.QCompany;
+import com.computerdatabase.domain.QComputer;
 import com.computerdatabase.wrapper.Page;
+import com.mysema.query.jpa.JPQLQuery;
+import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.path.PathBuilder;
 
 @Component
 public class ComputerDAO {
@@ -24,7 +31,6 @@ public class ComputerDAO {
 		logger.info("In insererComputer with computer argument");
 
 		entityManager.persist(computer);
-		entityManager.flush();
 
 		logger.info("Quit insererComputer method");
 	}
@@ -34,31 +40,35 @@ public class ComputerDAO {
 		int debut = page.getElementSearch();
 		int number = page.getNumberElement();
 
-		String order = page.getSort() + " " + page.getOrdre();
-
-		Query query = entityManager
-				.createQuery(
-						"select computer from Computer as computer left join computer.company as company order by "
-								+ order).setFirstResult(debut)
-				.setMaxResults(number);
-		List<Computer> computers = (List<Computer>) query.getResultList();
-
-		logger.info("Quit getListComputer method");
-
-		return computers;
+		QComputer computer = QComputer.computer;
+		QCompany company = QCompany.company;
+		JPQLQuery query = new JPAQuery(entityManager);
+		query.from(computer).leftJoin(computer.company, company).offset(debut)
+				.limit(number);
+		
+		query.orderBy(OrderSpecifierImpl.retrieveOrderSpecification(page, company,
+				computer));
+		return query.list(computer);
 	}
 
 	public int getNumber() {
-		return ((Long) entityManager.createQuery(
-				"select Count(*) from Computer").getSingleResult()).intValue();
+		QComputer computer = QComputer.computer;
+		JPQLQuery query = new JPAQuery(entityManager);
+		return query.from(computer).list(computer).size();
 	}
 
 	public int getNumber(String nom) {
-		return ((Long) entityManager
-				.createQuery(
-						"SELECT COUNT(*) FROM Computer AS computer LEFT JOIN computer.company as company WHERE LOWER(company.name) LIKE :compa OR LOWER(computer.name) LIKE :compa")
-				.setParameter("compa", "%" + nom + "%").getSingleResult())
-				.intValue();
+		QComputer computer = QComputer.computer;
+		QCompany company = QCompany.company;
+		JPQLQuery query = new JPAQuery(entityManager);
+
+		return query
+				.from(computer)
+				.leftJoin(computer.company, company)
+				.where(computer.name.like("%" + nom + "%").or(
+						company.name.like("%" + nom + "%"))).list(computer)
+				.size();
+
 	}
 
 	public void update(Computer computer) {
@@ -74,7 +84,7 @@ public class ComputerDAO {
 
 		Computer computer = entityManager.find(Computer.class, id);
 		entityManager.remove(computer);
-		
+
 		logger.info("Quit deleteComputer method");
 	}
 
@@ -86,20 +96,26 @@ public class ComputerDAO {
 
 	public List<Computer> readSearch(Page page) {
 		logger.info("In searchComputer method");
-		
+
 		int debut = page.getElementSearch();
 		int number = page.getNumberElement();
 		String nom = page.getSearchName();
 
-		String order = page.getSort() + " " + page.getOrdre();
+		QComputer computer = QComputer.computer;
+		QCompany company = QCompany.company;
+		JPQLQuery query = new JPAQuery(entityManager);
+		query.from(computer)
+				.leftJoin(computer.company, company)
+				.offset(debut)
+				.limit(number)
+				.where(computer.name.like("%" + nom + "%").or(
+						company.name.like("%" + nom + "%")));
 		
-		Query query = entityManager
-				.createQuery(
-						"select computer from Computer as computer left join computer.company as company WHERE LOWER(company.name) LIKE :searchName OR LOWER(computer.name) LIKE :searchName order by "
-								+ order).setParameter("searchName",  "%" + nom + "%").setFirstResult(debut)
-				.setMaxResults(number);
-		List<Computer> computers = (List<Computer>) query.getResultList();
+		query.orderBy(OrderSpecifierImpl.retrieveOrderSpecification(page, company,
+				computer));
 		
-		return computers;
+		return query.list(computer);
 	}
+
+	
 }
