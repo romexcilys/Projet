@@ -57,7 +57,7 @@ public class ComputerServices {
 		
 		page.setComputers(Mapper.toDTO(pageRequested.getContent()));
 
-		nombreComputers = new Long(computerRepository.count()).intValue();
+		nombreComputers = new Long(pageRequested.getTotalElements()).intValue();
 		page.setNumberComputer(nombreComputers);
 	}
 	
@@ -84,12 +84,12 @@ public class ComputerServices {
 		
 		readSortSearch(page);
 		
-		Page<Computer> computers = computerRepository.findByNameContainingOrCompanyNameContaining("%"+page.getName().trim()+"%","%"+page.getName().trim()+"%", constructPageSpecification(page));
+		Page<Computer> pageRequested = computerRepository.findByNameContainingOrCompanyNameContaining("%"+page.getName().trim()+"%","%"+page.getName().trim()+"%", constructPageSpecification(page));
 
 		
-		page.setComputers(Mapper.toDTO(computers.getContent()));
+		page.setComputers(Mapper.toDTO(pageRequested.getContent()));
 
-		nombreComputers = computerRepository.countSearch("%"+page.getName().trim()+"%");
+		nombreComputers = new Long(pageRequested.getTotalElements()).intValue();
 
 		page.setNumberComputer(nombreComputers);
 	}
