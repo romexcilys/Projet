@@ -1,5 +1,3 @@
-com/computerdatabase/repositories/ComputerRepositories.class
-com/computerdatabase/orderspecifier/OrderSpecifierImpl.class
-com/computerdatabase/dao/CompanyDAO.class
-com/computerdatabase/dao/ComputerDAO.class
-com/computerdatabase/dao/LogDAO.class
+com/computerdatabase/repositories/CompanyRepository.class
+com/computerdatabase/repositories/LogRepository.class
+com/computerdatabase/repositories/ComputerRepository.class

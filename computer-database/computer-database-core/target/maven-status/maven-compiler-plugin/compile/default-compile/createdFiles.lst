@@ -1,11 +1,8 @@
 com/computerdatabase/domain/Computer$Builder.class
 com/computerdatabase/domain/Logs$Builder.class
-com/computerdatabase/domain/QCompany.class
-com/computerdatabase/domain/QLogs.class
 com/computerdatabase/domain/Company$1.class
 com/computerdatabase/domain/Logs.class
-com/computerdatabase/domain/Computer$1.class
 com/computerdatabase/domain/Company$Builder.class
+com/computerdatabase/domain/Computer$1.class
 com/computerdatabase/domain/Computer.class
 com/computerdatabase/domain/Company.class
-com/computerdatabase/domain/QComputer.class

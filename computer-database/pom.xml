@@ -39,10 +39,13 @@
 		<javax-transaction.version>1.1</javax-transaction.version>
 
 		<querydsl.version>3.3.2</querydsl.version>
-		
+
 		<spring-data-jpa.version>1.5.2.RELEASE</spring-data-jpa.version>
 
+		<spring-security.version>3.2.3.RELEASE</spring-security.version>
+
 	</properties>
+
 	<dependencyManagement>
 		<dependencies>
 			<!-- LOGBACK -->
@@ -74,6 +77,12 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-jdbc</artifactId>
 				<version>${spring.version}</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>spring-core</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<!-- JSTL -->
@@ -193,8 +202,66 @@
 				</exclusions>
 			</dependency>
 
+			<!-- SPRING SECURITY -->
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-config</artifactId>
+				<version>3.2.3.RELEASE</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>spring-aop</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-beans</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-context</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-core</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-expression</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-web</artifactId>
+				<version>3.2.3.RELEASE</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>spring-aop</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-beans</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-context</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-core</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-expression</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
 		</dependencies>
-		</dependencyManagement>
+	</dependencyManagement>
+
 	<build>
 		<finalName>computer-database</finalName>
 		<plugins>

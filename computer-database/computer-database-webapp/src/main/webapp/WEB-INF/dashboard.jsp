@@ -32,27 +32,27 @@
 				<!-- Table header for Computer Name -->
 				<th id="computerName" > <spring:message code="comp.text" text="Computer" />  <pag:UrlMaker
 						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
-						sort="compu_name" ordre="asc" /><img src="<c:url value="/images/fleche_bas.png"  />"/></a>
+						sort="name" ordre="asc" /><img src="<c:url value="/images/fleche_bas.png"  />"/></a>
 					<pag:UrlMaker searchName="${ infoPage.searchName }"
-						search="${ sessionScope.search }" sort="compu_name" ordre="desc" />
+						search="${ sessionScope.search }" sort="name" ordre="desc" />
 					<img src="<c:url value="/images/fleche_haut.png"  />" /> </a>
 
 				</th>
 
 				<th id="introducedDate" ><spring:message code="intro.text" text="Introduced Date" /> <pag:UrlMaker searchName="${ infoPage.searchName }"
-						search="${ sessionScope.search }" sort="intro_date" ordre="asc" />
+						search="${ sessionScope.search }" sort="introducedDate" ordre="asc" />
 					<img src="<c:url value="/images/fleche_bas.png"  />" /></a> <pag:UrlMaker
 						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
-						sort="intro_date" ordre="desc" /><img src="<c:url value="/images/fleche_haut.png"  />" />
+						sort="introducedDate" ordre="desc" /><img src="<c:url value="/images/fleche_haut.png"  />" />
 					</a>
 				</th>
 
 				<!-- Table header for Discontinued Date -->
 				<th id="discontinuedDate" ><spring:message code="discon.text" text="Discontinued Date" /> <pag:UrlMaker
 						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
-						sort="discon_date" ordre="asc" /><img src="<c:url value="/images/fleche_bas.png"  />" /></a>
+						sort="discontinuedDate" ordre="asc" /><img src="<c:url value="/images/fleche_bas.png"  />" /></a>
 					<pag:UrlMaker searchName="${ infoPage.searchName }"
-						search="${ sessionScope.search }" sort="discon_date" ordre="desc" /><img
+						search="${ sessionScope.search }" sort="discontinuedDate" ordre="desc" /><img
 					src="<c:url value="/images/fleche_haut.png"  />" /> </a>
 
 				</th>
@@ -60,10 +60,10 @@
 
 
 				<th id="companyName" ><spring:message code="compa.text" text="Company" /> <pag:UrlMaker searchName="${ infoPage.searchName }"
-						search="${ sessionScope.search }" sort="compa_name" ordre="asc" /><img
+						search="${ sessionScope.search }" sort="company.name" ordre="asc" /><img
 					src="<c:url value="/images/fleche_bas.png"  />" /></a> <pag:UrlMaker
 						searchName="${ infoPage.searchName }" search="${ sessionScope.search }"
-						sort="compa_name" ordre="desc" /><img src="<c:url value="/images/fleche_haut.png"  />" />
+						sort="company.name" ordre="desc" /><img src="<c:url value="/images/fleche_haut.png"  />" />
 					</a>
 
 				</th>
@@ -97,7 +97,7 @@
 <div id="paginations">
 	<pag:Pagination searchName="${ infoPage.searchName }"
 		search="${ sessionScope.search }" currentPage="${ infoPage.currentPage }"
-		numberPage="${ infoPage.numberPage }" />
+		numberPage="${ infoPage.numberPage }" ordre="${ infoPage.ordre }" sort="${ infoPage.sort }" />
 </div>
 
 <jsp:include page="/include/footer.jsp" />

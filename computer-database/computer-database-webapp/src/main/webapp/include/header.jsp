@@ -17,6 +17,14 @@
 		<h1 class="fill">
 			<a href="affichage?page=1"> Application - Computer Database </a>
 			Language : <a href="?lang=en">English</a>|<a href="?lang=fr">French</a>
+			
+			<c:choose>
+				<c:when test="${ pageContext.request.userPrincipal.authenticated }">
+					<a href="<c:url value="j_spring_security_logout" />" > Logout</a>
+				</c:when>
+			</c:choose>
+			
 		</h1>
+		
 		
 	</header>

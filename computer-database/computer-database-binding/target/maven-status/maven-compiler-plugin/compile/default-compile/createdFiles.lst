@@ -1,7 +1,7 @@
 com/computerdatabase/mapper/Mapper.class
 com/computerdatabase/validator/ComputerValidator.class
+com/computerdatabase/wrapper/PageWrapper.class
+com/computerdatabase/wrapper/PageWrapper$1.class
 com/computerdatabase/dto/ComputerDTO.class
-com/computerdatabase/wrapper/Page$Builder.class
 com/computerdatabase/dto/ComputerDTO$Builder.class
-com/computerdatabase/wrapper/Page$1.class
-com/computerdatabase/wrapper/Page.class
+com/computerdatabase/wrapper/PageWrapper$Builder.class

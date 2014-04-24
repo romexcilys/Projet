@@ -1,6 +1,3 @@
-/home/excilys/workspace/Spring/computer-database/computer-database-core/target/generated-sources/java/com/computerdatabase/domain/QCompany.java
 /home/excilys/workspace/Spring/computer-database/computer-database-core/src/main/java/com/computerdatabase/domain/Computer.java
-/home/excilys/workspace/Spring/computer-database/computer-database-core/target/generated-sources/java/com/computerdatabase/domain/QComputer.java
-/home/excilys/workspace/Spring/computer-database/computer-database-core/target/generated-sources/java/com/computerdatabase/domain/QLogs.java
 /home/excilys/workspace/Spring/computer-database/computer-database-core/src/main/java/com/computerdatabase/domain/Logs.java
 /home/excilys/workspace/Spring/computer-database/computer-database-core/src/main/java/com/computerdatabase/domain/Company.java

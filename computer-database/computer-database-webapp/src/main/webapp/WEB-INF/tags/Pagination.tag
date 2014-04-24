@@ -3,6 +3,8 @@
 <%@ attribute name="search" required="true" %> 
 <%@ attribute name="searchName" required="true" %> 
 <%@ attribute name="numberPage" required="true" %> 
+<%@ attribute name="sort" required="true" %> 
+<%@ attribute name="ordre" required="true" %> 
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 
@@ -11,10 +13,10 @@
 		<c:choose>
 			<c:when test="${search == true }">
 				<a
-					href="SearchComputer?search=<c:out value='${ searchName }'/>&page=<c:out value='${ currentPage - 1 }'/>"><spring:message code="prece.text" text="Computer default" /></a>
+					href="SearchComputer?search=<c:out value='${ searchName }'/>&page=<c:out value='${ currentPage - 1 }'/>&sort=<c:out value='${ sort }'/>&ordre=<c:out value='${ ordre }'/>"><spring:message code="prece.text" text="Computer default" /></a>
 			</c:when>
 			<c:otherwise>
-				<a href="affichage?page=<c:out value='${ currentPage - 1 }'/>"><spring:message code="prece.text" text="Computer default" /></a>
+				<a href="affichage?page=<c:out value='${ currentPage - 1 }'/>&sort=<c:out value='${ sort }'/>&ordre=<c:out value='${ ordre }'/>"><spring:message code="prece.text" text="Computer default" /></a>
 			</c:otherwise>
 		</c:choose>
 	</c:when>
@@ -26,10 +28,10 @@
 		<c:choose>
 			<c:when test="${search == true }">
 				<a
-					href="SearchComputer?search=<c:out value='${ searchName }'/>&page=<c:out value='${ currentPage + 1 }'/>"><spring:message code="suiv.text" text="Computer default" /></a>
+					href="SearchComputer?search=<c:out value='${ searchName }'/>&page=<c:out value='${ currentPage + 1 }'/>&sort=<c:out value='${ sort }'/>&ordre=<c:out value='${ ordre }'/>"><spring:message code="suiv.text" text="Computer default" /></a>
 			</c:when>
 			<c:otherwise>
-				<a href="affichage?page=<c:out value='${ currentPage + 1 }'/>"><spring:message code="suiv.text" text="Computer default" /></a>
+				<a href="affichage?page=<c:out value='${ currentPage + 1 }'/>&sort=<c:out value='${ sort }'/>&ordre=<c:out value='${ ordre }'/>"><spring:message code="suiv.text" text="Computer default" /></a>
 			</c:otherwise>
 		</c:choose>
 	</c:when>
