@@ -114,3 +114,17 @@ table.computers .header a {
 	width: 30%;
 }
 
+
+#login-box
+{
+	width:350px;
+	margin:auto;
+	margin-top:150px;
+}
+
+.error
+{
+	text-align:center;
+	color:red;
+	background-color: yellow;
+}
