@@ -19,8 +19,8 @@ public class Computer {
 	@Id
 	@GeneratedValue
 	@Column(name="id")
-	private int id;
-	
+	private long id;
+
 	@Column(name="name")
 	private String name;
 	
@@ -54,7 +54,7 @@ public class Computer {
 		this.company = company;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -102,7 +102,7 @@ public class Computer {
 			computer = new Computer();
 		}
 
-		public Builder id(int id) {
+		public Builder id(long id) {
 			this.computer.id = id;
 			return this;
 		}

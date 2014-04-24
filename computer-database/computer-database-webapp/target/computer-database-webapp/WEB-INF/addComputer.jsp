@@ -9,7 +9,6 @@
 	<!-- <h1>Add Computer</h1> -->
 
 <div id="formulaireAdd">
-
 	<form:form action="AjoutComputer" method="POST" modelattribute="computerDTO" commandName="computerDTO">
 		<fieldset>
 			<div class="clearfix">

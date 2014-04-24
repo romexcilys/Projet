@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.computerdatabase.dto.ComputerDTO;
 
-public class Page {
+public class PageWrapper {
 	
 	int id;
 	String sort;
@@ -89,11 +89,11 @@ public class Page {
 
 	public static class Builder
 	{
-		Page page;
+		PageWrapper page;
 		
 		private Builder()
 		{
-			page = new Page();
+			page = new PageWrapper();
 		}
 		
 		public Builder id(int id)
@@ -162,7 +162,7 @@ public class Page {
 		}
 		
 		
-		public Page build() {
+		public PageWrapper build() {
 			return this.page;
 		}
 		

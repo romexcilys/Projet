@@ -15,13 +15,13 @@ public class Logs {
 	@Id
 	@GeneratedValue
 	@Column(name="id")
-	private int id;
+	private long id;
 	
 	@Column(name="operation")
 	private String operation;
 	
 	@Column(name="idComputer")
-	private int idComputer;
+	private long idComputer;
 	
 	@Column(name="name")
 	private String name;
@@ -31,10 +31,10 @@ public class Logs {
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime date;
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public DateTime getDate() {
@@ -50,10 +50,10 @@ public class Logs {
 	public void setOperation(String operation) {
 		this.operation = operation;
 	}
-	public int getIdComputer() {
+	public long getIdComputer() {
 		return idComputer;
 	}
-	public void setIdComputer(int idComputer) {
+	public void setIdComputer(long idComputer) {
 		this.idComputer = idComputer;
 	}
 	public String getName() {
@@ -77,7 +77,7 @@ public class Logs {
 			return this;
 		}
 		
-		public Builder idComputer(int idComputer)
+		public Builder idComputer(long idComputer)
 		{
 			this.log.idComputer = idComputer;
 			return this;
@@ -86,6 +86,12 @@ public class Logs {
 		public Builder name(String name)
 		{
 			this.log.name = name;
+			return this;
+		}
+		
+		public Builder date(DateTime date)
+		{
+			this.log.date = date;
 			return this;
 		}
 		

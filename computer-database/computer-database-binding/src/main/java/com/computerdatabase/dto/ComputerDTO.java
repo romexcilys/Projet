@@ -3,7 +3,7 @@ package com.computerdatabase.dto;
 
 public class ComputerDTO {
 	
-	private int id;
+	private long id;
 	
 	private String name;
 	
@@ -13,14 +13,14 @@ public class ComputerDTO {
 	
 	private String companyName;
 	
-	private int companyId;
+	private long companyId;
 	
 	
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -48,10 +48,10 @@ public class ComputerDTO {
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
-	public int getCompanyId() {
+	public long getCompanyId() {
 		return companyId;
 	}
-	public void setCompanyId(int companyId) {
+	public void setCompanyId(long companyId) {
 		this.companyId = companyId;
 	}
 	public static class Builder
@@ -63,7 +63,7 @@ public class ComputerDTO {
 			computerDTO = new ComputerDTO();
 		}
 		
-		public Builder id(int id)
+		public Builder id(long id)
 		{
 			this.computerDTO.id = id;
 			return this;
@@ -93,7 +93,7 @@ public class ComputerDTO {
 			return this;
 		}
 		
-		public Builder companyId(int companyId)
+		public Builder companyId(long companyId)
 		{
 			this.computerDTO.companyId = companyId;
 			return this;

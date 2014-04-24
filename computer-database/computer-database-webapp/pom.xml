@@ -35,12 +35,13 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd"
 			<artifactId>jsp-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- SPRING -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 		</dependency>
+
 
 	</dependencies>
 	<build>

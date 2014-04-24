@@ -13,7 +13,7 @@ public class Company {
 	@Id
 	@Column(name = "id",nullable = true)
 	@GeneratedValue
-	private int id;
+	private long id;
 	
 	@Column(name = "name",nullable = true)
 	private String name;
@@ -29,11 +29,11 @@ public class Company {
 		this.name = name;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -58,7 +58,7 @@ public class Company {
 			company = new Company();
 		}
 
-		public Builder id(int id) {
+		public Builder id(long id) {
 			this.company.id = id;
 			return this;
 		}

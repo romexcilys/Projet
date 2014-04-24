@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.computerdatabase.service.ComputerServices;
-import com.computerdatabase.wrapper.Page;
+import com.computerdatabase.wrapper.PageWrapper;
 
 /**
  * Servlet implementation class SearchComputerServlet
@@ -64,7 +64,7 @@ public class SearchComputerController {
 	
 			int elementSearch = (currentPage - 1) * nombreElement;
 	
-			Page  page = Page.builder().elementSearch(elementSearch)
+			PageWrapper  page = PageWrapper.builder().elementSearch(elementSearch)
 					.currentPage(currentPage).numberElement(nombreElement)
 					.sort(sort).ordre(ordre).name(nom)
 					.searchName(nom.toLowerCase()).build();

@@ -1,6 +1,6 @@
 com/computerdatabase/servlet/HTTPErrorController.class
 com/computerdatabase/servlet/AddComputerController.class
 com/computerdatabase/servlet/ListComputerController.class
-com/computerdatabase/servlet/SearchComputerController.class
 com/computerdatabase/servlet/DeleteComputerController.class
+com/computerdatabase/servlet/SearchComputerController.class
 com/computerdatabase/servlet/UpdateComputerController.class
