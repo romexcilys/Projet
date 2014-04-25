@@ -5,7 +5,6 @@
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
-	<beans:import resource="classpath:database/Spring-Datasource.xml"/>
 
 	
 	<http auto-config="true" use-expressions="true">
