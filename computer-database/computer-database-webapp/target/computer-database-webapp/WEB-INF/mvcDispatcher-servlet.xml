@@ -23,23 +23,7 @@
 	<import resource="spring-security.xml" />
 	<import resource="classpath:/spring-conf/Spring-Service.xml" />
 
-
-	<!-- INTERNATIONALIZATION -->
-	<bean id="messageSource"
-		class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basename" value="message" />
-	</bean>
-
-    <mvc:interceptors>
-        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-            <property name="paramName" value="lang" />
-        </bean>
-    </mvc:interceptors>
-
-    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
-        <property name="defaultLocale" value="en" />
-    </bean>
-	
+	<import resource="classpath:/internationalization.xml"/>
 	
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -55,7 +39,5 @@
 	<mvc:resources mapping="/images/**" location="/images/" />
 
 	<mvc:annotation-driven />
-	
-	
 	
 </beans>

@@ -1,20 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.excilys</groupId>
-    <artifactId>computer-database</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  
-	
-  <dependencies>
-	<dependency>
-			 <groupId>${project.groupId}</groupId>
-		    <artifactId>computer-database-core</artifactId>
-		    <version>${project.version}</version>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.excilys</groupId>
+		<artifactId>computer-database</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>computer-database-core</artifactId>
+			<version>${project.version}</version>
 		</dependency>
-	
-	<!-- LOGBACK -->
+
+		<!-- LOGBACK -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -23,13 +24,13 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 		</dependency>
-		
+
 		<!-- SPRING -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 		</dependency>
-		
+
 		<!-- VALIDATION -->
 		<dependency>
 			<groupId>javax.validation</groupId>
@@ -39,12 +40,12 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 		</dependency>
-  </dependencies>
-  
-  <build>
-    <finalName>computer-database-binding</finalName>
-    
-    <plugins>
+	</dependencies>
+
+	<build>
+		<finalName>computer-database-binding</finalName>
+
+		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -55,7 +56,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-  </build>
-  
-  <artifactId>computer-database-binding</artifactId>
+	</build>
+
+	<artifactId>computer-database-binding</artifactId>
 </project>

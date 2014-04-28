@@ -30,7 +30,6 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 		</dependency>
 
-
 	</dependencies>
 
 	<build>
@@ -49,9 +48,6 @@
 
 		</plugins>
 	</build>
-	
-
-
 
 	<artifactId>computer-database-core</artifactId>
 

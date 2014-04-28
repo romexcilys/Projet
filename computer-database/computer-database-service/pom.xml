@@ -7,7 +7,6 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-
 	<dependencies>
 
 		<dependency>
@@ -32,9 +31,8 @@
 			<artifactId>logback-classic</artifactId>
 		</dependency>
 
-
-
 	</dependencies>
+	
 	<build>
 		<finalName>computer-database-service</finalName>
 

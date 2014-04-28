@@ -45,6 +45,12 @@ public class ComputerServices {
 		logRepository.save(log);
 		logger.info("Quit create method");
 	}
+	
+	public List<Computer> findAll() {
+		List<Computer> computers = computerRepository.findAll();
+				
+		return computers;
+	}
 
 	public List<Computer> get(PageWrapper page) {
 		Logs log = Logs.builder().date(DateTime.now())

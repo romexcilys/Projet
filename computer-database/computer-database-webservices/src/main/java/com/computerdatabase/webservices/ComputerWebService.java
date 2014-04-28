@@ -12,7 +12,7 @@ import javax.ws.rs.Produces;
 public interface ComputerWebService {
 	
 	@POST
-	@Path("/bdd")
+	@Path("/computerList")
 	public List<String> computerList();
 /*
 	@POST

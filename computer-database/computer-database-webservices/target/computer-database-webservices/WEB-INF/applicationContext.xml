@@ -35,6 +35,4 @@ xmlns:mvc="http://www.springframework.org/schema/mvc"
         <property name="defaultLocale" value="en" />
     </bean>
 	
-	
-
 </beans>

@@ -14,11 +14,12 @@ import com.computerdatabase.dto.ComputerDTO;
 @Component
 public class ComputerValidator implements Validator{
 	
-	//Ne sert pas car regex 
 	public boolean verifierDate(String date) {
 		// TODO Auto-generated method stub
-
-		return true;
+		
+		String regex = ResourceBundle.getBundle("message", LocaleContextHolder.getLocale()).getString("pattern_date.pattern");
+		
+		return date.matches(regex);
 	}
 
 	public boolean verifierName(String name) {

@@ -16,7 +16,6 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd"
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>computer-database-service</artifactId>
@@ -52,8 +51,8 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd"
 				<artifactId>spring-security-web</artifactId>
 		</dependency>
 
-
 	</dependencies>
+	
 	<build>
 		<finalName>computer-database-webapp</finalName>
 		<plugins>
