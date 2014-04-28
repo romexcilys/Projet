@@ -21,13 +21,7 @@
 			<version>${project.version}</version>
 		</dependency>
 
-		<!-- JAX WS -->
-		<dependency>
-			<groupId>com.sun.xml.ws</groupId>
-			<artifactId>jaxws-rt</artifactId>
-		</dependency>
-
-		<!-- Spring WS -->
+		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -39,10 +33,6 @@
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.ws</groupId>
-			<artifactId>spring-ws-core</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-remoting</artifactId>
 		</dependency>
@@ -51,10 +41,10 @@
 			<artifactId>spring-webmvc</artifactId>
 		</dependency>
 
-		<!-- Apache CXF for WS -->
+		<!-- Apache CXF for RS -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-frontend-jaxws</artifactId>
+			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
@@ -66,7 +56,15 @@
 			<artifactId>cxf-rt-bindings-soap</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>jsr311-api</artifactId>
+		</dependency>
 
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-jaxrs</artifactId>
+		</dependency>
 
 	</dependencies>
 

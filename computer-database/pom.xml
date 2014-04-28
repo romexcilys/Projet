@@ -45,13 +45,13 @@
 		<spring-security.version>3.2.3.RELEASE</spring-security.version>
 
 		<jax-ws.version>1.9</jax-ws.version>
-		
+
 		<apache-cxf.version>2.7.11</apache-cxf.version>
-		
-		<spring-ws.version>2.1.4.RELEASE</spring-ws.version>
-		
+
 		<spring-remoting.version>2.0.8</spring-remoting.version>
 		<sun-ws.version>2.2.7</sun-ws.version>
+
+		<javax-ws-rs.version>1.1.1</javax-ws-rs.version>
 
 	</properties>
 	<dependencyManagement>
@@ -250,7 +250,7 @@
 			<!-- WEB SERVICES -->
 			<dependency>
 				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-rt-frontend-jaxws</artifactId>
+				<artifactId>cxf-rt-frontend-jaxrs</artifactId>
 				<version>${apache-cxf.version}</version>
 			</dependency>
 
@@ -267,21 +267,22 @@
 			</dependency>
 
 			<dependency>
-				<groupId>org.springframework.ws</groupId>
-				<artifactId>spring-ws-core</artifactId>
-				<version>${spring-ws.version}</version>
-			</dependency>
-
-			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-remoting</artifactId>
 				<version>${spring-remoting.version}</version>
 			</dependency>
 
+			<!-- WEB SERVICES JAX RS -->
 			<dependency>
-				<groupId>com.sun.xml.ws</groupId>
-				<artifactId>jaxws-rt</artifactId>
-				<version>${sun-ws.version}</version>
+				<groupId>javax.ws.rs</groupId>
+				<artifactId>jsr311-api</artifactId>
+				<version>${javax-ws-rs.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-jaxrs</artifactId>
+				<version>1.9.13</version>
 			</dependency>
 
 		</dependencies>
