@@ -39,6 +39,7 @@
 				<label for="company"><spring:message code='compa_name.text' text='Company name' /> :</label>
 				<div class="input">
 					<select name="company">
+						<option value="0">--</option>
 						<c:forEach items="${ companys }" var="company">
 							<c:choose>
 								<c:when test="${ company.id == computer.companyId }">

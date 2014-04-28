@@ -15,7 +15,7 @@ import com.computerdatabase.domain.Logs;
 import com.computerdatabase.repositories.CompanyRepository;
 import com.computerdatabase.repositories.LogRepository;
 
-@Service
+@Service("companyServices")
 public class CompanyServices {
 	
 	@Autowired

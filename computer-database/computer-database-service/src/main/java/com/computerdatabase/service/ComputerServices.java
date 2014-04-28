@@ -1,5 +1,7 @@
 package com.computerdatabase.service;
 
+import java.util.List;
+
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +20,7 @@ import com.computerdatabase.repositories.ComputerRepository;
 import com.computerdatabase.repositories.LogRepository;
 import com.computerdatabase.wrapper.PageWrapper;
 
-@Service
+@Service("computerServices")
 @Transactional
 public class ComputerServices {
 
@@ -44,7 +46,7 @@ public class ComputerServices {
 		logger.info("Quit create method");
 	}
 
-	public void get(PageWrapper page) {
+	public List<Computer> get(PageWrapper page) {
 		Logs log = Logs.builder().date(DateTime.now())
 				.operation("Get Computer").name(null).idComputer(0).build();
 
@@ -56,6 +58,8 @@ public class ComputerServices {
 		page.setComputers(Mapper.toDTO(pageRequested.getContent()));
 		
 		page.setNumberComputer(new Long(pageRequested.getTotalElements()).intValue());
+		
+		return pageRequested.getContent();
 	}
 
 	public Computer find(int id) {

@@ -12,7 +12,6 @@
 		<module>computer-database-persistence</module>
 		<module>computer-database-service</module>
 		<module>computer-database-binding</module>
-		<module>webservices</module>
 		<module>computer-database-webservices</module>
 	</modules>
 
@@ -41,16 +40,21 @@
 		<javax-persistence.version>1.0.2</javax-persistence.version>
 		<javax-transaction.version>1.1</javax-transaction.version>
 
-		<querydsl.version>3.3.2</querydsl.version>
-
 		<spring-data-jpa.version>1.5.2.RELEASE</spring-data-jpa.version>
 
 		<spring-security.version>3.2.3.RELEASE</spring-security.version>
 
 		<jax-ws.version>1.9</jax-ws.version>
+		
+		<apache-cxf.version>2.7.11</apache-cxf.version>
+		
+		<spring-ws.version>2.1.4.RELEASE</spring-ws.version>
+		
+		<spring-remoting.version>2.0.8</spring-remoting.version>
+		<sun-ws.version>2.2.7</sun-ws.version>
 
 	</properties>
-<dependencyManagement>
+	<dependencyManagement>
 		<dependencies>
 			<!-- LOGBACK -->
 			<dependency>
@@ -95,7 +99,6 @@
 				<groupId>javax.servlet</groupId>
 				<artifactId>jsp-api</artifactId>
 				<version>${javax-servlet.version}</version>
-				<scope>provided</scope>
 			</dependency>
 
 			<!-- JODATIME -->
@@ -158,19 +161,6 @@
 				<version>${javax-transaction.version}</version>
 			</dependency>
 
-			<!-- QUERYDSL -->
-			<dependency>
-				<groupId>com.mysema.querydsl</groupId>
-				<artifactId>querydsl-apt</artifactId>
-				<version>${querydsl.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.mysema.querydsl</groupId>
-				<artifactId>querydsl-jpa</artifactId>
-				<version>${querydsl.version}</version>
-			</dependency>
-
 			<!-- SPRING DATA JPA -->
 			<dependency>
 				<groupId>org.springframework.data</groupId>
@@ -204,7 +194,7 @@
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-config</artifactId>
-				<version>3.2.3.RELEASE</version>
+				<version>${spring-security.version}</version>
 				<exclusions>
 					<exclusion>
 						<artifactId>spring-aop</artifactId>
@@ -257,8 +247,45 @@
 				</exclusions>
 			</dependency>
 
+			<!-- WEB SERVICES -->
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxws</artifactId>
+				<version>${apache-cxf.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http</artifactId>
+				<version>${apache-cxf.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-bindings-soap</artifactId>
+				<version>${apache-cxf.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.ws</groupId>
+				<artifactId>spring-ws-core</artifactId>
+				<version>${spring-ws.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-remoting</artifactId>
+				<version>${spring-remoting.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.sun.xml.ws</groupId>
+				<artifactId>jaxws-rt</artifactId>
+				<version>${sun-ws.version}</version>
+			</dependency>
+
 		</dependencies>
-</dependencyManagement>
+	</dependencyManagement>
 	<build>
 		<finalName>computer-database</finalName>
 		<plugins>
@@ -273,5 +300,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

@@ -6,7 +6,8 @@
 	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
 
-	<http auto-config="true">
+	
+	<http auto-config="true" use-expressions="true">
 		<!-- ERROR PAGE FOR ACCESS DENIED -->
 		<access-denied-handler error-page="/WEB-INF/403.jsp" />
 
@@ -14,9 +15,9 @@
 			authentication-failure-url="/login?error" username-parameter="username"
 			password-parameter="password" />
 
-		<intercept-url pattern="/PageDelete**" access="ROLE_ADMIN" />
-		<intercept-url pattern="/PageUpdate**" access="ROLE_ADMIN" />
-		<intercept-url pattern="/PageAjout**" access="ROLE_ADMIN" />
+		<intercept-url pattern="/PageDelete**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/PageUpdate**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/PageAjout**" access="hasRole('ROLE_ADMIN')" />
 
 		<!-- FOR LOGOUT -->
 		<logout logout-success-url="/index.jsp" />
@@ -31,10 +32,6 @@
 				users-by-username-query="select username, password, enabled from users where username=?"
 				authorities-by-username-query="select username, ROLE from user_roles where username=?" />
 
-			<!-- <user-service> <user name="john" password="password" authorities="ROLE_USER" 
-				/> <user name="admin" password="admin" authorities="ROLE_ADMIN" /> </user-service> -->
-				
-				
 		</authentication-provider>
 	</authentication-manager>
 
