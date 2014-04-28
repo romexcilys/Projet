@@ -41,7 +41,7 @@
 			<artifactId>spring-webmvc</artifactId>
 		</dependency>
 
-		<!-- Apache CXF for RS -->
+		<!-- Apache CXF FILES -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
@@ -50,17 +50,18 @@
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-transports-http</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-bindings-soap</artifactId>
 		</dependency>
+		<!-- /Apache CXF FILES -->
 
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>jsr311-api</artifactId>
 		</dependency>
 
+		<!-- JACKSON -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-jaxrs</artifactId>
